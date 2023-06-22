@@ -1,5 +1,6 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
 .Random.seed|object|318bf49e39747436|||||||||||||||
+baseline_vars|object|3a56a8ab974484ed|||||||||||||||
 calc_truth|function|b2453598b46cc2aa|||||||||||||||
 cc|stem|75d3eddefe7665b2|8d1733555c9135a7|83e9c4921eafc49f|-2101373494||t19530.4628567355s|fcc9d428d20008ad|20257|rds|local|vector|||1.58|package SuperLearner was built under R version 4.1.2. package foreach was built under R version 4.1.2. package biglm was built under R version 4.0.5. package doParallel was built under R version 4.0.5. package iterators was built under R version 4.0.5. package snow was built under R version 4.1.1. package doSNOW was built under R version 4.0.5|
 clean_sim_data|function|5bd385108614d22b|||||||||||||||
@@ -10,16 +11,18 @@ get_formulas|function|35fe77a52fd88640|||||||||||||||
 get_ltmle_data|function|abb7018fe4679d73|||||||||||||||
 get_rhs|function|733841e78a88ea19|||||||||||||||
 get_subset_data|function|69ef8f92dd6fc048|||||||||||||||
+long_covariates|object|5ae7b2a3ef99c1cc|||||||||||||||
 Ltmle|function|75754c44e9ddea7e|||||||||||||||
 ltmle.glmnet|function|fa9d13c0324b096c|||||||||||||||
-merge_data|function|d99ff0480efd3059|||||||||||||||
-nix|object|e6dfc31053a0b899|||||||||||||||
+merge_data|function|678229e484819c1e|||||||||||||||
+nix|object|0e1fde12ef36fd33|||||||||||||||
 predict.ltmle.glmnet|function|a400be7d45f2e7b3|||||||||||||||
-prepare_Ltmle|function|a8a5de4fe75c5a5c|||||||||||||||
+prepare_Ltmle|function|337468825b89e3e6|||||||||||||||
 print.Ltmle|function|3500cbbb57722a1a|||||||||||||||
 print.prepare_Ltmle|function|0d77a703800a7ccc|||||||||||||||
-run_ltmle|function|d42962d1fef11d74|||||||||||||||
-run_ltmle_sim|function|e1a9dcd1be3fb5c6|||||||||||||||
+run_ltmle|function|2b3b56ae3d5730cf|||||||||||||||
+run_ltmle_new|function|413508092754fc06|||||||||||||||
+run_ltmle_sim|function|762502b23e5674fc|||||||||||||||
 sim_data|stem|f34249ee32b10511|54ad3fe4c9bacb7e|71742fdb83412bd0|365671976||t19530.496819044s|3872d66714742796|536394|rds|local|vector|||19.98||
 sim_reps|object|a396645e64d1e7f2|||||||||||||||
 summary.Ltmle|function|209b5d71010f73a8|||||||||||||||
