@@ -73,7 +73,7 @@ tar_target(cc,fread(paste0(here::here(),"/data/coefficients.txt"))  #%>%
   #drop censoring and death for simplicity
    # filter(!grepl("event_death",var) & !grepl("censor",var) ) 
 )
-,tar_target(sim_data, generate_data(cc, seed=12345, reps=sim_reps, n=dataset_N, N_time=10, clean_death=FALSE))
+,tar_target(sim_data, generate_data(cc, seed=12345, reps=sim_reps, n=dataset_N, N_time=10))
 
 #calculate truth
 ,tar_target(truth,  calc_truth(cc, seed=23426, nsamp=100000))
