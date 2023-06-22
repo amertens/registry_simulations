@@ -8,36 +8,20 @@
 #  V:/Data/Workdata/706582/Corona_update/Data/11. levering.
 #
 # setwd("z:/Workdata/706582/Andrew Mertens/targets_diabetes_dementia/")
+try(setwd("~/research/Methods/registry_simulations/"))
 library(targets)
 library(data.table)
 library(tidyverse)
-
 #load packages
-tar_option_set(packages=c("lava",
-                          "heaven",
-                          "ltmle",
-                          "data.table",
-                          "tidyverse",
-                          "SuperLearner",
-                          "tictoc",
-                          "glmnet",
-                          "Matrix",
-                          "Publish",
-                          "matrixStats",
-                          "speedglm"
-                          ,"doParallel"
-                          ,"parallel"
-                          ,"caret"
-                          ,"snow"
-                          ,"doSNOW"
-                          ,"foreach"))
+tar_option_set(packages=c("lava","heaven","ltmle","data.table","tidyverse","SuperLearner","tictoc","glmnet","Matrix","Publish","matrixStats","speedglm","doParallel","parallel","caret","snow","doSNOW","foreach")
+               )
 
 # -------------------------------------------------------------------------------------------------------------
 # Configuration
 # -------------------------------------------------------------------------------------------------------------
 
 nix=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
-
+source("Ltmle/Augmentation/Ltmle.R")
   # #set up parallelization
   #  #use about half of space
   # ncores <- floor(detectCores()/2)
