@@ -1,22 +1,21 @@
-
 run_ltmle_new <- function(d,
                           time_horizon=3,
                           baseline_vars=baseline_vars,
                           long_covariates=long_covariates,
                           treatment_vars="glp1",
                           outcome_vars=c("event_dementia","censor","event_death"),
-         N_time = 11, #number of time points you want to look at
-         SL.library = c("SL.glmnet"),
-         resdf=NULL,
-         Qint=F,
-         gcomp=F,
-         det.Q=T,
-         gbound = c(0.01, 1),
-         override_function=SuperLearner_override,
-         varmethod = "tmle", #variance method
-         label="",
-         glm=FALSE,
-         id=NULL){
+                          N_time = 11, #number of time points you want to look at
+                          SL.library = c("SL.glmnet"),
+                          resdf=NULL,
+                          Qint=F,
+                          gcomp=F,
+                          det.Q=T,
+                          gbound = c(0.01, 1),
+                          override_function=SuperLearner_override,
+                          varmethod = "tmle", #variance method
+                          label="",
+                          glm=FALSE,
+                          id=NULL){
   
   d_wide_list <- tar_read(sim_data)
   
