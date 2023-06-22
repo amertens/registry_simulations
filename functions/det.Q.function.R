@@ -1,15 +1,12 @@
-
-det.Q.function <- function(data, current.node, nodes, called.from.estimate.g){
-  death.index <- grep("death_",names(data))
-  if(length(death.index)==0)stop("no node found")
-  hist.death.index <- death.index[death.index < current.node]
-  if(length(hist.death.index)==0)return(NULL)
-  if(length(hist.death.index)==1){
-    is.deterministic <- data[,hist.death.index]==1
-  } else {
-    is.deterministic <- apply(data[,hist.death.index]==1,1,any)
-  }#if death before, remove from fitting
-  is.deterministic[is.na(is.deterministic)] <- F
-  return(list(is.deterministic=is.deterministic, Q.value=0))
-  
+det.Q.function<-function(data, current.node, nodes, called.from.estimate.g){
+    compete.index <- grep("^event_death",names(data))
+    hist.compete.index <- compete.index[compete.index < current.node]
+    if(length(hist.compete.index)==0)
+        return(NULL)
+    else{
+        is.deterministic <- Reduce("+",lapply(data[,hist.compete.index,drop=FALSE],
+                                              function(dd){x=dd;x[is.na(dd)] <- 0;x}))>=1
+        is.deterministic[is.na(is.deterministic)] <- FALSE
+        list(is.deterministic=is.deterministic, Q.value=0)
+    }
 }

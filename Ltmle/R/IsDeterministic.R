@@ -37,12 +37,16 @@ function (data, cur.node, deterministic.Q.function, nodes, called.from.estimate.
         stop(paste("inconsistent deterministic Q at node:", names(data)[cur.node]))
     }
     finalY <- data[, max(nodes$Y)]
-    inconsistent.rows <- (det.list$Q.value %in% c(0, 1)) & (det.list$Q.value != 
-        finalY[det.list$is.deterministic]) & !is.na(finalY[det.list$is.deterministic])
-    if (any(inconsistent.rows)) 
+    # FIXME: the original code compared a singleton against a vector
+    browser()
+    inconsistent.rows <- (det.list$Q.value %in% c(0, 1)) &
+        (det.list$Q.value != finalY[det.list$is.deterministic]) &
+        !is.na(finalY[det.list$is.deterministic])
+    if (any(inconsistent.rows)){
         stop(paste("At node:", names(data)[cur.node], "deterministic.Q.function is inconsistent with data - Q.value is either 0 or 1 but this does not match the final Y node value\nCheck data rows:", 
             paste(head(rownames(data)[det.list$is.deterministic][inconsistent.rows]), 
-                collapse = " ")))
+                  collapse = " ")))
+    }
     Q.value <- rep(NA, nrow(data))
     Q.value[is.deterministic] <- 1
     Q.value[det.list$is.deterministic] <- det.list$Q.value
