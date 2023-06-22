@@ -32,7 +32,7 @@ merge_data <- function(time_horizon,
   #
   # adding the baseline covariates
   #
-  browser()
+  #browser()
   wide_data=baseline_data[wide_data, on = c("pnr")]
   # subset and sort data
   if (test)
