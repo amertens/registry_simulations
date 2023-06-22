@@ -4,7 +4,7 @@ run_ltmle_new <- function(d,
                           baseline_vars=baseline_vars,
                           long_covariates=long_covariates,
                           treatment_vars="glp1",
-                          outcome_vars="event_dementia",
+                          outcome_vars=c("event_dementia","censor","event_death"),
          N_time = 11, #number of time points you want to look at
          SL.library = c("SL.glmnet"),
          resdf=NULL,
@@ -28,22 +28,17 @@ run_ltmle_new <- function(d,
   timevar_data <- d[,c("pnr",grep(paste0(long_covariates, collapse ="|"),names(d), value = TRUE)), with = FALSE] 
   
   
-  pl <- prepare_Ltmle(outcome_data = outcome_data,
+  pl <- prepare_Ltmle(outcome_data = list("event_dementia"=outcome_data),
                       regimen_data = treatment_data,
                       baseline_data = baseline_data,
                       timevar_data = timevar_data,
                       time_horizon = time_horizon,
-                      deterministic.Q.function = NULL,
-                      # name_outcome = paste0("event_dementia_",1:time_horizon),
-                      # name_regimen = paste0("glp1_",1:time_horizon),
+                      deterministic.Q.function = det.Q.function,
                       name_outcome = "event_dementia",
                       name_regimen = "glp1",
-                      # name_censoring = "Censored",
-                      # censored_label = "censored",
-                      # name_comp.event = "Dead",
-                      name_censoring = NULL,
-                      censored_label = NULL,
-                      name_comp.event = NULL,
+                      name_censoring = "censor",
+                      censored_label = "censored",
+                      name_comp.event = "event_death",
                       Markov = NULL, #set to true?
                       subset_id = NULL,
                       SL.library="glm",
@@ -51,7 +46,7 @@ run_ltmle_new <- function(d,
                       abar = list(rep(1,time_horizon),rep(0,time_horizon)))
   
   
-  pl 
+  pl$verbose=1L 
   
   
   fit <- do.call(Ltmle, pl)
