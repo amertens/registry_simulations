@@ -1,0 +1,27 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+.Random.seed|object|318bf49e39747436|||||||||||||||
+calc_truth|function|b2453598b46cc2aa|||||||||||||||
+cc|stem|75d3eddefe7665b2|8d1733555c9135a7|83e9c4921eafc49f|-2101373494||t19530.4628567355s|fcc9d428d20008ad|20257|rds|local|vector|||1.58|package SuperLearner was built under R version 4.1.2. package foreach was built under R version 4.1.2. package biglm was built under R version 4.0.5. package doParallel was built under R version 4.0.5. package iterators was built under R version 4.0.5. package snow was built under R version 4.1.1. package doSNOW was built under R version 4.0.5|
+clean_sim_data|function|5bd385108614d22b|||||||||||||||
+dataset_N|object|f65052742dde121f|||||||||||||||
+event_node_manipulator|function|db5f4d75b9a359cd|||||||||||||||
+generate_data|function|16c73e2b55d2086c|||||||||||||||
+get_formulas|function|35fe77a52fd88640|||||||||||||||
+get_ltmle_data|function|abb7018fe4679d73|||||||||||||||
+get_rhs|function|733841e78a88ea19|||||||||||||||
+get_subset_data|function|69ef8f92dd6fc048|||||||||||||||
+Ltmle|function|75754c44e9ddea7e|||||||||||||||
+ltmle.glmnet|function|fa9d13c0324b096c|||||||||||||||
+merge_data|function|d99ff0480efd3059|||||||||||||||
+nix|object|e6dfc31053a0b899|||||||||||||||
+predict.ltmle.glmnet|function|a400be7d45f2e7b3|||||||||||||||
+prepare_Ltmle|function|a8a5de4fe75c5a5c|||||||||||||||
+print.Ltmle|function|3500cbbb57722a1a|||||||||||||||
+print.prepare_Ltmle|function|0d77a703800a7ccc|||||||||||||||
+run_ltmle|function|d42962d1fef11d74|||||||||||||||
+run_ltmle_sim|function|e1a9dcd1be3fb5c6|||||||||||||||
+sim_data|stem|f34249ee32b10511|54ad3fe4c9bacb7e|71742fdb83412bd0|365671976||t19530.496819044s|3872d66714742796|536394|rds|local|vector|||19.98||
+sim_reps|object|a396645e64d1e7f2|||||||||||||||
+summary.Ltmle|function|209b5d71010f73a8|||||||||||||||
+synthesizeDD|function|c37ac635551da0e0|||||||||||||||
+truth|stem|303493c0f0dabe5d|512a7532571df71a|57a32c26afe006b3|1440255||t19530.4777756335s|f4fcaa75623a2322|9163437|rds|local|vector|||32.52||
