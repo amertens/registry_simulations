@@ -15,6 +15,7 @@ prepare_Ltmle <- function(regimen_data,
                           deterministic.Q.function = NULL,
                           SL.library,
                           test = FALSE) {
+  
     ## Merge all data and order in correct order
     merged_data = merge_data(time_horizon = time_horizon,
                              regimen_data = regimen_data,
