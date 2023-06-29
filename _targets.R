@@ -8,6 +8,7 @@
 #  V:/Data/Workdata/706582/Corona_update/Data/11. levering.
 #
 # setwd("z:/Workdata/706582/Andrew Mertens/targets_diabetes_dementia/")
+try(setwd("C:/Users/andre/Documents/jici/registry_simulations/"))
 try(setwd("~/research/Methods/registry_simulations/"))
 library(targets)
 library(data.table)

@@ -9,6 +9,8 @@ merge_data <- function(time_horizon,
                        censored_label = "censored",
                        name_comp.event = NULL,
                        test=FALSE){
+  
+  
   time_grid = 0:time_horizon
   K = length(time_grid)
   # the regimen may have two components (A and B) both are

@@ -38,7 +38,7 @@ function (data, cur.node, deterministic.Q.function, nodes, called.from.estimate.
     }
     finalY <- data[, max(nodes$Y)]
     # FIXME: the original code compared a singleton against a vector
-    browser()
+    #browser()
     inconsistent.rows <- (det.list$Q.value %in% c(0, 1)) &
         (det.list$Q.value != finalY[det.list$is.deterministic]) &
         !is.na(finalY[det.list$is.deterministic])
