@@ -8,11 +8,12 @@
 #  V:/Data/Workdata/706582/Corona_update/Data/11. levering.
 #
 # setwd("z:/Workdata/706582/Andrew Mertens/targets_diabetes_dementia/")
-try(setwd("C:/Users/andre/Documents/jici/registry_simulations/"))
-try(setwd("~/research/Methods/registry_simulations/"))
+shh <-try(setwd("C:/Users/andre/Documents/jici/registry_simulations/"))
+shh <-try(setwd("~/research/Methods/registry_simulations/"))
 library(targets)
 library(data.table)
 library(tidyverse)
+library(ltmle)
 #load packages
 tar_option_set(packages=c("lava","heaven","ltmle","data.table","tidyverse","SuperLearner","tictoc","glmnet","Matrix","Publish","matrixStats","speedglm","doParallel","parallel","caret","snow","doSNOW","foreach")
                )
@@ -21,8 +22,19 @@ tar_option_set(packages=c("lava","heaven","ltmle","data.table","tidyverse","Supe
 # Configuration
 # -------------------------------------------------------------------------------------------------------------
 
-nix=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
-source("Ltmle/Augmentation/Ltmle.R")
+nix1=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
+#Load augmented LTMLE functions
+ #nix2=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
+nix3=lapply(list.files("./Ltmle/ltmle package functions/", full.names = TRUE, recursive=TRUE), source)
+nix3=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
+ # source("./Ltmle/Augmentation/prepare_Ltmle.R")
+ # source("./Ltmle/Augmentation/merge_data.R")
+ # source("./Ltmle/Augmentation/get_subset_data.R")
+ # source("./Ltmle/Augmentation/get_ltmle_data.R")
+ # source("./Ltmle/Augmentation/get_formulas.R")
+ # source("./Ltmle/Augmentation/get_rhs.R")
+
+#To update:
   # #set up parallelization
   #  #use about half of space
   # ncores <- floor(detectCores()/2)
@@ -46,6 +58,9 @@ baseline_vars = c("ie_type","age_base","sex", "code5txt", "quartile_income")
 long_covariates = c("insulin_","any.malignancy_", "chronic.pulmonary.disease_","hypertension_",
                     "myocardial.infarction_", "ischemic.heart.disease_","heart.failure_", "renal.disease_", "sglt2_inhib_"   )
 
+#Longitudinal covariates assumed to be following the markov process
+Markov_variables = c("insulin","any.malignancy", "chronic.pulmonary.disease","hypertension",
+                    "myocardial.infarction", "ischemic.heart.disease","heart.failure", "renal.disease", "sglt2_inhib")
 
 # -------------------------------------------------------------------------------------------------------------
 # Simulate data
@@ -62,7 +77,7 @@ tar_target(cc,fread(paste0(here::here(),"/data/coefficients.txt"))  #%>%
 
 #calculate truth
 ,tar_target(truth,  calc_truth(cc, seed=23426, nsamp=100000))
-)
+
 
 
 
@@ -70,4 +85,16 @@ tar_target(cc,fread(paste0(here::here(),"/data/coefficients.txt"))  #%>%
 # Run simulation
 # -------------------------------------------------------------------------------------------------------------
 
+#test single run
+,tar_target(test_results_1, run_Ltmle(d=sim_data[[1]], SL.library = "glm", time_horizon=11))
 
+#TEST ON RedVelvet!
+#,tar_target(test_results_2, run_ltmle_sim(d=sim_data, time_horizon=2))
+
+#test IC simulation with glm
+
+
+
+#,tar_target(test_run,  run_ltmle(sim_data))
+
+)

@@ -1,11 +1,17 @@
 
 
-clean_ltmle_res <- function(fit){
+clean_ltmle_res <- function(fit, analysis_name="", iteration=NULL){
 
-# [1] "IC"                "msm"               "beta"              "cum.g"             "cum.g.unbounded"   "fit"              
-# [7] "variance.estimate" "beta.iptw"         "IC.iptw"           "Qstar"             "cum.g.used"        "gcomp"            
-# [13] "formulas"          "binaryOutcome"     "transformOutcome"  "survivalOutcome"   "call"              "info" 
-
-  #Need to save important info for checking simulation (like Qstar, cum.g.used, etc. )
+  res = summary(fit)
   
+  #add in
+  res.iptw = summary(fit,"iptw")
+  
+  res=bind_rows(res, res.iptw)
+  # res$Qform = list(fit$formulas$Qform)
+  # res$gform = list(fit$formulas$gform)
+  res$analysis_name=analysis_name
+  res$iteration=iteration
+  res=data.frame(res)
+  return(res)  
 }

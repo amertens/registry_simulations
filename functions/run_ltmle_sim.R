@@ -1,20 +1,40 @@
 
 
-run_ltmle_sim <- function(){
-  
-  d_wide_list <- tar_read(sim_data)
-  
+
+
+run_ltmle_sim <- function(sim_d_list, 
+                          Ncores=4,
+                          Niter=200,
+                          time_horizon=3,
+                          name_outcome = "event_dementia",
+                          name_regimen = "glp1",
+                          name_censoring = "censor",
+                          censored_label = "censored",
+                          name_comp.event = "event_death",
+                          baseline_variables=baseline_vars,
+                          longituninal_covariates=long_covariates,
+                          treatment_vars="glp1",
+                          outcome_vars=c("event_dementia","censor","event_death"),
+                          SL.library = "glm",
+                          deterministic.Q.function = det.Q.function,
+                          #Qint=F, # need to implement
+                          #gcomp, # need to implement
+                          test = FALSE,
+                          #gbound = c(0.01, 1), #Need to implement
+                          #varmethod = "ic", #Need to implement
+                          Markov_vars=Markov_variables){
   library(parallel)
   library(doParallel)
-  registerDoParallel(cores=4)
+  registerDoParallel(cores=Ncores)
   
-  
-  resdf_DetQ_ic <- foreach(i = 1:length(d_wide_list), .combine = 'bind_rows', .errorhandling = 'remove') %dopar% {
-    res <- NULL
-    try(res <- run_ltmle(d_wide_list[[i]], resdf=NULL, Qint=FALSE, det.Q =FALSE, varmethod = "ic"))
+  resdf = NULL
+  resdf <- foreach(i = 1:Niter, .combine = 'bind_rows', .errorhandling = 'remove') %dopar% {
+    res <- fit <- NULL
+    try(fit <- run_Ltmle(sim_d_list[[i]]))
+    try(res <- clean_ltmle_res(fit=fit, analysis_name="", iteration=i))
     return(res)
   }
-  
-  
+  resdf
+  return(resdf)
 }
 

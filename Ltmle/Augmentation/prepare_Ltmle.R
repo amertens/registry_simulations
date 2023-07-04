@@ -16,7 +16,7 @@ prepare_Ltmle <- function(regimen_data,
                           SL.library,
                           test = FALSE) {
   
-
+  
     ## Merge all data and order in correct order
     merged_data = merge_data(time_horizon = time_horizon,
                              regimen_data = regimen_data,
@@ -29,7 +29,7 @@ prepare_Ltmle <- function(regimen_data,
                              censored_label = censored_label,
                              name_comp.event = name_comp.event,
                              test = test)
-
+    
     ## Subsetting the data; This returns data in correct order according to time and without constant nodes
     subset_data = get_subset_data(work_data = merged_data$data,
                                   time_horizon = time_horizon,
@@ -48,6 +48,7 @@ prepare_Ltmle <- function(regimen_data,
                                 name_censoring=name_censoring,
                                 censored_label=censored_label,
                                 name_comp.event=name_comp.event)
+
 
     formulas = get_formulas(time_horizon = time_horizon,
                             work_data = ltmle_data$data,
@@ -69,7 +70,7 @@ prepare_Ltmle <- function(regimen_data,
     }
     ## Message about the time interval
     time_interval = NULL
-    list(data = ltmle_data$data[],
+    return(list(data = ltmle_data$data[],
          Qform = formulas$Qform,
          gform = formulas$gform,
          estimate.time = FALSE,
@@ -92,7 +93,7 @@ prepare_Ltmle <- function(regimen_data,
                      at.risk = ltmle_data$at.risk,
                      constant_variables= subset_data$constant_variables,
                      Markov = Markov)
-         )
+         ))
 }
 
 

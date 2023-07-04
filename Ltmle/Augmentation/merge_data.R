@@ -10,7 +10,6 @@ merge_data <- function(time_horizon,
                        name_comp.event = NULL,
                        test=FALSE){
   
-  
   time_grid = 0:time_horizon
   K = length(time_grid)
   # the regimen may have two components (A and B) both are
@@ -31,15 +30,17 @@ merge_data <- function(time_horizon,
   #
   wide_data=baseline_data[wide_data, on = c("pnr")]
   # subset and sort data
-  if (test)
+  if(test){
     work_data <- wide_data[agegroups%in%c("60-65","65-70")]
-  else
-    work_data <- wide_data
+  }else{
+    work_data <- wide_data  
+  }
+  
   # add time covariates
   # first remove outcome if overlap
-  if (length((outcome_overlap <- grep(paste0(name_outcome,"_"),names(timevar_data)))
-             >0))
+  if(length((outcome_overlap <- grep(paste0(name_outcome,"_"),names(timevar_data)))>0)){
     timevar_data <- timevar_data[,-outcome_overlap, with=FALSE]
+  }
   setkey(timevar_data,pnr)
   work_data=timevar_data[work_data, on = c("pnr")]
   
@@ -59,9 +60,11 @@ merge_data <- function(time_horizon,
       }
   }))), with = FALSE]
   
-  list(data = work_data[],
+  
+  
+  return(list(data = work_data[],
        name_baseline_covariates = name_baseline_covariates,
        name_time_covariates = name_time_covariates,
-       name_regimen = name_regimen)
+       name_regimen = name_regimen))
 }
 

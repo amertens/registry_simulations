@@ -1,17 +1,27 @@
-ltmle <- function (data, Anodes, Cnodes = NULL, Lnodes = NULL, Ynodes,
+
+#NOTE
+#Andrew: this function is the renamed Ltmle function from the augmentation folder, which was renamed to avoid igraph errors
+#Should debug the source of these errors when function is called Ltmle
+#used in the "run_ltmle" function
+
+
+estimate_Ltmle <- function (data, Anodes, Cnodes = NULL, Lnodes = NULL, Ynodes,
                    survivalOutcome = NULL, Qform = NULL, gform = NULL, abar,
                    rule = NULL, gbounds = c(0.01, 1), Yrange = NULL, deterministic.g.function = NULL,
                    stratify = FALSE, SL.library = "glm", SL.cvControl = list(),
                    estimate.time = TRUE, gcomp = FALSE, iptw.only = FALSE, deterministic.Q.function = NULL,
-                   variance.method = "tmle", observation.weights = NULL, id = NULL,
-                   verbose=FALSE)
+                   variance.method = "tmle", observation.weights = NULL, id = NULL,info = NULL,verbose=FALSE)
 {
-    stop("Use Ltmle instead.")
     require(matrixStats)
-    if (verbose) message("Loading ltmle functions ...")
-    if (verbose) message("Checking data ...")
+  
+  #Note: below code causes targets error "Last error: igraph::is_dag(graph) is not TRUE" so functions sourced in targets file
+    # for (f in list.files("Ltmle/R/",pattern = ".R$",full.names = TRUE)) {
+    #     source(f)
+    # }
+    # for (f in list.files("Ltmle/Augmentation/",pattern = ".R$",full.names = TRUE)) {
+    #     source(f)
+    # }
     data <- CheckData(data)
-    if (verbose) message("Creating inputs ...")
     msm.inputs <- GetMSMInputsForLtmle(data, abar, rule, gform)
     inputs <- CreateInputs(data = data, Anodes = Anodes, Cnodes = Cnodes,
                            Lnodes = Lnodes, Ynodes = Ynodes, survivalOutcome = survivalOutcome,
@@ -24,9 +34,10 @@ ltmle <- function (data, Anodes, Cnodes = NULL, Lnodes = NULL, Ynodes,
                            estimate.time = estimate.time, gcomp = gcomp, iptw.only = iptw.only,
                            deterministic.Q.function = deterministic.Q.function,
                            variance.method = variance.method, observation.weights = observation.weights,
-                           id = id,verbose=verbose)
-    if (verbose) message("Running ltmle ...")
+                           id = id, verbose = verbose)
     result <- LtmleFromInputs(inputs)
     result$call <- match.call()
+    result$info <- result$call$info
+    class(result) <- "Ltmle"
     return(result)
 }

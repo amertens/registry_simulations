@@ -11,6 +11,7 @@ ltmle.glmnet <- function(Y,
                          useMin = TRUE,
                          loss = "deviance",
                          ...){
+  
     requireNamespace("glmnet")
 
     Xnames=attr(newX,"Xnames")
@@ -28,8 +29,9 @@ ltmle.glmnet <- function(Y,
             foldid_data=data.table(id=unique(id),foldid=sample(1:nfolds,size=length(unique(id)),replace=TRUE))
             foldid=foldid_data[id_data,on="id"]
         }else{
-            foldid=sample(1:nfolds,size=length(id),replace=TRUE)
+            foldid=NULL
         }
+   
         uoh <- try(fit <- glmnet::cv.glmnet(x = X,
                                             y = Y,
                                             weights = obsWeights,

@@ -1,18 +1,17 @@
-Ltmle <- function (data, Anodes, Cnodes = NULL, Lnodes = NULL, Ynodes,
+ltmle_XXX_archived <- function (data, Anodes, Cnodes = NULL, Lnodes = NULL, Ynodes,
                    survivalOutcome = NULL, Qform = NULL, gform = NULL, abar,
                    rule = NULL, gbounds = c(0.01, 1), Yrange = NULL, deterministic.g.function = NULL,
                    stratify = FALSE, SL.library = "glm", SL.cvControl = list(),
                    estimate.time = TRUE, gcomp = FALSE, iptw.only = FALSE, deterministic.Q.function = NULL,
-                   variance.method = "tmle", observation.weights = NULL, id = NULL,info = NULL,verbose=FALSE)
+                   variance.method = "tmle", observation.weights = NULL, id = NULL,
+                   verbose=FALSE)
 {
+    stop("Use Ltmle instead.")
     require(matrixStats)
-    for (f in list.files("Ltmle/R/",pattern = ".R$",full.names = TRUE)) {
-        source(f)
-    }
-    for (f in list.files("Ltmle/Augmentation/",pattern = ".R$",full.names = TRUE)) {
-        source(f)
-    }
+    if (verbose) message("Loading ltmle functions ...")
+    if (verbose) message("Checking data ...")
     data <- CheckData(data)
+    if (verbose) message("Creating inputs ...")
     msm.inputs <- GetMSMInputsForLtmle(data, abar, rule, gform)
     inputs <- CreateInputs(data = data, Anodes = Anodes, Cnodes = Cnodes,
                            Lnodes = Lnodes, Ynodes = Ynodes, survivalOutcome = survivalOutcome,
@@ -25,10 +24,9 @@ Ltmle <- function (data, Anodes, Cnodes = NULL, Lnodes = NULL, Ynodes,
                            estimate.time = estimate.time, gcomp = gcomp, iptw.only = iptw.only,
                            deterministic.Q.function = deterministic.Q.function,
                            variance.method = variance.method, observation.weights = observation.weights,
-                           id = id, verbose = verbose)
+                           id = id,verbose=verbose)
+    if (verbose) message("Running ltmle ...")
     result <- LtmleFromInputs(inputs)
     result$call <- match.call()
-    result$info <- result$call$info
-    class(result) <- "Ltmle"
     return(result)
 }
