@@ -18,6 +18,7 @@ run_Ltmle <- function(d,
                           test = FALSE,
                           #gbound = c(0.01, 1), #Need to implement
                           #varmethod = "ic", #Need to implement
+                          id=NULL,
                           Markov_vars=Markov_variables){
   
     outcome_data <- d[,c("pnr",grep(paste0(outcome_vars, collapse ="|"),names(d), value = TRUE)), with = FALSE]
@@ -43,6 +44,7 @@ run_Ltmle <- function(d,
                         abar = list(rep(1,time_horizon),rep(0,time_horizon)))
   
     pl$verbose=1L 
+    pl$id = NULL
     if (length(SL.cvControl)>0){pl$SL.cvControl <- SL.cvControl}
     
     fit <- do.call(estimate_Ltmle, pl)
