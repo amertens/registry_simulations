@@ -89,26 +89,35 @@ tar_target(cc,fread(paste0(here::here(),"/data/coefficients.txt"))  #%>%
 # -------------------------------------------------------------------------------------------------------------
 
 #test single run
-,tar_target(test_results_1, run_Ltmle(d=sim_data[[1]], SL.library = "glm", time_horizon=11))
+,tar_target(test_results_1, run_Ltmle(d=sim_data[[1]], SL.library = "glm", time_horizon=3, concurrentY=TRUE))
+,tar_target(test_results_2, run_Ltmle(d=sim_data[[1]], SL.library = "glmnet", SL.cvControl=list(selector="min_lambda",alpha=1), time_horizon=3, concurrentY=TRUE))
+,tar_target(test_results_3, run_Ltmle(d=sim_data[[1]], SL.library = "glmnet", SL.cvControl=list(selector="min_lambda",alpha=1), time_horizon=3, concurrentY=TRUE,  Markov_vars=Markov_variables))
+,tar_target(test_results_boot_2, run_ltmle_sim_bootstrap(sim_d_list=list(sim_data[[1]]), SL.library = "glm", time_horizon=3, concurrentY=TRUE, Niter=1, Nbootstrap=1))
 
 
-#test IC simulation with glm
-,tar_target(glm_res, run_ltmle_sim(sim_d_list=sim_data, time_horizon=11, Ncores=64, Niter=200))
-#bootstrap test
-,tar_target(test_results_bootstrap, run_ltmle_sim_bootstrap(sim_d_list=sim_data, 
-                                      SL.library = "glm",
-                                      #SL.cvControl=list(selector="min_lambda",alpha=1),
-                                      time_horizon=3, Ncores=64, Niter=2, Nbootstrap=2))
+# #test IC simulation with glm
+# ,tar_target(glm_res, run_ltmle_sim(sim_d_list=sim_data, time_horizon=11, Ncores=64, Niter=200))
+# #bootstrap test
+# ,tar_target(test_results_bootstrap, run_ltmle_sim_bootstrap(sim_d_list=sim_data, 
+#                                       SL.library = "glm",
+#                                       #SL.cvControl=list(selector="min_lambda",alpha=1),
+#                                       time_horizon=3, Ncores=64, Niter=2, Nbootstrap=2))
 #IC simulation with glmnet
 ,tar_target(glmnet_res, run_ltmle_sim(sim_d_list=sim_data,
                                       SL.library = "glmnet",
                                       SL.cvControl=list(selector="min_lambda",alpha=1),
                                       time_horizon=11, Ncores=64, Niter=200))
 #bootstrap simulation with glmnet
-,tar_target(glmnet_res_boot, run_ltmle_sim_bootstrap(sim_d_list=sim_data,
+,tar_target(glmnet_res_boot1, run_ltmle_sim_bootstrap(sim_d_list=sim_data,
                                       SL.library = "glmnet",
                                       SL.cvControl=list(selector="min_lambda",alpha=1),
-                                      time_horizon=11, Ncores=64, Niter=200, Nbootstrap=200))
+                                      time_horizon=11, Ncores=64, Niter=200, Nbootstrap=100))
+# #IC simulation with glmnet and markov process
+# ,tar_target(glmnet_res_markov, run_ltmle_sim(sim_d_list=sim_data,
+#                                       SL.library = "glmnet",
+#                                       SL.cvControl=list(selector="min_lambda",alpha=1),
+#                                       time_horizon=11, Ncores=64, Niter=200, Markov_vars=Markov_variables))
+
 
 
 

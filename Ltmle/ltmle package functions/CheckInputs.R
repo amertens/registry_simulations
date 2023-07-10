@@ -3,8 +3,9 @@ CheckInputs <-
               Yrange, deterministic.g.function, SL.library, SL.cvControl,
               regimes, working.msm, summary.measures, final.Ynodes, stratify,
               msm.weights, deterministic.Q.function, observation.weights,
-              gcomp, variance.method, id)
-{
+              gcomp, variance.method, id){
+      
+      
     stopifnot(length(dim(regimes)) == 3)
     num.regimes <- dim(regimes)[3]
     if (!is.glm(GetLibrary(SL.library, "Q")) || !is.glm(GetLibrary(SL.library,

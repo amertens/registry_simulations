@@ -23,7 +23,8 @@ run_ltmle_sim <- function(sim_d_list,
                           test = FALSE,
                           #gbound = c(0.01, 1), #Need to implement
                           #varmethod = "ic", #Need to implement
-                          Markov_vars=Markov_variables){
+                          concurrentY=TRUE,
+                          Markov_vars=NULL){
   library(parallel)
   library(doParallel)
   registerDoParallel(cores=Ncores)
@@ -51,6 +52,7 @@ run_ltmle_sim <- function(sim_d_list,
                          test = test,
                          #gbound = c(0.01, 1), #Need to implement
                          #varmethod = "ic", #Need to implement
+                         concurrentY=concurrentY,
                          Markov_vars=Markov_variables
                          ))
     try(res <- clean_ltmle_res(fit=fit, analysis_name="", iteration=i))

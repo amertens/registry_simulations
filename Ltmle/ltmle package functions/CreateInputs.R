@@ -3,8 +3,10 @@ CreateInputs <- function (data, Anodes, Cnodes, Lnodes, Ynodes, survivalOutcome,
     SL.library, SL.cvControl, regimes, working.msm, summary.measures,
     final.Ynodes, stratify, msm.weights, estimate.time, gcomp,
     iptw.only, deterministic.Q.function, variance.method, observation.weights,
-    id,verbose)
-{
+    id,verbose){
+  
+  
+  
     if (is.list(regimes)) {
         if (!all(sapply(regimes, is.function)))
             stop("If 'regimes' is a list, then all elements should be functions.")
@@ -25,9 +27,10 @@ CreateInputs <- function (data, Anodes, Cnodes, Lnodes, Ynodes, survivalOutcome,
         regimes <- regimes * 1
         message("abar or regimes was passed as logical and was converted to numeric")
     }
+    #browser()
     all.nodes <- CreateNodes(data, Anodes, Cnodes, Lnodes, Ynodes)
-    Qform <- CreateLYNodes(data, all.nodes, check.Qform = TRUE,
-        Qform = Qform)$Qform
+    Qform <- CreateLYNodes(data, all.nodes, check.Qform = TRUE, Qform = Qform)$Qform
+
     data <- ConvertCensoringNodes(data, Cnodes, has.deterministic.functions = !is.null(deterministic.g.function) &&
         is.null(deterministic.Q.function))
     if (is.null(final.Ynodes)) {
@@ -102,5 +105,7 @@ CreateInputs <- function (data, Anodes, Cnodes, Lnodes, Ynodes, survivalOutcome,
         inputs$variance.method <- "ic"
     if (inputs$variance.method != "ic" && !is.null(VarianceAvailableWarning(inputs)))
         inputs$variance.method <- "ic"
+    
+    
     return(inputs)
 }

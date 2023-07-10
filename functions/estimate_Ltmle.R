@@ -22,6 +22,7 @@ estimate_Ltmle <- function (data, Anodes, Cnodes = NULL, Lnodes = NULL, Ynodes,
     #     source(f)
     # }
     data <- CheckData(data)
+
     msm.inputs <- GetMSMInputsForLtmle(data, abar, rule, gform)
     inputs <- CreateInputs(data = data, Anodes = Anodes, Cnodes = Cnodes,
                            Lnodes = Lnodes, Ynodes = Ynodes, survivalOutcome = survivalOutcome,

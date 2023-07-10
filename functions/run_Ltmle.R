@@ -13,6 +13,7 @@ run_Ltmle <- function(d,
                           SL.library = "glm",
                           SL.cvControl=NULL,
                           deterministic.Q.function = det.Q.function,
+                          concurrentY=FALSE, #Whether Yt is predicted from Lt (TRUE, used for sim data from coefficients) or Lt-1 (FALSE)
                           #Qint=F, # need to implement
                           #gcomp, # need to implement
                           test = FALSE,
@@ -21,12 +22,14 @@ run_Ltmle <- function(d,
                           id=NULL,
                           Markov_vars=Markov_variables){
   
+
     outcome_data <- d[,c("pnr",grep(paste0(outcome_vars, collapse ="|"),names(d), value = TRUE)), with = FALSE]
     treatment_data <- d[,c("pnr",grep(treatment_vars,names(d), value = TRUE)), with = FALSE]
-    baseline_data <- d[,.(pnr,baseline_variables)]
+    baseline_data <- d[,c("pnr",grep(paste0(baseline_variables, collapse ="|"),names(d), value = TRUE)), with = FALSE] 
     timevar_data <- d[,c("pnr",grep(paste0(longituninal_covariates, collapse ="|"),names(d), value = TRUE)), with = FALSE] 
   
-    pl <- prepare_Ltmle(outcome_data = list("event_dementia"=outcome_data),
+    #browser()
+    pl <- prepare_Ltmle_sim(outcome_data = list("event_dementia"=outcome_data),
                         regimen_data = treatment_data,
                         baseline_data = baseline_data,
                         timevar_data = timevar_data,
@@ -38,14 +41,18 @@ run_Ltmle <- function(d,
                         censored_label = censored_label,
                         name_comp.event = name_comp.event,
                         Markov = Markov_vars, #names of time-varying variables assumed to be following the markov process
+                        concurrentY=concurrentY,
                         subset_id = NULL,
                         SL.library=SL.library, 
                         test = test,
-                        abar = list(rep(1,time_horizon),rep(0,time_horizon)))
+                        abar = list(rep(1,time_horizon+ (1 * concurrentY)),rep(0,time_horizon+ (1 * concurrentY))))
   
+    
     pl$verbose=1L 
     pl$id = NULL
     if (length(SL.cvControl)>0){pl$SL.cvControl <- SL.cvControl}
+    # browser()
+    # head(pl$data)
     
     fit <- do.call(estimate_Ltmle, pl)
     

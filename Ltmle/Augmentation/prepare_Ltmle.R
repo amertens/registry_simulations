@@ -12,12 +12,14 @@ prepare_Ltmle <- function(regimen_data,
                           name_comp.event = "Dead",
                           Markov = NULL,
                           abar,
+                          concurrentY, #Whether Yt is predicted from Lt (TRUE, used for sim data from coefficients) or Lt-1 (FALSE)
                           deterministic.Q.function = NULL,
                           SL.library,
                           test = FALSE) {
   
+  browser()
     ## Merge all data and order in correct order
-    merged_data = merge_data(time_horizon = time_horizon,
+    merged_data = merge_data_sim(time_horizon = time_horizon,
                              regimen_data = regimen_data,
                              outcome_data = outcome_data,
                              baseline_data = baseline_data,
@@ -48,7 +50,7 @@ prepare_Ltmle <- function(regimen_data,
                                 censored_label=censored_label,
                                 name_comp.event=name_comp.event)
 
-
+ #browser()
     formulas = get_formulas(time_horizon = time_horizon,
                             work_data = ltmle_data$data,
                             name_outcome = name_outcome,
@@ -57,6 +59,7 @@ prepare_Ltmle <- function(regimen_data,
                             name_regimen = name_regimen,
                             name_censoring = name_censoring,
                             name_comp.event = name_comp.event,
+                            concurrentY=concurrentY, 
                             Markov = Markov,
                             constant_variables = subset_data$constant_variables)
 
@@ -67,6 +70,7 @@ prepare_Ltmle <- function(regimen_data,
         else
             abar <- list(rep(1,time_horizon), rep(0,time_horizon))
     }
+    
     ## Message about the time interval
     time_interval = NULL
     return(list(data = ltmle_data$data[],

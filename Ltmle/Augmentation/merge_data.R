@@ -8,6 +8,7 @@ merge_data <- function(time_horizon,
                        name_censoring = NULL,
                        censored_label = "censored",
                        name_comp.event = NULL,
+                       simulation_analysis=TRUE,
                        test=FALSE){
   
   time_grid = 0:time_horizon
@@ -48,18 +49,35 @@ merge_data <- function(time_horizon,
   name_baseline_covariates = setdiff(names(baseline_data),"pnr")
  
   # sorting the variables for LTMLE
-  work_data = work_data[,c("pnr", name_baseline_covariates,unlist(sapply(time_grid, function(timepoint){
-      if(timepoint == 0){
-          paste0(c(name_time_covariates, name_regimen),"_",timepoint)
-      } else{
-          if(timepoint != time_grid[K]){
-              paste0(c(name_censoring, name_outcome, name_time_covariates, name_comp.event, name_regimen),"_",timepoint)
-          } else {
-              paste0(c(name_censoring, name_outcome),"_",timepoint)
-          }
-      }
-  }))), with = FALSE]
+
   
+  #NOTE! Need to sort for the simulation in this order:
+  #L, A, C, Y
+  if(simulation_analysis){
+    work_data = work_data[,c("pnr", name_baseline_covariates,unlist(sapply(time_grid, function(timepoint){
+      if(timepoint == 0){
+        paste0(c(name_time_covariates, name_regimen),"_",timepoint)
+      } else{
+        if(timepoint != time_grid[K]){
+          paste0(c(name_time_covariates, name_regimen, name_censoring, name_outcome,  name_comp.event),"_",timepoint)
+        } else {
+          paste0(c(name_time_covariates, name_regimen, name_censoring, name_outcome),"_",timepoint)
+        }
+      }
+    }))), with = FALSE]
+  }else{
+    work_data = work_data[,c("pnr", name_baseline_covariates,unlist(sapply(time_grid, function(timepoint){
+      if(timepoint == 0){
+        paste0(c(name_time_covariates, name_regimen),"_",timepoint)
+      } else{
+        if(timepoint != time_grid[K]){
+          paste0(c(name_censoring, name_outcome, name_time_covariates, name_comp.event, name_regimen),"_",timepoint)
+        } else {
+          paste0(c(name_censoring, name_outcome),"_",timepoint)
+        }
+      }
+    }))), with = FALSE]
+  }
   
   
   return(list(data = work_data[],

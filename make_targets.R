@@ -4,7 +4,42 @@ library(targets)
 source(paste0(here::here(),"/_targets.R"))
 tar_make(garbage_collection = TRUE)
 
-res_boot = tar_read(test_results_bootstrap)
+
+
+res1 = tar_read(test_results_1)
+res2 = tar_read(test_results_2)
+res3 = tar_read(test_results_3)
+res_boot1 = tar_read(test_results_boot_2)
+
+summary(res1)
+summary(res2)
+summary(res3)
+res_boot1
+
+
+res_boot = tar_read(glmnet_res_boot)
+saveRDS(res_boot, file = paste0(here::here(),"/scratch/res_boot_v1.RDS"))
+
+res_boot <- res_boot %>% filter(Target_parameter=="ATE", Estimator=="tmle")
+boot_CIs <- res_boot %>% group_by(iteration) %>%
+  summarise(
+    mean_est = mean(estimate),
+    CI1=quantile(estimate,.025),
+    CI2=quantile(estimate,.975)
+  )
+mean(boot_CIs$mean_est)
+CI_widths = boot_CIs$CI2 - boot_CIs$CI1
+mean(CI_widths)
+median(CI_widths)
+
+res = tar_read(glmnet_res)
+saveRDS(res, file = paste0(here::here(),"/scratch/res_v1.RDS"))
+res <- res %>% filter(Target_parameter=="ATE", Estimator=="tmle")
+mean(res$estimate)
+mean(res$upper - res$lower)
+
+
+#bootstrap is slightly lower with updated res
 
 
 res1 = tar_read(test_results_1)
@@ -26,7 +61,10 @@ truth$truth_df
 
 #Scratch
 #To do next: 
-#make a bootstrapping option
+# save the current results
+# update bootstrap to use L2 to pred Y2 instead of Y3, etc.
+#calculate current coverage
+#test IC with and without Markov process
 # Simulate the really simple data using code from other repo to check
 # do simulation without death or longitudinal confounding
 # do simulation without death
@@ -39,7 +77,7 @@ truth$truth_df
 
 df=tar_read(sim_data)[[1]]
 fit=run_Ltmle(d=df,
-                   #time_horizon=3,
+                   time_horizon=4,
                    # name_outcome = "event_dementia",
                    # name_regimen = "glp1",
                    # name_censoring = "censor",
@@ -49,12 +87,18 @@ fit=run_Ltmle(d=df,
                    #long_covariates=long_covariates,
                   # treatment_vars="glp1",
                   # outcome_vars=c("event_dementia","censor","event_death"),
-              SL.library = "glmnet",
+              SL.library = "glmnet", 
+              concurrentY=TRUE,
               SL.cvControl=list(selector="min_lambda",alpha=0),
               #SL.library = "glm",
                    #deterministic.Q.function = det.Q.function,
                    #test = FALSE,
-                  Markov_vars=Markov_variables)
+                  Markov_vars=NULL)
+
+#NOTE! Need to incorporate A3 correctly in predicting Y3, etc
+#need to fix censoring formula
+
+
 summary(fit)
 
 

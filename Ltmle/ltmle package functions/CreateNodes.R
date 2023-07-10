@@ -10,6 +10,8 @@ function (data, Anodes, Cnodes, Lnodes, Ynodes)
         "is.na() applied to non-(list or vector) of type 'NULL'")
     nodes$baseline <- sseq(1, min(c(nodes$A, nodes$L, nodes$C, 
         nodes$Y)) - 1)
+    
+    #browser()
     nodes$LY <- CreateLYNodes(data, nodes, check.Qform = FALSE)
     return(nodes)
 }

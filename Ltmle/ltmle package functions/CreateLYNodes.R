@@ -1,14 +1,15 @@
 CreateLYNodes <-
-function (data, nodes, check.Qform, Qform) 
-{
+function (data, nodes, check.Qform, Qform) {
+  
+
     LYnodes <- sort(c(nodes$L, nodes$Y))
     SuppressGivenWarnings(nodes.to.remove <- LYnodes[LYnodes < 
         min(nodes$AC)], "no non-missing arguments to min; returning Inf")
-    if (length(LYnodes) > 1) {
-        for (i in 1:(length(LYnodes) - 1)) {
+    if(length(LYnodes) > 1){
+        for(i in 1:(length(LYnodes) - 1)){
             cur.node <- LYnodes[i]
             next.node <- LYnodes[i + 1]
-            if (!any(cur.node:next.node %in% nodes$AC)) {
+            if(!any(cur.node:next.node %in% nodes$AC)){
                 nodes.to.remove <- c(nodes.to.remove, next.node)
             }
         }
@@ -16,9 +17,9 @@ function (data, nodes, check.Qform, Qform)
     new.LYnodes <- setdiff(LYnodes, nodes.to.remove)
     if (check.Qform) {
         removed.Qform.index <- NULL
-        for (i in nodes.to.remove) {
+        for(i in nodes.to.remove){
             index <- which(names(Qform) == names(data)[i])
-            if (length(index) > 0) {
+            if(length(index) > 0){
                 removed.Qform.index <- c(removed.Qform.index, 
                   index)
             }

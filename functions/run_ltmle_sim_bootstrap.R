@@ -44,7 +44,8 @@ run_ltmle_sim_bootstrap <- function(sim_d_list,
                           test = FALSE,
                           #gbound = c(0.01, 1), #Need to implement
                           #varmethod = "ic", #Need to implement
-                          Markov_vars=Markov_variables){
+                          concurrentY=TRUE,
+                          Markov_vars=NULL){
   library(parallel)
   library(doParallel)
   registerDoParallel(cores=Ncores)
@@ -59,7 +60,7 @@ run_ltmle_sim_bootstrap <- function(sim_d_list,
     res_df <- foreach(j = 1:Niter, .combine = 'bind_rows', .errorhandling = 'remove') %dopar% {
       
       set.seed(j)
-      d <- sim_d_list[[i]]
+      d <- sim_d_list[[j]]
       d$id <- 1:nrow(d)
       dboot <- d[sample(.N, nrow(d),replace=TRUE)]
       #hack: remake unique PNR's for merge
@@ -88,7 +89,8 @@ run_ltmle_sim_bootstrap <- function(sim_d_list,
                            #gbound = c(0.01, 1), #Need to implement
                            #varmethod = "ic", #Need to implement
                            id=dboot$id,
-                           Markov_vars=Markov_variables
+                           concurrentY=concurrentY,
+                           Markov_vars=NULL
       ))
       try(res <- clean_ltmle_res(fit=fit, analysis_name="", iteration=i))
       return(res)
