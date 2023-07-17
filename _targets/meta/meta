@@ -16,16 +16,20 @@ CalcUncensoredMatrix|function|45520cd11f5dad96|||||||||||||||
 cc|stem|589c68f1c150f5fc|c22ce3886a1284ec|6194307cfa30ad23|-2101373494||t19545.8121726366s|a74ac19152efce6b|22720|qs|local|vector|||1.677||
 CheckData|function|0abc3f4da1781f96|||||||||||||||
 CheckForVarianceWarning|function|ac708f0f59317b6c|||||||||||||||
-CheckInputs|function|f9a1ebaa1047172a|||||||||||||||
+CheckInputs|function|e02b89d0077dc14a|||||||||||||||
 CheckVarianceEstimateRatio|function|3561bda99b15ca32|||||||||||||||
 clean_ltmle_res|function|a9778966064719f7|||||||||||||||
 clean_sim_data|function|aa1a6977bf21bfd7|||||||||||||||
 clean_sim_results|function|298c8dcb86382dda|||||||||||||||
 CleanData|function|c4f2ed254f368357|||||||||||||||
+coefs|stem|82f3a309283b5cc6|59426ec39e23a3f6|700949601d51c337|-1662652578||t19555.4701890071s|01c26211bdeeb4f5|34537|qs|local|vector|||0.969||
+concurrentY_get_formulas|function|46c800713a79db10|||||||||||||||
+concurrentY_get_rhs|function|4a65aa32b2cbfa58|||||||||||||||
+concurrentY_prepare_Ltmle|function|13199073b497ba8f|||||||||||||||
 ConvertCensoringNodes|function|6a7e8d4af6c6a608|||||||||||||||
 ConvertCensoringNodeToBinary|function|a4eac3df4d1e68b1|||||||||||||||
 ConvertToMainTerms|function|ee2d4d86ed4f1057|||||||||||||||
-CreateInputs|function|3652202046d19272|||||||||||||||
+CreateInputs|function|2513687a77bfd5d9|||||||||||||||
 CreateLYNodes|function|f8bd5c79150517ca|||||||||||||||
 CreateNodes|function|03a9ae8a1d4359fb|||||||||||||||
 dataset_N|object|b6f2afabb59d1ce1|||||||||||||||
@@ -34,6 +38,8 @@ deterministic.g.function_template|function|76932076f01e7326|||||||||||||||
 deterministic.Q.function_template|function|197c94dfeeecd42b|||||||||||||||
 drop3|function|ff36951b73c65e27|||||||||||||||
 dropn|function|0a9825e2d77eb84c|||||||||||||||
+elastic_estimate|stem|232c068c72de1c90|0e007092286b25f6|0c7840b9cdeafc33|-603089281||t19555.5607075208s|17bd540818a2ef60|49743403|qs|local|vector|||215.365|SuperLearner returned predicted.values  1 or  0 min, max   4.5101719912643 , 0.145659793729023 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   0.469418776228573 , 4.45507046031603 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   5.63545667674036 , 1.82748476040478 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   0.488563376385067 , 4.75392649782374 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   5.89027417031233 , 1.44174247501011 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   0.403922122435444 , 5.72576708784739 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   6.55315877893776 , 1.40190163996321 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   0.441104183338891 , 5.30964994011947 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   6.57729134247388 , 1.31203486779307 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   0.53848303664236 , 6.0157537053114 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   6.46624287899378 , 0.93214435616453 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   0.449181475339426 , 5.62724656950646 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   7.17557395612986 , 1.20245128674962 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   0.0837366343998623 , 6.49743790410013 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   12.3769388209551 , 1.13378002510767 . Bounding to 0,1. SuperLearner returned predicted.values  1 or  0 min, max   0.241228933925796 , 5.65147445783194 . Bounding to 0,1. SuperLearner returned predicted.values  1|
+eLtmle|function|1b076950c9538cb5|||||||||||||||
 Estimate|function|66649547d64d3b33|||||||||||||||
 estimate_Ltmle|function|e0cd547a433dba8d|||||||||||||||
 EstimateG|function|b5e31829e2a2e560|||||||||||||||
@@ -44,12 +50,21 @@ FinalizeIC|function|2fc0640d5b41e1c2|||||||||||||||
 FitPooledMSM|function|2d9b20fe0441b579|||||||||||||||
 FixedTimeTMLE|function|4c3f2a5b3e876409|||||||||||||||
 FixScoreEquation|function|b0a38739372262ad|||||||||||||||
+<<<<<<< HEAD
 generate_data|function|f9d6d41086d9af14|||||||||||||||
 get_formulas|function|5f98904cba293129|||||||||||||||
 get_formulas_sim|function|713aa64395a574bf|||||||||||||||
 get_ltmle_data|function|abb7018fe4679d73|||||||||||||||
+=======
+generate_data|function|a33de1515146fc66|||||||||||||||
+get_formulas|function|e054e9316b608b04|||||||||||||||
+get_formulas_sim|function|7687619a636f02c8|||||||||||||||
+get_lava_model|function|4f356977f8b98582|||||||||||||||
+get_ltmle_data|function|39ec67110a95ecec|||||||||||||||
+>>>>>>> 90f31bbcbbd2eba872e6182d12df924ccfb021a5
 get_ltmle_data_sim|function|1e3d5ee2a4c1e8fc|||||||||||||||
-get_rhs|function|4a65aa32b2cbfa58|||||||||||||||
+get_rhs|function|733841e78a88ea19|||||||||||||||
+get_simulated_data_list|function|de2101cb29b73200|||||||||||||||
 get_subset_data|function|69ef8f92dd6fc048|||||||||||||||
 GetABar|function|d541e0cbb98d3df5|||||||||||||||
 GetCI|function|d078f3897e1a54bf|||||||||||||||
@@ -82,19 +97,20 @@ IsBinary|function|9f8bbf2f680314b6|||||||||||||||
 IsDeterministic|function|27fdd76cacbc600f|||||||||||||||
 IsDeterministicG|function|c9e77d2950f5a89b|||||||||||||||
 IsUncensored|function|e0c9f19bdc3dec1a|||||||||||||||
+lava_model|stem|625290cc0db9deef|8fca06d11d1e5e06|96fa6a41cd1a6735|-1024502408||t19555.4711787681s|82c14b30c722350c|384307|qs|local|vector|||85.174||
 LhsVars|function|d46010601c84fb4f|||||||||||||||
 LogitScale|function|1270cdb76976cca2|||||||||||||||
 long_covariates|object|5ae7b2a3ef99c1cc|||||||||||||||
 ltmle|function|8abd638e2d0e38df|||||||||||||||
-Ltmle|function|27c46ae24059d917|||||||||||||||
-ltmle_XXX_archived|function|d8764543e847e088|||||||||||||||
+Ltmle|function|fecdb35d57a402ec|||||||||||||||
+ltmle_XXX_archived|function|1f11dd251af48304|||||||||||||||
 ltmle.glm|function|3b63e40091f2ead1|||||||||||||||
 ltmle.glm.fit|function|5a72d463e43d9c99|||||||||||||||
 ltmle.glmnet|function|685bb2158e7c7403|||||||||||||||
 ltmle.sg|function|690fab36812f3982|||||||||||||||
 Ltmle2|function|4f5efefca74963fa|||||||||||||||
 LtmleFromInputs|function|6256c64036ee4179|||||||||||||||
-ltmleMSM|function|a1eb73b5dd4f0a1f|||||||||||||||
+ltmleMSM|function|896575869a6dca98|||||||||||||||
 LtmleMSMFromInputs|function|a49cbcf9a72c80dc|||||||||||||||
 MainCalcs|function|782723b1a3ebc39e|||||||||||||||
 MaintainControl|function|1181c835a2a446e3|||||||||||||||
@@ -102,18 +118,24 @@ MaintainTreatment|function|d98bb6bf26ccae4c|||||||||||||||
 MakePosDef|function|4b5671d4eeba98b8|||||||||||||||
 Markov_variables|object|3d40651b6e53f557|||||||||||||||
 Markov_vars|object|3d40651b6e53f557|||||||||||||||
+merge_and_sort_data|function|34d15f681bd7448f|||||||||||||||
 merge_data|function|713ff6d9b44382fe|||||||||||||||
 merge_data_sim|function|713ff6d9b44382fe|||||||||||||||
 Mode|function|b8ff6ef540b0a5aa|||||||||||||||
 nix|object|2d858c349eb0d70e|||||||||||||||
+<<<<<<< HEAD
 nix1|object|30bbf7f14bc3f320|||||||||||||||
+=======
+nix1|object|afe6e90cf71afa66|||||||||||||||
+>>>>>>> 90f31bbcbbd2eba872e6182d12df924ccfb021a5
 nix2|object|2f82572b804737c2|||||||||||||||
 nix3|object|6d9caf95687a051b|||||||||||||||
+nn|object|8848b301b6ee2bea|||||||||||||||
 NodeToIndex|function|680dfd94a6a93fe9|||||||||||||||
 NormalizeIC|function|8de7461cfbc80cc0|||||||||||||||
 predict.ltmle.glmnet|function|a400be7d45f2e7b3|||||||||||||||
-prepare_Ltmle|function|90aeee8b0d7cd66c|||||||||||||||
-prepare_Ltmle_sim|function|998045919d1e725d|||||||||||||||
+prepare_Ltmle|function|00fcad380a640058|||||||||||||||
+prepare_Ltmle_sim|function|eb81d4061831aaf0|||||||||||||||
 print.ltmle|function|092bd3f6d3117a72|||||||||||||||
 print.Ltmle|function|3500cbbb57722a1a|||||||||||||||
 print.ltmleEffectMeasures|function|600fcc7484c6dedb|||||||||||||||
@@ -130,30 +152,44 @@ ReorderFits|function|eaa0e0caa05bc17b|||||||||||||||
 repmat|function|44ee1f3e847b09f5|||||||||||||||
 rexpit|function|d21a8bb0dbaa5fab|||||||||||||||
 RhsVars|function|1d1ce3422e319f26|||||||||||||||
+<<<<<<< HEAD
 ridge_res|stem|e93a6d409d3fa925|25268d5e1810b200|3f4b8b27fc34971a|1205760375||t19552.9365084513s|fd79a7dcef940a7b|56406|qs|local|vector|||1320.136||
 run_ltmle|function|13b4832b41007b43|||||||||||||||
 run_Ltmle|function|436cd1f1d44b0d5b|||||||||||||||
+=======
+run_ltmle|function|29b1dd6c17b9f501|||||||||||||||
+run_Ltmle|function|aa84dd862b46a791|||||||||||||||
+>>>>>>> 90f31bbcbbd2eba872e6182d12df924ccfb021a5
 run_ltmle_new|function|722db9229ddbb0b9|||||||||||||||
-run_ltmle_sim|function|cdeb72b51192e428|||||||||||||||
-run_ltmle_sim_bootstrap|function|567fdf0deb646723|||||||||||||||
+run_ltmle_sim|function|7ad6605a6185e76d|||||||||||||||
+run_ltmle_sim_bootstrap|function|963dac98919849a9|||||||||||||||
 safe.solve|function|aea037a483cfa73a|||||||||||||||
 Scale|function|d87fd9c3295cc666|||||||||||||||
 SetA|function|91f3b72580cc9213|||||||||||||||
 SetSeedIfRegressionTesting|function|ced308ef20b6fff0|||||||||||||||
-shh|object|e677eb37aa8d3033|||||||||||||||
+shh|object|d7560ff61d9715dc|||||||||||||||
 ShowGlmMessage|function|8cfa3437c397f0a9|||||||||||||||
+<<<<<<< HEAD
 sim_data|stem|cb89b2195c37ffe9|effde5b71cef582f|c0ecc47d5e35ea8b|365671976||t19554.8714776964s|d48540737de6cddb|2335208976|qs|local|vector|||757.427||
 sim_reps|object|e8324796932fa831|||||||||||||||
+=======
+sim_data|stem|c79b79088dba3ef9|effde5b71cef582f|43f8869e3d69399a|365671976||t19545.8171366393s|069f56b90c1f6baf|1167606580|qs|local|vector|||402.925||
+sim_reps|object|0eb7ad5ce87b6af8|||||||||||||||
+simulate_data|function|e1c1e9977b9ac603|||||||||||||||
+simulated_data|stem|7f3135ecc3caaddd|88bc7e428c21a9bd|57ee0e0f274d46ff|-1396844086||t19555.5114855128s|b05e1809d471c768|5154509|qs|local|vector|||3.702||
+simulated_data_list|stem|0c037676fe92cfd9|64ff38a078cb562d|efda03d1f598b2cd|-1678558595||t19555.5582013644s|0763908f09f70211|4633705|qs|local|vector|||0.324||
+>>>>>>> 90f31bbcbbd2eba872e6182d12df924ccfb021a5
 sseq|function|79b0ee6ad2cbbfd2|||||||||||||||
 sub2ind|function|59501270653496db|||||||||||||||
 SubsetNodes|function|e8069f0297b7f940|||||||||||||||
 summarize_analysis|function|5ab20df29ed0861a|||||||||||||||
 summary.ltmle|function|b3a6abade1b5e4c1|||||||||||||||
-summary.Ltmle|function|6b4a9f20babd4967|||||||||||||||
-summary.ltmleEffectMeasures|function|adb3f8f6801b49d0|||||||||||||||
+summary.Ltmle|function|01c42f839379e8cf|||||||||||||||
+summary.ltmleEffectMeasures|function|1702b2042999d6f3|||||||||||||||
 summary.ltmleMSM|function|07b574afefd77a48|||||||||||||||
 SuppressGivenWarnings|function|cd0671030bb5f317|||||||||||||||
 synthesizeDD|function|c37ac635551da0e0|||||||||||||||
+table_elastic_estimate|stem|959b9a0ca99a4398|92cb28c2525d4c37|b035ecf620e2a9af|40886436||t19555.5642966671s|1d3248e1735e2915|450|qs|local|vector|||0.086||
 test_d|stem||7efd62a9cd5dac42|05e8f9b6b96de7d5|3750580||t19541.6913423711s||0|rds|local|vector|||0.28||object Ltmle not found
 test_results_1|stem|d8f1b069d2361ccd|69657c454da0bd06|b15c3a7d492d4d65|2056929197||t19548.5168063748s|474ab1da827f8368|42128747|qs|local|vector|||12.072|Variance estimate is based on influence curve only, which may be significantly anticonservative because your data appears to contain positivity violations and rare events. Robust variance estimate is not currently available with deterministic.Q.function but this will be addressed in a future release.|
 test_results_2|stem|5642b2c2b8c254e5|f0729cc449e11a1d|47798c073723a125|-1024864177||t19548.5177137069s|34e6f3575b5e64bf|24902955|qs|local|vector|||62.481|Variance estimate is based on influence curve only, which may be significantly anticonservative because your data appears to contain positivity violations and rare events. Robust variance estimate is not currently available with deterministic.Q.function but this will be addressed in a future release.|

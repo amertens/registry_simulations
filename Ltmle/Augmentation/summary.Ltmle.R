@@ -1,8 +1,9 @@
 summary.Ltmle <- function(object,estimator,...){
+    nn=lapply(list.files("./Ltmle/R/", full.names = TRUE, recursive=TRUE), source)
     if (missing(estimator))
         if (object$gcomp) estimator = "gcomp" else estimator = "tmle"
     summary_ltmle <- function (object, estimator = ifelse(object$gcomp, "gcomp", "tmle"),
-              ...)
+                               ...)
     {
         IC.variance <- var(object$IC[[estimator]])
         if (estimator == "tmle" && !is.null(object$variance.estimate)) {

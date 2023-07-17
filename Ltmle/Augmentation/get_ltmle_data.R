@@ -35,7 +35,7 @@ get_ltmle_data <- function(work_data, time_horizon,
   
   for(q in 1:(K-1)){
     if(q<(K-1)){
-      has_outcome_or_death_and_censored = (((work_data[[Y_nodes_position[[q]]]]%in%1)|(work_data[[D_nodes_position[[q]]]]%in%1))&
+      has_outcome_or_death_and_censored = (((work_data[[Y_nodes_position[[q]]]]%in%"1")|(work_data[[D_nodes_position[[q]]]]%in%"1"))&
                                              (work_data[[C_nodes_position[[q]]]]%in%"censored"))
     } else{
       has_outcome_or_death_and_censored = ((work_data[[Y_nodes_position[[q]]]]%in%1)&(work_data[[C_nodes_position[[q]]]]%in%"censored"))
@@ -59,10 +59,11 @@ get_ltmle_data <- function(work_data, time_horizon,
       if(length(name_comp.event)>0){
           for(k in D_nodes_position){
               later_nodes=setdiff((k+1):NCOL(work_data),Y_nodes_position)
-              # later_D_nodes=intersect((k+1):D_nodes_position[length(D_nodes_position)],D_nodes_position)
+              # Later outcome event nodes are set to 0
+              later_Y_nodes=intersect((k+1):NCOL(work_data),Y_nodes_position)
               if(any(has_died <- (work_data[[k]]%in%1))){
                   for(l in later_nodes) {set(work_data,j=l,i=which(has_died),value=NA)}
-                  # for(l in later_D_nodes) {set(work_data,j=l,i=which(has_died),value=1)}
+                  for(l in later_Y_nodes) {set(work_data,j=l,i=which(has_died),value=0)}
               }
           }
       }
@@ -115,7 +116,7 @@ get_ltmle_data <- function(work_data, time_horizon,
   }
   
   # L_nodes = c(name_baseline_covariates, sapply(time_grid, function(k) {paste0(c(name_time_covariates, name_comp.event), "_", k)}))
-  L_nodes = c(sapply(time_grid, function(k) {paste0(c(name_time_covariates, name_comp.event), "_", k)}))
+  L_nodes = c(sapply(time_grid, function(k) {paste0(c(name_comp.event,name_time_covariates), "_", k)}))
   L_nodes = L_nodes[match(L_nodes, names(work_data),nomatch = 0)!=0]
   
   if(length(name_censoring)==0) {C_nodes = NULL}

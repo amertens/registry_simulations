@@ -27,7 +27,7 @@ tar_option_set(storage = "worker", retrieval = "worker")
 nix1=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
 #Load augmented LTMLE functions
  #nix2=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
-nix3=lapply(list.files("./Ltmle/ltmle package functions/", full.names = TRUE, recursive=TRUE), source)
+nix3=lapply(list.files("./Ltmle/R/", full.names = TRUE, recursive=TRUE), source)
 nix3=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
  # source("./Ltmle/Augmentation/prepare_Ltmle.R")
  # source("./Ltmle/Augmentation/merge_data.R")
