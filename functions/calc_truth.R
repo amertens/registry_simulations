@@ -16,6 +16,8 @@ calc_truth <- function(cc, A_name = "glp1", seed=12345,  nsamp=100000){
   u.never <- synthesizeDD(cc, A=0)
   d.never <- sim(u.never, nsamp)
   
+  d.always<- clean_sim_data(d.always, N_time=10)
+  d.never<- clean_sim_data(d.never, N_time=10)
   
   #to do: update so a flexible number of time point truths can be calculated
   

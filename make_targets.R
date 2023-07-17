@@ -4,7 +4,7 @@ library(targets)
 source(paste0(here::here(),"/_targets.R"))
 tar_make(garbage_collection = TRUE)
 
-
+glm_markov_res  = tar_read(glm_markov_res )
 
 res1 = tar_read(test_results_1)
 res2 = tar_read(test_results_2)
@@ -77,7 +77,7 @@ truth$truth_df
 
 df=tar_read(sim_data)[[1]]
 fit=run_Ltmle(d=df,
-                   time_horizon=4,
+                   time_horizon=2,
                    # name_outcome = "event_dementia",
                    # name_regimen = "glp1",
                    # name_censoring = "censor",
@@ -93,7 +93,7 @@ fit=run_Ltmle(d=df,
               #SL.library = "glm",
                    #deterministic.Q.function = det.Q.function,
                    #test = FALSE,
-                  Markov_vars=NULL)
+                  Markov_vars=Markov_variables)
 
 #NOTE! Need to incorporate A3 correctly in predicting Y3, etc
 #need to fix censoring formula

@@ -52,7 +52,7 @@ set.seed(12345)
 
 #define some important global variables
 dataset_N = 115698
-sim_reps = 200
+sim_reps = 400
 
 #baseline covariates
 baseline_vars = c("ie_type","age_base","sex", "code5txt", "quartile_income")
@@ -79,7 +79,7 @@ tar_target(cc,fread(paste0(here::here(),"/data/coefficients.txt"))  #%>%
 ,tar_target(sim_data, generate_data(cc, seed=12345, reps=sim_reps, n=dataset_N, N_time=10))
 
 #calculate truth
-,tar_target(truth,  calc_truth(cc, seed=12345, nsamp=500000))
+,tar_target(truth,  calc_truth(cc, seed=12345, nsamp=1000000))
 
 
 
@@ -92,7 +92,7 @@ tar_target(cc,fread(paste0(here::here(),"/data/coefficients.txt"))  #%>%
 ,tar_target(test_results_1, run_Ltmle(d=sim_data[[1]], SL.library = "glm", time_horizon=3, concurrentY=TRUE))
 ,tar_target(test_results_2, run_Ltmle(d=sim_data[[1]], SL.library = "glmnet", SL.cvControl=list(selector="min_lambda",alpha=1), time_horizon=3, concurrentY=TRUE))
 ,tar_target(test_results_3, run_Ltmle(d=sim_data[[1]], SL.library = "glmnet", SL.cvControl=list(selector="min_lambda",alpha=1), time_horizon=3, concurrentY=TRUE,  Markov_vars=Markov_variables))
-,tar_target(test_results_boot_2, run_ltmle_sim_bootstrap(sim_d_list=list(sim_data[[1]]), SL.library = "glm", time_horizon=3, concurrentY=TRUE, Niter=1, Nbootstrap=1))
+#,tar_target(test_results_boot_2, run_ltmle_sim_bootstrap(sim_d_list=list(sim_data[[1]]), SL.library = "glm", time_horizon=3, concurrentY=TRUE, Niter=1, Nbootstrap=1))
 
 
 # #test IC simulation with glm
@@ -103,15 +103,70 @@ tar_target(cc,fread(paste0(here::here(),"/data/coefficients.txt"))  #%>%
 #                                       #SL.cvControl=list(selector="min_lambda",alpha=1),
 #                                       time_horizon=3, Ncores=64, Niter=2, Nbootstrap=2))
 #IC simulation with glmnet
+,tar_target(glm_res_t1, run_ltmle_sim(sim_d_list=sim_data,
+                                      SL.library = "glm",
+                                         Markov_vars=NULL,
+                                         time_horizon=2, Ncores=64, Niter=sim_reps))
+,tar_target(glmnet_res_t1, run_ltmle_sim(sim_d_list=sim_data,
+                                         SL.library = "glmnet",
+                                         SL.cvControl=list(selector="min_lambda",alpha=1),
+                                         Markov_vars=NULL,
+                                         time_horizon=2, Ncores=64, Niter=sim_reps))
+,tar_target(glmnet_res_t2, run_ltmle_sim(sim_d_list=sim_data,
+                                         SL.library = "glmnet",
+                                         SL.cvControl=list(selector="min_lambda",alpha=1),
+                                         Markov_vars=NULL,
+                                         time_horizon=3, Ncores=64, Niter=sim_reps))
+,tar_target(glmnet_res_t4, run_ltmle_sim(sim_d_list=sim_data,
+                                         SL.library = "glmnet",
+                                         SL.cvControl=list(selector="min_lambda",alpha=1),
+                                         time_horizon=5, Ncores=64, Niter=sim_reps))
+,tar_target(glmnet_res_t6, run_ltmle_sim(sim_d_list=sim_data,
+                                         SL.library = "glmnet",
+                                         SL.cvControl=list(selector="min_lambda",alpha=1),
+                                         time_horizon=7, Ncores=64, Niter=sim_reps))
+,tar_target(glmnet_res_t8, run_ltmle_sim(sim_d_list=sim_data,
+                                      SL.library = "glmnet",
+                                      SL.cvControl=list(selector="min_lambda",alpha=1),
+                                      time_horizon=9, Ncores=64, Niter=sim_reps))
 ,tar_target(glmnet_res, run_ltmle_sim(sim_d_list=sim_data,
                                       SL.library = "glmnet",
                                       SL.cvControl=list(selector="min_lambda",alpha=1),
-                                      time_horizon=11, Ncores=64, Niter=200))
-#bootstrap simulation with glmnet
-,tar_target(glmnet_res_boot1, run_ltmle_sim_bootstrap(sim_d_list=sim_data,
+                                      time_horizon=11, Ncores=64, Niter=sim_reps))
+,tar_target(glmnet_undersmooth_res, run_ltmle_sim(sim_d_list=sim_data,
+                                      SL.library = "glmnet",
+                                      SL.cvControl=list(selector="undersmooth",alpha=1),
+                                      Markov_vars=NULL,
+                                      time_horizon=11, Ncores=64, Niter=sim_reps))
+,tar_target(glmnet_markov_res, run_ltmle_sim(sim_d_list=sim_data,
                                       SL.library = "glmnet",
                                       SL.cvControl=list(selector="min_lambda",alpha=1),
-                                      time_horizon=11, Ncores=64, Niter=200, Nbootstrap=100))
+                                      time_horizon=11, Ncores=64, Niter=sim_reps,
+                                      Markov_vars=Markov_variables))
+,tar_target(glmnet_markov_undersmooth_res, run_ltmle_sim(sim_d_list=sim_data,
+                                                  SL.library = "glmnet",
+                                                  SL.cvControl=list(selector="undersmooth",alpha=1),
+                                                  time_horizon=11, Ncores=64, Niter=sim_reps,
+                                                  Markov_vars=Markov_variables))
+,tar_target(ridge_res, run_ltmle_sim(sim_d_list=sim_data,
+                                      SL.library = "glmnet",
+                                      SL.cvControl=list(selector="min_lambda",alpha=0),
+                                     Markov_vars=NULL,
+                                      time_horizon=11, Ncores=64, Niter=sim_reps))
+
+,tar_target(glm_res, run_ltmle_sim(sim_d_list=sim_data,
+                                      SL.library = "glm",
+                                      time_horizon=11, Ncores=64, Niter=sim_reps))
+,tar_target(glm_markov_res, run_ltmle_sim(sim_d_list=sim_data,
+                                      SL.library = "glm",
+                                      Markov_vars=Markov_variables,
+                                      time_horizon=11, Ncores=64, Niter=sim_reps))
+
+#bootstrap simulation with glmnet
+# ,tar_target(glmnet_res_boot1, run_ltmle_sim_bootstrap(sim_d_list=sim_data,
+#                                       SL.library = "glmnet",
+#                                       SL.cvControl=list(selector="min_lambda",alpha=1),
+#                                       time_horizon=11, Ncores=64, Niter=200, Nbootstrap=100))
 # #IC simulation with glmnet and markov process
 # ,tar_target(glmnet_res_markov, run_ltmle_sim(sim_d_list=sim_data,
 #                                       SL.library = "glmnet",
