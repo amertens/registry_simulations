@@ -31,3 +31,11 @@ mean(counterfactual_data_A1$dementia_10)*100
 mean(counterfactual_data_A0$dementia_10)*100-mean(counterfactual_data_A1$dementia_10)*100
 mean(counterfactual_data_A0$dementia_10)-mean(counterfactual_data_A1$dementia_10)
 
+
+truth <- tar_read(truth)
+res <- tar_read(sim_res_glm2)
+res_tab=NULL
+for(i in 1:(length(res)/4)){
+  temp = summary(res[[i + (3*(i-1))]]$GLP1RA$Ltmle_fit)
+  res_tab <- bind_rows(res_tab, temp)
+}
