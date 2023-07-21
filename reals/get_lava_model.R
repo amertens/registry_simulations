@@ -1,9 +1,30 @@
+### get_simulated_data_list.R --- 
+#----------------------------------------------------------------------
+## Author: Thomas Alexander Gerds
+## Created: Jul 17 2023 (14:14) 
+## Version: 
+## Last-Updated: Jul 17 2023 (15:23) 
+##           By: Andrew Mertens
+##     Update #: 2
+#----------------------------------------------------------------------
+## 
+### Commentary: 
+## 
+### Change Log: Add counterfactual_A arguement to deterministically set 
+### A to 1 or zero (by making intercepts very large in positive or negative direction)
+#----------------------------------------------------------------------
+## 
+### Code:
+
+
+
 # library(lava)
 # library(data.table)
 # library(foreach)
 
 get_lava_model <- function(time_horizon,
-                           coefs){
+                           coefs,
+                           counterfactual_A=NULL){
     time_grid = 0:time_horizon
     K = length(time_grid)
     outcome_coefs=coefs[["outcome_coef"]]
@@ -85,7 +106,17 @@ get_lava_model <- function(time_horizon,
         for(reg in regimen){
             message(reg)
             distribution(m, paste0(reg,"_",k)) <- binomial.lvm()
-            intercept(m, paste0(reg,"_",k)) <- regimen_coefs[[paste0(reg,"_",k)]][1]
+            if(is.null(counterfactual_A)){
+              intercept(m, paste0(reg,"_",k)) <- regimen_coefs[[paste0(reg,"_",k)]][1]
+            }else{
+              if(counterfactual_A %in% c(0,1)){
+                 A_sign <- ifelse(counterfactual_A==1, 1, -1)
+                 intercept(m, paste0(reg,"_",k)) <- A_sign * 999999999
+                 #could update with lava "constant" instead
+              }else{
+                stop("counterfactual_A needs to be 0 or 1 (numeric)")
+              }
+            }
             from_k=unlist(lapply(names(regimen_coefs[[paste0(reg,"_",k)]][-1]), 
                                  function(x){gsub("-", " - ", gsub(" ", "", x))}))
             regression(m, to = paste0(reg,"_",k), from = from_k) <- regimen_coefs[[paste0(reg,"_",k)]][-1]

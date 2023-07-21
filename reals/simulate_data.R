@@ -10,7 +10,7 @@
 ## 
 ### Commentary: 
 ## 
-### Change Log:
+### Change Log: 
 #----------------------------------------------------------------------
 ## 
 ### Code:
@@ -22,7 +22,7 @@ simulate_data <- function(lava_model,n){
     cnames = grep("Censored_",names(d),value = TRUE)
     for (c in cnames)
         set(d,j = c,value = factor(d[[c]],levels=c(1,0),labels=c("uncensored","censored")))
-    # from integeger to numeric
+    # from integer to numeric
     isINT=sapply(names(d),function(n)is.integer(d[[n]]))
     d[,(names(d)[isINT]):=lapply(.SD, as.numeric), .SDcols = names(d)[isINT]]
     d[]

@@ -1,11 +1,7 @@
 
 
-cc <- coefs <- tar_read(coefs)
-time_horizon=10
-nsamp=1000000
 
-
-calc_truth <- function(cc, A_name = "glp1", seed=12345,  nsamp=100000){
+calc_truth_old <- function(cc, A_name = "glp1", seed=12345,  nsamp=100000){
   
  #To do: check if seed is a vector and then duplicate and average the calculated results
   #if(lenght(seed)>1){
