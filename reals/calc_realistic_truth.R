@@ -46,3 +46,11 @@ calc_realistic_truth <- function(A_name = "glp1", nsamp=100000, return_data=FALS
     return(truth_df)
   }
 }
+
+
+average_truth <- function(truth){
+  truth <- truth %>% group_by(time) %>%
+    summarise(RR=mean(RR), RD=mean(RD)) %>%
+    as.data.frame()
+  return(truth)
+}

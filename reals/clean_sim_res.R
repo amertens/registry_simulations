@@ -3,8 +3,10 @@
 #Set dementia after death to NA
 clean_sim_res <- function(res){
   res_tab=NULL
-  for(i in 1:(length(res)/4)){
-    temp = summary(res[[i + (3*(i-1))]]$GLP1RA$Ltmle_fit)
+  res=res[grepl("Ltmle_fit",names(res))]
+  for(i in 1:length(res)){
+    temp = summary(res[[i]])
+    temp$iteration = i
     res_tab <- bind_rows(res_tab, temp)
   }
   

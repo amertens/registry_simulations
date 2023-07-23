@@ -22,6 +22,7 @@ tar_option_set(packages=c("fst","lava","ltmle","data.table","tidyverse","tictoc"
 tar_option_set(format = "qs")
 tar_option_set(memory = "transient", garbage_collection = TRUE)
 tar_option_set(storage = "worker", retrieval = "worker")
+tar_option_set(error = "null")
 
 # Uncomment below to use local multicore computing
 # when running tar_make_clustermq().
@@ -73,69 +74,112 @@ set.seed(12345)
  # )
 
 list(
-    # tar_target(coefs,{
-    #     source("data/coefs.txt")
-    #     coefs
-    # }),
-    # tar_target(lava_model,
-    #     get_lava_model(time_horizon = time, coefs = coefs),
-    #     deployment = "main"
-    # ),
-    # tar_target(res,{
-    #   run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1), n=n_df, time=time)
-    # })
-  tar_target(truth,{calc_realistic_truth()})#,
-  # tar_rep(truth_rep,
-  #         command=calc_realistic_truth(),
-  #         batches = 4, reps = 25, rep_workers = 25),
-  # tar_rep(sim_res_glm2,
-  #         command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=2),
-  #         batches = 4, reps = 50, rep_workers = 50),
-  # tar_rep(sim_res_glm3,
-  #         command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=3),
-  #         batches = 4, reps = 50, rep_workers = 50),
-  # tar_rep(sim_res_glm4,
-  #         command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=4),
-  #         batches = 4, reps = 50, rep_workers = 50),
-  # tar_rep(sim_res_glm5,
-  #         command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=5),
-  #         batches = 4, reps = 50, rep_workers = 50),
-  # tar_rep(sim_res_glm6,
-  #         command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=6),
-  #         batches = 4, reps = 50, rep_workers = 50),
-  # tar_rep(sim_res_glm7,
-  #         command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=7),
-  #         batches = 4, reps = 50, rep_workers = 50),
-  # tar_rep(sim_res_glm8,
-  #         command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=8),
-  #         batches = 4, reps = 50, rep_workers = 50),
-  # tar_rep(sim_res_glm9,
-  #         command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=9),
-  #         batches = 4, reps = 50, rep_workers = 50),
-  #   tar_rep(sim_res_glm,
-  #           command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=time),
-  #           batches = 4, reps = 50, rep_workers = 50),
-  #   tar_rep(sim_res_glm_markov,
-  #           command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=time, Markov_variables=Markov_variables),
-  #           batches = 4, reps = 50, rep_workers = 50),
-  #   # tar_rep(sim_res_glmnet,
-  #   #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time),
-  #   #         batches = 4, reps = 50, rep_workers = 50),
-  #   tar_rep(sim_res_glmnet_undersmooth,
-  #           command=run_targets_ltmle_simulation_batch(#library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),
-  #                                                      n=n_df, time=time),
-  #           batches = 1, reps = 1, rep_workers = 1)
-  # ,tar_target(sim_res_tab_glm2, clean_sim_res(res=sim_res_glm2))
-  # ,tar_target(sim_res_tab_glm3, clean_sim_res(res=sim_res_glm3))
-  # ,tar_target(sim_res_tab_glm4, clean_sim_res(res=sim_res_glm4))
-  # ,tar_target(sim_res_tab_glm5, clean_sim_res(res=sim_res_glm5))
-  # ,tar_target(sim_res_tab_glm6, clean_sim_res(res=sim_res_glm6))
-  # ,tar_target(sim_res_tab_glm7, clean_sim_res(res=sim_res_glm7))
-  # ,tar_target(sim_res_tab_glm8, clean_sim_res(res=sim_res_glm8))
-  # ,tar_target(sim_res_tab_glm9, clean_sim_res(res=sim_res_glm9))
-  # ,tar_target(sim_res_tab_glm, clean_sim_res(res=sim_res_glm))
-    #,tar_target(sim_res_tab_glmnet, clean_sim_res(res=sim_res_glmnet))
-    #,tar_target(sim_res_tab_glmnet_undersmooth, clean_sim_res(res=sim_res_glmnet_undersmooth))
+    tar_target(coefs,{
+        source("data/coefs.txt")
+        coefs
+    }),
+    tar_target(lava_model,
+        get_lava_model(time_horizon = time, coefs = coefs),
+        deployment = "main"
+    ),
+    tar_target(test,{
+      run_targets_ltmle_simulation_batch(library="glm",  n=n_df, time=2)
+    }),
+    # tar_rep(test,
+    #         command=run_ltmle_sim_bootstrap(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1), n=n_df, time=2),
+    #         batches = 1, reps = 1, rep_workers = 1),
+    # tar_target(test_tab, clean_sim_res(res=test)),
+  tar_rep(truth_rep,
+          command=calc_realistic_truth(),
+          batches = 4, reps = 25, rep_workers = 25),
+  tar_target(truth, average_truth(truth_rep)),
+  tar_rep(sim_res_glm2,
+          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=2),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_res_glm3,
+          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=3),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_res_glm4,
+          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=4),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_res_glm5,
+          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=5),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_res_glm6,
+          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=6),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_res_glm7,
+          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=7),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_res_glm8,
+          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=8),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_res_glm9,
+          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=9),
+          batches = 4, reps = 50, rep_workers = 25),
+    tar_rep(sim_res_glm,
+            command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=time),
+            batches = 4, reps = 50, rep_workers = 25),
+    tar_rep(sim_res_glm_markov,
+            command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=time, Markov_variables=Markov_variables),
+            batches = 4, reps = 50, rep_workers = 25),
+    tar_rep(sim_res_glmnet,
+            command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time),
+            batches = 200, reps = 1, rep_workers = 1),
+    tar_rep(sim_res_glmnet_undersmooth,
+            command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time),
+            batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_glmnet_markov,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_glmnet_undersmooth_markov,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_EN,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_EN_undersmooth,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_EN_markov,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_EN_undersmooth_markov,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_ridge,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_ridge_undersmooth,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_ridge_markov,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_ridge_undersmooth_markov,
+          command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+   tar_target(sim_res_tab_glm2, clean_sim_res(res=sim_res_glm2))
+  ,tar_target(sim_res_tab_glm3, clean_sim_res(res=sim_res_glm3))
+  ,tar_target(sim_res_tab_glm4, clean_sim_res(res=sim_res_glm4))
+  ,tar_target(sim_res_tab_glm5, clean_sim_res(res=sim_res_glm5))
+  ,tar_target(sim_res_tab_glm6, clean_sim_res(res=sim_res_glm6))
+  ,tar_target(sim_res_tab_glm7, clean_sim_res(res=sim_res_glm7))
+  ,tar_target(sim_res_tab_glm8, clean_sim_res(res=sim_res_glm8))
+  ,tar_target(sim_res_tab_glm9, clean_sim_res(res=sim_res_glm9))
+  ,tar_target(sim_res_tab_glm, clean_sim_res(res=sim_res_glm))
+  ,tar_target(sim_res_tab_glmnet, clean_sim_res(res=sim_res_glmnet))
+  ,tar_target(sim_res_tab_glmnet_undersmooth, clean_sim_res(res=sim_res_glmnet_undersmooth))
+  ,tar_target(sim_res_tab_glmnet_markov, clean_sim_res(res=sim_res_glmnet_markov))
+  ,tar_target(sim_res_tab_glmnet_undersmooth_markov, clean_sim_res(res=sim_res_glmnet_undersmooth_markov))
+  ,tar_target(sim_res_tab_ridge, clean_sim_res(res=sim_res_ridge))
+  ,tar_target(sim_res_tab_ridge_undersmooth, clean_sim_res(res=sim_res_ridge_undersmooth))
+  ,tar_target(sim_res_tab_ridge_markov, clean_sim_res(res=sim_res_ridge_markov))
+  ,tar_target(sim_res_tab_ridge_undersmooth_markov, clean_sim_res(res=sim_res_ridge_undersmooth_markov))
+  ,tar_target(sim_res_tab_EN, clean_sim_res(res=sim_res_EN))
+  ,tar_target(sim_res_tab_EN_undersmooth, clean_sim_res(res=sim_res_EN_undersmooth))
+  ,tar_target(sim_res_tab_EN_markov, clean_sim_res(res=sim_res_EN_markov))
+  ,tar_target(sim_res_tab_EN_undersmooth_markov, clean_sim_res(res=sim_res_EN_undersmooth_markov))
     #Set up to pass many hyperparameters to the simulation
     # tar_map_rep(sim_res,
     #         command=run_targets_ltmle_simulation(#lava_model=lava_model, 
