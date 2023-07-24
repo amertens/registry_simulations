@@ -82,12 +82,12 @@ list(
         get_lava_model(time_horizon = time, coefs = coefs),
         deployment = "main"
     ),
-    tar_target(test,{
-      run_targets_ltmle_simulation_batch(library="glm",  n=n_df, time=2)
-    }),
-    # tar_rep(test,
-    #         command=run_ltmle_sim_bootstrap(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1), n=n_df, time=2),
-    #         batches = 1, reps = 1, rep_workers = 1),
+    # tar_target(test,{
+    #   run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=2, n_bootstrap_samples=2)
+    # }),
+    tar_rep(test,
+            command=run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=2, n_bootstrap_samples=2),
+            batches = 1, reps = 1, rep_workers = 1),
     # tar_target(test_tab, clean_sim_res(res=test)),
   tar_rep(truth_rep,
           command=calc_realistic_truth(),
@@ -180,6 +180,27 @@ list(
   ,tar_target(sim_res_tab_EN_undersmooth, clean_sim_res(res=sim_res_EN_undersmooth))
   ,tar_target(sim_res_tab_EN_markov, clean_sim_res(res=sim_res_EN_markov))
   ,tar_target(sim_res_tab_EN_undersmooth_markov, clean_sim_res(res=sim_res_EN_undersmooth_markov))
+  
+  ,tar_target(sim_performance, calc_sim_performance(
+    res=list(
+      sim_res_tab_glm-sim_res_tab_glm,
+      sim_res_tab_glmnet=sim_res_tab_glmnet,
+      sim_res_tab_glmnet_undersmooth=sim_res_tab_glmnet_undersmooth,
+      sim_res_tab_glmnet_markov=sim_res_tab_glmnet_markov,
+      sim_res_tab_glmnet_undersmooth_markov=sim_res_tab_glmnet_undersmooth_markov,
+      sim_res_tab_ridge=sim_res_tab_ridge,
+      sim_res_tab_ridge_undersmooth=sim_res_tab_ridge_undersmooth,
+      sim_res_tab_ridge_markov=sim_res_tab_ridge_markov,
+      sim_res_tab_ridge_undersmooth_markov=sim_res_tab_ridge_undersmooth_markov,
+      sim_res_tab_EN=sim_res_tab_EN,
+      sim_res_tab_EN_undersmooth=sim_res_tab_EN_undersmooth,
+      sim_res_tab_EN_markov=sim_res_tab_EN_markov,
+      sim_res_tab_EN_undersmooth_markov=sim_res_tab_EN_undersmooth_markov
+    ), 
+    truth=truth, 
+    time=10
+  ))
+  
     #Set up to pass many hyperparameters to the simulation
     # tar_map_rep(sim_res,
     #         command=run_targets_ltmle_simulation(#lava_model=lava_model, 
