@@ -86,8 +86,8 @@ list(
     #   run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=2, n_bootstrap_samples=2)
     # }),
     tar_rep(test,
-            command=run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=2, n_bootstrap_samples=2),
-            batches = 1, reps = 1, rep_workers = 1),
+            command=run_targets_ltmle_simulation_bootstrap(library="glmnet",  n=n_df, time=2, n_bootstrap_samples=2),
+            batches = 2, reps = 1, rep_workers = 1),
     # tar_target(test_tab, clean_sim_res(res=test)),
   tar_rep(truth_rep,
           command=calc_realistic_truth(),
@@ -159,6 +159,9 @@ list(
   tar_rep(sim_res_ridge_undersmooth_markov,
           command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables),
           batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_RF,
+          command=run_targets_ltmle_simulation_batch(library="SL.randomForest",n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
    tar_target(sim_res_tab_glm2, clean_sim_res(res=sim_res_glm2))
   ,tar_target(sim_res_tab_glm3, clean_sim_res(res=sim_res_glm3))
   ,tar_target(sim_res_tab_glm4, clean_sim_res(res=sim_res_glm4))
@@ -180,10 +183,11 @@ list(
   ,tar_target(sim_res_tab_EN_undersmooth, clean_sim_res(res=sim_res_EN_undersmooth))
   ,tar_target(sim_res_tab_EN_markov, clean_sim_res(res=sim_res_EN_markov))
   ,tar_target(sim_res_tab_EN_undersmooth_markov, clean_sim_res(res=sim_res_EN_undersmooth_markov))
+  ,tar_target(sim_res_tab_RF, clean_sim_res(res=sim_res_RF))
   
   ,tar_target(sim_performance, calc_sim_performance(
     res=list(
-      sim_res_tab_glm-sim_res_tab_glm,
+      sim_res_tab_glm=sim_res_tab_glm,
       sim_res_tab_glmnet=sim_res_tab_glmnet,
       sim_res_tab_glmnet_undersmooth=sim_res_tab_glmnet_undersmooth,
       sim_res_tab_glmnet_markov=sim_res_tab_glmnet_markov,
@@ -195,7 +199,8 @@ list(
       sim_res_tab_EN=sim_res_tab_EN,
       sim_res_tab_EN_undersmooth=sim_res_tab_EN_undersmooth,
       sim_res_tab_EN_markov=sim_res_tab_EN_markov,
-      sim_res_tab_EN_undersmooth_markov=sim_res_tab_EN_undersmooth_markov
+      sim_res_tab_EN_undersmooth_markov=sim_res_tab_EN_undersmooth_markov,
+      sim_res_tab_RF,sim_res_tab_RF
     ), 
     truth=truth, 
     time=10

@@ -1,5 +1,8 @@
 
 
+
+
+
 calc_sim_performance <- function(res, truth, time=10){
   
   if(class(res)=="list"){
