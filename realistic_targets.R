@@ -29,10 +29,12 @@ tar_option_set(error = "null")
 options(clustermq.scheduler = "multicore")
 
 
+#Set number of cores to parallelize the branches over
 library(crew)
 tar_option_set(
   controller = crew_controller_local(workers = 50)
 )
+
 # -------------------------------------------------------------------------------------------------------------
 # Configuration
 # -------------------------------------------------------------------------------------------------------------
@@ -47,33 +49,22 @@ set.seed(12345)
 
 
 # # Set the simulation hyperparameters
- n_sims = 2
- n_df=100000
+ #simulated dataset size
+ n_df=100000 
  #set time horizon
  time=10
- SL.library="glm"
+ #Longitudinal variables possibly following the markov process
  Markov_variables=c("heart.failure","renal.disease","chronic.pulmonary.disease", "any.malignancy"  ,         
                     "ischemic.heart.disease","myocardial.infarction","hypertension","stroke" ,                  
                     "bb","ccb","rasi","thiazid",
                     "loop","mra","copd_med"  )
  
-  
- #To do:
- #Make simple sim with just age and sex, no censoring or death
- #look into mclapply for parallelization (Thomas and Helena's project)
- #Set up bootstrap
- 
- # hyperparameters <- tibble::tibble(
- #   #lava_model=list(lava_model,lava_model,lava_model),
- #   n=rep(10000,3),
- #   # library=c("glm","glmnet","glmnet"),
- #   # SL.cvControl=list(NULL,
- #   #                  list(selector="undersmooth",alpha=0),
- #   #                  list(selector="undersmooth",alpha=1))
- #   
- # )
+
 
 list(
+  #---------------------------------------------------------
+  # Set up data simulation model and calculate truth
+  #---------------------------------------------------------
     tar_target(coefs,{
         source("data/coefs.txt")
         coefs
@@ -82,17 +73,22 @@ list(
         get_lava_model(time_horizon = time, coefs = coefs),
         deployment = "main"
     ),
+    tar_rep(truth_rep,
+            command=calc_realistic_truth(),
+            batches = 4, reps = 25, rep_workers = 25),
+    tar_target(truth, average_truth(truth_rep)),
     # tar_target(test,{
     #   run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=2, n_bootstrap_samples=2)
     # }),
-    tar_rep(test,
-            command=run_targets_ltmle_simulation_bootstrap(library="glmnet",  n=n_df, time=2, n_bootstrap_samples=2),
-            batches = 2, reps = 1, rep_workers = 1),
+    # tar_rep(test2,
+    #         command=run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=2, n_bootstrap_samples=2),
+    #         batches = 2, reps = 1, rep_workers = 1),
     # tar_target(test_tab, clean_sim_res(res=test)),
-  tar_rep(truth_rep,
-          command=calc_realistic_truth(),
-          batches = 4, reps = 25, rep_workers = 25),
-  tar_target(truth, average_truth(truth_rep)),
+
+  
+  #---------------------------------------------------------
+  # Run different estimation options
+  #---------------------------------------------------------
   tar_rep(sim_res_glm2,
           command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=2),
           batches = 4, reps = 50, rep_workers = 25),
@@ -159,9 +155,18 @@ list(
   tar_rep(sim_res_ridge_undersmooth_markov,
           command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables),
           batches = 200, reps = 1, rep_workers = 1),
-  tar_rep(sim_res_RF,
-          command=run_targets_ltmle_simulation_batch(library="SL.randomForest",n=n_df, time=time),
+  # tar_rep(sim_res_RF,
+  #         command=run_targets_ltmle_simulation_batch(library="SL.randomForest",n=n_df, time=time),
+  #         batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_res_glm_1000iter,
+          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=time),
+          batches = 20, reps = 50, rep_workers = 25),
+  tar_rep(sim_res_glm_bootstrap,
+          command=run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=10, n_bootstrap_samples=200),
           batches = 200, reps = 1, rep_workers = 1),
+  #---------------------------------------------------------
+  # Calculate results
+  #---------------------------------------------------------
    tar_target(sim_res_tab_glm2, clean_sim_res(res=sim_res_glm2))
   ,tar_target(sim_res_tab_glm3, clean_sim_res(res=sim_res_glm3))
   ,tar_target(sim_res_tab_glm4, clean_sim_res(res=sim_res_glm4))
@@ -183,7 +188,11 @@ list(
   ,tar_target(sim_res_tab_EN_undersmooth, clean_sim_res(res=sim_res_EN_undersmooth))
   ,tar_target(sim_res_tab_EN_markov, clean_sim_res(res=sim_res_EN_markov))
   ,tar_target(sim_res_tab_EN_undersmooth_markov, clean_sim_res(res=sim_res_EN_undersmooth_markov))
-  ,tar_target(sim_res_tab_RF, clean_sim_res(res=sim_res_RF))
+  #,tar_target(sim_res_tab_RF, clean_sim_res(res=sim_res_RF))
+  
+  #---------------------------------------------------------
+  # Calculate simulation performance
+  #---------------------------------------------------------
   
   ,tar_target(sim_performance, calc_sim_performance(
     res=list(
@@ -199,24 +208,12 @@ list(
       sim_res_tab_EN=sim_res_tab_EN,
       sim_res_tab_EN_undersmooth=sim_res_tab_EN_undersmooth,
       sim_res_tab_EN_markov=sim_res_tab_EN_markov,
-      sim_res_tab_EN_undersmooth_markov=sim_res_tab_EN_undersmooth_markov,
-      sim_res_tab_RF,sim_res_tab_RF
+      sim_res_tab_EN_undersmooth_markov=sim_res_tab_EN_undersmooth_markov#,
+      #sim_res_tab_RF,sim_res_tab_RF
     ), 
     truth=truth, 
     time=10
   ))
-  
-    #Set up to pass many hyperparameters to the simulation
-    # tar_map_rep(sim_res,
-    #         command=run_targets_ltmle_simulation(#lava_model=lava_model, 
-    #                                              n=n, 
-    #                                              library=library, time=time),
-    #         values = hyperparameters,
-    #           names = tidyselect::any_of("scenario"),
-    #           batches = 2,
-    #           reps = 3,
-    #           rep_workers = 3
-    #         )
 )
 
 

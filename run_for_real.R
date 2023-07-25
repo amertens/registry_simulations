@@ -8,6 +8,10 @@ library(tidyverse)
 gc()
 tar_make(script = "realistic_targets.R")
 
+sim_performance = tar_read(sim_performance)
+sim_performance
+write.csv(sim_performance, file=paste0(here::here(),"/data/sim_performance.csv"))
+
 #Need to debug, doesn't load functions
 #tar_make_clustermq()
 
