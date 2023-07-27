@@ -6,7 +6,8 @@ library(data.table)
 library(tidyverse)
 
 gc()
-tar_make(script = "realistic_targets.R")
+#tar_make(script = "realistic_targets.R")
+tar_make(script = "null_targets.R")
 
 sim_performance = tar_read(sim_performance)
 sim_performance
