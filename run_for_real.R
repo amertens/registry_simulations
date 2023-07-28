@@ -23,3 +23,7 @@ write.csv(sim_performance, file=paste0(here::here(),"/data/sim_performance.csv")
 # tar_watch(seconds = 10, outdated = FALSE, targets_only = TRUE)
 # # Now run the pipeline and watch the graph change.
 # px <- tar_make()
+
+
+sim_res_glm_bootstrap = tar_read(sim_res_glm_bootstrap)
+saveRDS(sim_res_glm_bootstrap, paste0(here::here(), "/scratch/sim_res_glm_bootstrap.RDS"))
