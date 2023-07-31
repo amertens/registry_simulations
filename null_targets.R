@@ -32,7 +32,7 @@ options(clustermq.scheduler = "multicore")
 #Set number of cores to parallelize the branches over
 library(crew)
 tar_option_set(
-  controller = crew_controller_local(workers = 24)
+  controller = crew_controller_local(workers = 50)
 )
 
 # -------------------------------------------------------------------------------------------------------------
@@ -77,77 +77,121 @@ list(
   #---------------------------------------------------------
   # Run different estimation options
   #---------------------------------------------------------
+  #tar_target(test, run_targets_ltmle_simulation_null(library="glm", n=n_df, time=2)),
   tar_rep(null_res_glm,
-          command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=time),
-          #batches = 4, reps = 50, rep_workers = 24),
-          batches = 1, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_glm_markov,
-  #         command=run_targets_ltmle_simulation_batch(library="glm", n=n_df, time=time, Markov_variables=Markov_variables),
-  #         batches = 4, reps = 50, rep_workers = 24),
-  # tar_rep(null_res_glmnet,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_glmnet_undersmooth,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_glmnet_markov,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time, Markov_variables=Markov_variables),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_glmnet_undersmooth_markov,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_EN,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_EN_undersmooth,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_EN_markov,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time, Markov_variables=Markov_variables),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_EN_undersmooth_markov,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time, Markov_variables=Markov_variables),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_ridge,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_ridge_undersmooth,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_ridge_markov,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time, Markov_variables=Markov_variables),
-  #         batches = 200, reps = 1, rep_workers = 1),
-  # tar_rep(null_res_ridge_undersmooth_markov,
-  #         command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables),
-  #         batches = 200, reps = 1, rep_workers = 1),
+          command=run_targets_ltmle_simulation_null(library="glm", n=n_df, time=time),
+          batches = 4, reps = 50, rep_workers = 50),
+          #batches = 1, reps = 1, rep_workers = 1),
+  tar_rep(null_res_glm_markov,
+          command=run_targets_ltmle_simulation_null(library="glm", n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 4, reps = 50, rep_workers = 50),
+  tar_rep(null_res_glmnet,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+          #batches = 1, reps = 1, rep_workers = 1)#,
+  tar_rep(null_res_glmnet_undersmooth,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_glmnet_markov,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_glmnet_undersmooth_markov,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_EN,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_EN_undersmooth,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_EN_markov,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_EN_undersmooth_markov,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_ridge,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_ridge_undersmooth,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_ridge_markov,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(null_res_ridge_undersmooth_markov,
+          command=run_targets_ltmle_simulation_null(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
   # tar_rep(null_res_RF,
-  #         command=run_targets_ltmle_simulation_batch(library="SL.randomForest",n=n_df, time=time),
-  #         batches = 200, reps = 1, rep_workers = 1),
-
+  #         command=run_targets_ltmle_simulation_null(library="SL.randomForest",n=n_df, time=time),
+  #         batches = 200, reps = 1, rep_workers = 1)
+  
+  tar_rep(sim_null_trunc_glm,
+          command=run_targets_ltmle_simulation_trunc(library="glm", n=n_df, time=time),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_null_trunc_glm_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glm", n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_null_trunc_glmnet,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_glmnet_undersmooth,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_glmnet_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_glmnet_undersmooth_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_EN,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_EN_undersmooth,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_EN_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_EN_undersmooth_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_ridge,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_ridge_undersmooth,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_ridge_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_null_trunc_ridge_undersmooth_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
   #---------------------------------------------------------
   # Calculate results
   #---------------------------------------------------------
 
-  ,tar_target(null_res_tab_glm, clean_sim_res(res=null_res_glm))
-  # ,tar_target(null_res_tab_glmnet, clean_sim_res(res=null_res_glmnet))
-  # ,tar_target(null_res_tab_glmnet_undersmooth, clean_sim_res(res=null_res_glmnet_undersmooth))
-  # ,tar_target(null_res_tab_glmnet_markov, clean_sim_res(res=null_res_glmnet_markov))
-  # ,tar_target(null_res_tab_glmnet_undersmooth_markov, clean_sim_res(res=null_res_glmnet_undersmooth_markov))
-  # ,tar_target(null_res_tab_ridge, clean_sim_res(res=null_res_ridge))
-  # ,tar_target(null_res_tab_ridge_undersmooth, clean_sim_res(res=null_res_ridge_undersmooth))
-  # ,tar_target(null_res_tab_ridge_markov, clean_sim_res(res=null_res_ridge_markov))
-  # ,tar_target(null_res_tab_ridge_undersmooth_markov, clean_sim_res(res=null_res_ridge_undersmooth_markov))
-  # ,tar_target(null_res_tab_EN, clean_sim_res(res=null_res_EN))
-  # ,tar_target(null_res_tab_EN_undersmooth, clean_sim_res(res=null_res_EN_undersmooth))
-  # ,tar_target(null_res_tab_EN_markov, clean_sim_res(res=null_res_EN_markov))
-  # ,tar_target(null_res_tab_EN_undersmooth_markov, clean_sim_res(res=null_res_EN_undersmooth_markov))
+  tar_target(null_res_tab_glm, clean_sim_res(res=null_res_glm))
+  ,tar_target(null_res_tab_glmnet, clean_sim_res(res=null_res_glmnet))
+  ,tar_target(null_res_tab_glmnet_undersmooth, clean_sim_res(res=null_res_glmnet_undersmooth))
+  ,tar_target(null_res_tab_glmnet_markov, clean_sim_res(res=null_res_glmnet_markov))
+  ,tar_target(null_res_tab_glmnet_undersmooth_markov, clean_sim_res(res=null_res_glmnet_undersmooth_markov))
+  ,tar_target(null_res_tab_ridge, clean_sim_res(res=null_res_ridge))
+  ,tar_target(null_res_tab_ridge_undersmooth, clean_sim_res(res=null_res_ridge_undersmooth))
+  ,tar_target(null_res_tab_ridge_markov, clean_sim_res(res=null_res_ridge_markov))
+  ,tar_target(null_res_tab_ridge_undersmooth_markov, clean_sim_res(res=null_res_ridge_undersmooth_markov))
+  ,tar_target(null_res_tab_EN, clean_sim_res(res=null_res_EN))
+  ,tar_target(null_res_tab_EN_undersmooth, clean_sim_res(res=null_res_EN_undersmooth))
+  ,tar_target(null_res_tab_EN_markov, clean_sim_res(res=null_res_EN_markov))
+  ,tar_target(null_res_tab_EN_undersmooth_markov, clean_sim_res(res=null_res_EN_undersmooth_markov))
   #,tar_target(null_res_tab_RF, clean_sim_res(res=null_res_RF))
   
   #---------------------------------------------------------
   # Calculate simulation performance
   #---------------------------------------------------------
   
-  ,tar_target(sim_performance, calc_sim_performance(
+  ,tar_target(null_sim_performance, calc_sim_performance(
     res=list(
       null_res_tab_glm=null_res_tab_glm,
       null_res_tab_glmnet=null_res_tab_glmnet,
@@ -163,8 +207,8 @@ list(
       null_res_tab_EN_markov=null_res_tab_EN_markov,
       null_res_tab_EN_undersmooth_markov=null_res_tab_EN_undersmooth_markov#,
       #null_res_tab_RF,null_res_tab_RF
-    ), 
-    truth=truth, #NEED TO UPDATE
+    ),
+    truth=data.frame(time=1:10, RR=rep(1,10), RD=rep(0,10)), 
     time=10
   ))
 )

@@ -78,7 +78,7 @@ list(
             batches = 4, reps = 25, rep_workers = 25),
     tar_target(truth, average_truth(truth_rep)),
     # tar_target(test,{
-    #   run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=2, n_bootstrap_samples=2)
+    #   run_targets_ltmle_simulation_trunc(library="glm", gbounds=c(0,1), n=n_df, time=2)
     # }),
     # tar_rep(test2,
     #         command=run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=2, n_bootstrap_samples=2),
@@ -155,6 +155,52 @@ list(
   tar_rep(sim_res_ridge_undersmooth_markov,
           command=run_targets_ltmle_simulation_batch(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables),
           batches = 200, reps = 1, rep_workers = 1),
+  #---------------------------------------------------------------------------------------------------
+  # Truncation
+  #---------------------------------------------------------------------------------------------------
+  tar_rep(sim_trunc_glm,
+          command=run_targets_ltmle_simulation_trunc(library="glm", n=n_df, time=time),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_trunc_glm_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glm", n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 4, reps = 50, rep_workers = 25),
+  tar_rep(sim_trunc_glmnet,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_glmnet_undersmooth,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_glmnet_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=1),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_glmnet_undersmooth_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_EN,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_EN_undersmooth,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_EN_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_EN_undersmooth_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_ridge,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_ridge_undersmooth,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_ridge_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="min_lambda",alpha=0),  n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  tar_rep(sim_trunc_ridge_undersmooth_markov,
+          command=run_targets_ltmle_simulation_trunc(library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables),
+          batches = 200, reps = 1, rep_workers = 1),
+  
   # tar_rep(sim_res_RF,
   #         command=run_targets_ltmle_simulation_batch(library="SL.randomForest",n=n_df, time=time),
   #         batches = 200, reps = 1, rep_workers = 1),
@@ -164,6 +210,21 @@ list(
   tar_rep(sim_res_glm_bootstrap,
           command=run_targets_ltmle_simulation_bootstrap(library="glm",  n=n_df, time=10, n_bootstrap_samples=200),
           batches = 200, reps = 1, rep_workers = 1),
+  #---------------------------------------------------------
+  # Calculate results
+  #---------------------------------------------------------
+  
+  tar_target(tar_comp_lasso1, run_targets_ltmle_simulation_comparison(rep_seed=12345, library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables)),
+  tar_target(tar_comp_ridge1, run_targets_ltmle_simulation_comparison(rep_seed=12345, library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables)),
+  tar_target(tar_comp_lasso2, run_targets_ltmle_simulation_comparison(rep_seed=235124, library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables)),
+  tar_target(tar_comp_ridge2, run_targets_ltmle_simulation_comparison(rep_seed=235124, library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables)),
+  tar_target(tar_comp_lasso3, run_targets_ltmle_simulation_comparison(rep_seed=2355, library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables)),
+  tar_target(tar_comp_ridge3, run_targets_ltmle_simulation_comparison(rep_seed=2355, library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables)),
+  tar_target(tar_comp_lasso4, run_targets_ltmle_simulation_comparison(rep_seed=4, library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables)),
+  tar_target(tar_comp_ridge4, run_targets_ltmle_simulation_comparison(rep_seed=4, library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables)),
+  tar_target(tar_comp_lasso5, run_targets_ltmle_simulation_comparison(rep_seed=2345245, library="glmnet", SL.Control=list(selector="undersmooth",alpha=1),n=n_df, time=time, Markov_variables=Markov_variables)),
+  tar_target(tar_comp_ridge5, run_targets_ltmle_simulation_comparison(rep_seed=2345245, library="glmnet", SL.Control=list(selector="undersmooth",alpha=0),n=n_df, time=time, Markov_variables=Markov_variables)),
+                                   
   #---------------------------------------------------------
   # Calculate results
   #---------------------------------------------------------
@@ -188,7 +249,23 @@ list(
   ,tar_target(sim_res_tab_EN_undersmooth, clean_sim_res(res=sim_res_EN_undersmooth))
   ,tar_target(sim_res_tab_EN_markov, clean_sim_res(res=sim_res_EN_markov))
   ,tar_target(sim_res_tab_EN_undersmooth_markov, clean_sim_res(res=sim_res_EN_undersmooth_markov))
-  #,tar_target(sim_res_tab_RF, clean_sim_res(res=sim_res_RF))
+  
+  #Truncated:
+
+  ,tar_target(sim_trunc_tab_glm, clean_sim_res(res=sim_trunc_glm))
+  ,tar_target(sim_trunc_tab_glmnet, clean_sim_res(res=sim_trunc_glmnet))
+  ,tar_target(sim_trunc_tab_glmnet_undersmooth, clean_sim_res(res=sim_trunc_glmnet_undersmooth))
+  ,tar_target(sim_trunc_tab_glmnet_markov, clean_sim_res(res=sim_trunc_glmnet_markov))
+  ,tar_target(sim_trunc_tab_glmnet_undersmooth_markov, clean_sim_res(res=sim_trunc_glmnet_undersmooth_markov))
+  ,tar_target(sim_trunc_tab_ridge, clean_sim_res(res=sim_trunc_ridge))
+  ,tar_target(sim_trunc_tab_ridge_undersmooth, clean_sim_res(res=sim_trunc_ridge_undersmooth))
+  ,tar_target(sim_trunc_tab_ridge_markov, clean_sim_res(res=sim_trunc_ridge_markov))
+  ,tar_target(sim_trunc_tab_ridge_undersmooth_markov, clean_sim_res(res=sim_trunc_ridge_undersmooth_markov))
+  ,tar_target(sim_trunc_tab_EN, clean_sim_res(res=sim_trunc_EN))
+  ,tar_target(sim_trunc_tab_EN_undersmooth, clean_sim_res(res=sim_trunc_EN_undersmooth))
+  ,tar_target(sim_trunc_tab_EN_markov, clean_sim_res(res=sim_trunc_EN_markov))
+  ,tar_target(sim_trunc_tab_EN_undersmooth_markov, clean_sim_res(res=sim_trunc_EN_undersmooth_markov))
+  # ,tar_target(sim_trunc_tab_RF, clean_sim_res(res=sim_trunc_RF))
   
   #---------------------------------------------------------
   # Calculate simulation performance
@@ -208,10 +285,23 @@ list(
       sim_res_tab_EN=sim_res_tab_EN,
       sim_res_tab_EN_undersmooth=sim_res_tab_EN_undersmooth,
       sim_res_tab_EN_markov=sim_res_tab_EN_markov,
-      sim_res_tab_EN_undersmooth_markov=sim_res_tab_EN_undersmooth_markov#,
-      #sim_res_tab_RF,sim_res_tab_RF
-    ), 
-    truth=truth, 
+      sim_res_tab_EN_undersmooth_markov=sim_res_tab_EN_undersmooth_markov,
+      # sim_res_tab_RF,sim_res_tab_RF
+      sim_trunc_tab_glm=sim_trunc_tab_glm,
+      sim_trunc_tab_glmnet=sim_trunc_tab_glmnet,
+      sim_trunc_tab_glmnet_undersmooth=sim_trunc_tab_glmnet_undersmooth,
+      sim_trunc_tab_glmnet_markov=sim_trunc_tab_glmnet_markov,
+      sim_trunc_tab_glmnet_undersmooth_markov=sim_trunc_tab_glmnet_undersmooth_markov,
+      sim_trunc_tab_ridge=sim_trunc_tab_ridge,
+      sim_trunc_tab_ridge_undersmooth=sim_trunc_tab_ridge_undersmooth,
+      sim_trunc_tab_ridge_markov=sim_trunc_tab_ridge_markov,
+      sim_trunc_tab_ridge_undersmooth_markov=sim_trunc_tab_ridge_undersmooth_markov,
+      sim_trunc_tab_EN=sim_trunc_tab_EN,
+      sim_trunc_tab_EN_undersmooth=sim_trunc_tab_EN_undersmooth,
+      sim_trunc_tab_EN_markov=sim_trunc_tab_EN_markov,
+      sim_trunc_tab_EN_undersmooth_markov=sim_trunc_tab_EN_undersmooth_markov
+    ),
+    truth=truth,
     time=10
   ))
 )

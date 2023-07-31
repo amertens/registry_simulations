@@ -20,24 +20,25 @@
 
 run_targets_ltmle_simulation_null <- function(library="glm",
                                                SL.Control=NULL,
-                                               n, time=2,
+                                               n=100000, 
+                                               time=2,
                                                n_bootstrap_samples=0,
                                                Markov_variables=NULL){
   
-  # source("data/coefs.txt")
-  # model= get_lava_model(time_horizon = time, coefs = coefs)
+  
   model <- targets::tar_read_raw("lava_model")
   simulated_data = simulate_data(lava_model = model, n = n)
   simulated_data = clean_sim_data(simulated_data, N_time=time)
-    Y <- simulated_data %>% select(starts_with("dementia")|starts_with("dead")|starts_with("censor_"))
-    Y <- Y[sample(nrow(Y)),]
-    simulated_data <- simulated_data %>% select(!starts_with("dementia")&!starts_with("dead")&!starts_with("censor_"))
-    dsimulated_data<- bind_cols(simulated_data, Y)
-  
-  
-  # # #set up analysis:
+  simulated_data = data.frame(simulated_data)
+  Y = simulated_data[,grepl("dementia",colnames(simulated_data))|grepl("Dead",colnames(simulated_data))|grepl("Censored_",colnames(simulated_data))]
+  Y <- Y[sample(nrow(Y)),]
+  simulated_data = simulated_data[,!(grepl("dementia",colnames(simulated_data))|grepl("Dead",colnames(simulated_data))|grepl("Censored_",colnames(simulated_data)))]
+  simulated_data<- bind_cols(simulated_data, Y)
+  simulated_data = as.data.table(simulated_data)
+
+  # #set up analysis:
   simulated_data_list <- get_simulated_data_list(simulated_data = simulated_data, time_horizon=time)
-  #simulated_data_list$outcome_data
+
   res = run_ltmle(name_outcome="dementia",
                   time_horizon=time,
                   test=FALSE,
@@ -51,21 +52,11 @@ run_targets_ltmle_simulation_null <- function(library="glm",
                   Markov=Markov_variables,
                   SL.cvControl=SL.Control,
                   verbose=TRUE)
-  
-  
+
+
   res=res[[1]][[1]]
   res=res[1]
   res
-  
-  # res=summary(res[grepl("Ltmle_fit",names(res))])
-  # res
-  #summary(res[[1]])
-  #(res[grepl("Ltmle_fit",names(res))])
-  #names(res[[1]][[1]])
-  # Ltmle_fit=NULL
-  # try(Ltmle_fit = summary(res[[1]][[1]]$Ltmle_fit))
-  # Ltmle_fit
-  #return(res_tab)
   
 }
 
