@@ -19,6 +19,7 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               Markov_variables=NULL,
                                               estimator=""){
   
+  start=Sys.time()
   # res= mclapply(seeds, function(z) run_targets_ltmle_simulation(seed=z,
   #                                                               library=library,
   #                                                               SL.Control=SL.Control,
@@ -58,5 +59,5 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
   res=rbindlist(res)
   res$estimator=estimator
   return(res)
-  
+  print(Sys.time()-start) 
 }
