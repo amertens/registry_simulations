@@ -81,11 +81,8 @@ system.time({res_glmnet_1=mclapply_targets_ltmle_simulation(estimator="lasso",se
 # res_glm_untruncated_1=mclapply_targets_ltmle_simulation(estimator="glm",seeds=seeds1, gbounds=c(0,1), library="glm")
 # res_glmnet_untruncated_1=mclapply_targets_ltmle_simulation(estimator="lasso",seeds=seeds1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))
 
-#-------------------------
-#ERRORED
-res_glmnet_undersmooth_untruncated_1=mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso",seeds=seeds1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))
-#-------------------------
 
+res_glmnet_undersmooth_untruncated_1=mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso",seeds=seeds1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))
 res_ridge_untruncated_1=mclapply_targets_ltmle_simulation(estimator="ridge",seeds=seeds1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))
 res_ridge_undersmooth_untruncated_1=mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge",seeds=seeds1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))
 res_EN_untruncated_1=mclapply_targets_ltmle_simulation(estimator="EN",seeds=seeds1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))
@@ -100,5 +97,5 @@ res_EN_markov_untruncated_1=mclapply_targets_ltmle_simulation(estimator="EN mark
 res_EN_undersmooth_markov_untruncated_1=mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge markov",seeds=seeds1, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))
 
 
-save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res.Rdata"))
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
 
