@@ -20,9 +20,14 @@
 
 run_targets_ltmle_simulation_batch <- function(library="glm",
                                                SL.Control=NULL,
+                                               seed=NULL,
                                                n, time=2,
                                                n_bootstrap_samples=0,
                                                Markov_variables=NULL){
+  
+  if(!is.null(seed)){
+    set.seed(seed)
+  }
   
   # source("data/coefs.txt")
   # model= get_lava_model(time_horizon = time, coefs = coefs)
@@ -51,16 +56,6 @@ run_targets_ltmle_simulation_batch <- function(library="glm",
     res=res[[1]][[1]]
     res=res[1]
     res
-    
-    # res=summary(res[grepl("Ltmle_fit",names(res))])
-    # res
-    #summary(res[[1]])
-    #(res[grepl("Ltmle_fit",names(res))])
-    #names(res[[1]][[1]])
-    # Ltmle_fit=NULL
-    # try(Ltmle_fit = summary(res[[1]][[1]]$Ltmle_fit))
-    # Ltmle_fit
-    #return(res_tab)
 
 }
 

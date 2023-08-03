@@ -18,13 +18,41 @@
 #Wrapper functions for simulating data then analyzing it 
 #(ideally across many estimation hyperparameters)
 
-run_targets_ltmle_simulation <- function(lava_model = lava_model, n=10000, library="glm", time=2){
+# seed=1234
+# library="glmnet"
+# SL.Control=list(selector="undersmooth",alpha=1)
+# n=10000
+# time=2
+# Markov_variables=Markov_variables
+# n_bootstrap_samples=0
 
 
-    simulated_data <- simulate_data(lava_model = lava_model, n = n)
-    #set up analysis:
-    simulated_data_list <- get_simulated_data_list(simulated_data = simulated_data, time_horizon=time)
-    estimate = run_ltmle(name_outcome="dementia",
+
+
+run_targets_ltmle_simulation <- function(library="glm",
+                                               SL.Control=NULL,
+                                               seed=NULL,
+                                               n, time=2,
+                                               gbounds=gbounds,
+                                               n_bootstrap_samples=0,
+                                               Markov_variables=NULL){
+  
+  if(!is.null(seed)){
+    set.seed(seed)
+  }
+  nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
+  nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
+  
+  # source("data/coefs.txt")
+  # model= get_lava_model(time_horizon = time, coefs = coefs)
+  model <- targets::tar_read_raw("lava_model")
+  simulated_data = simulate_data(lava_model = model, n = n)
+  simulated_data = clean_sim_data(simulated_data, N_time=time)
+     
+    # # #set up analysis:
+     simulated_data_list <- get_simulated_data_list(simulated_data = simulated_data, time_horizon=time)
+     #simulated_data_list$outcome_data
+    res = run_ltmle(name_outcome="dementia",
                                              time_horizon=time,
                                              test=FALSE,
                                              outcome_data=simulated_data_list$outcome_data,
@@ -32,19 +60,19 @@ run_targets_ltmle_simulation <- function(lava_model = lava_model, n=10000, libra
                                              baseline_data=simulated_data_list$sim_baseline_covariates,
                                              timevar_data=simulated_data_list$sim_time_covariates,
                                              det.Q.function=NULL,# now build-in
+                                             gbounds=gbounds,
+                                             B_bootstrap_samples=n_bootstrap_samples,
                                              SL.library=library,
-                                             #SL.cvControl=list(selector="undersmooth",alpha=1),
+                                             Markov=Markov_variables,
+                                             SL.cvControl=SL.Control,
                                              verbose=TRUE)
-    res=summary(estimate[[1]][[1]]$Ltmle_fit)
     
-    res.iptw = summary(estimate[[1]][[1]]$Ltmle_fit,"iptw")
-    res=bind_rows(res, res.iptw)
-    # #add in
-    # # res$Qform = list(fit$formulas$Qform)
-    # # res$gform = list(fit$formulas$gform)
-    # res$analysis_name=analysis_name
-    # res$iteration=iteration
-    res=data.frame(res)
-    return(res)
+    
+    res=res[[1]][[1]]
+    res=res[1]
+    #res
+
+    output=summary(res$Ltmle_fit)
+    output
 }
 

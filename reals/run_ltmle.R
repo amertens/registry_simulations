@@ -6,6 +6,7 @@ run_ltmle <- function(name_outcome,
                       outcome_data,
                       baseline_data,
                       timevar_data,
+                      gbounds=c(0.01,1),
                       Markov=NULL,
                       det.Q.function,
                       SL.library="glmnet",
@@ -60,6 +61,10 @@ run_ltmle <- function(name_outcome,
                              Markov=markov,
                              deterministic.Q.function=det.Q.function,
                              abar=abar)
+            
+            #add truncation
+            pl$gbounds = gbounds
+            
             if (verbose){
                 cat("Run Ltmle for regimen ",
                     paste0(regimens,collapse=","),

@@ -187,6 +187,22 @@ list(
   ,tar_target(null_res_tab_EN_undersmooth_markov, clean_sim_res(res=null_res_EN_undersmooth_markov))
   #,tar_target(null_res_tab_RF, clean_sim_res(res=null_res_RF))
   
+  #Truncated:
+  
+  ,tar_target(null_trunc_tab_glm, clean_sim_res(res=sim_null_trunc_glm))
+  ,tar_target(null_trunc_tab_glmnet, clean_sim_res(res=sim_null_trunc_glmnet))
+  ,tar_target(null_trunc_tab_glmnet_undersmooth, clean_sim_res(res=sim_null_trunc_glmnet_undersmooth))
+  ,tar_target(null_trunc_tab_glmnet_markov, clean_sim_res(res=sim_null_trunc_glmnet_markov))
+  ,tar_target(null_trunc_tab_glmnet_undersmooth_markov, clean_sim_res(res=sim_null_trunc_glmnet_undersmooth_markov))
+  ,tar_target(null_trunc_tab_ridge, clean_sim_res(res=sim_null_trunc_ridge))
+  ,tar_target(null_trunc_tab_ridge_undersmooth, clean_sim_res(res=sim_null_trunc_ridge_undersmooth))
+  ,tar_target(null_trunc_tab_ridge_markov, clean_sim_res(res=sim_null_trunc_ridge_markov))
+  ,tar_target(null_trunc_tab_ridge_undersmooth_markov, clean_sim_res(res=sim_null_trunc_ridge_undersmooth_markov))
+  ,tar_target(null_trunc_tab_EN, clean_sim_res(res=sim_null_trunc_EN))
+  ,tar_target(null_trunc_tab_EN_undersmooth, clean_sim_res(res=sim_null_trunc_EN_undersmooth))
+  ,tar_target(null_trunc_tab_EN_markov, clean_sim_res(res=sim_null_trunc_EN_markov))
+  ,tar_target(null_trunc_tab_EN_undersmooth_markov, clean_sim_res(res=sim_null_trunc_EN_undersmooth_markov))
+  
   #---------------------------------------------------------
   # Calculate simulation performance
   #---------------------------------------------------------
@@ -205,8 +221,21 @@ list(
       null_res_tab_EN=null_res_tab_EN,
       null_res_tab_EN_undersmooth=null_res_tab_EN_undersmooth,
       null_res_tab_EN_markov=null_res_tab_EN_markov,
-      null_res_tab_EN_undersmooth_markov=null_res_tab_EN_undersmooth_markov#,
+      null_res_tab_EN_undersmooth_markov=null_res_tab_EN_undersmooth_markov,
       #null_res_tab_RF,null_res_tab_RF
+      null_trunc_tab_glm=null_trunc_tab_glm,
+      null_trunc_tab_glmnet=null_trunc_tab_glmnet,
+      null_trunc_tab_glmnet_undersmooth=null_trunc_tab_glmnet_undersmooth,
+      null_trunc_tab_glmnet_markov=null_trunc_tab_glmnet_markov,
+      null_trunc_tab_glmnet_undersmooth_markov=null_trunc_tab_glmnet_undersmooth_markov,
+      null_trunc_tab_ridge=null_trunc_tab_ridge,
+      null_trunc_tab_ridge_undersmooth=null_trunc_tab_ridge_undersmooth,
+      null_trunc_tab_ridge_markov=null_trunc_tab_ridge_markov,
+      null_trunc_tab_ridge_undersmooth_markov=null_trunc_tab_ridge_undersmooth_markov,
+      null_trunc_tab_EN=null_trunc_tab_EN,
+      null_trunc_tab_EN_undersmooth=null_trunc_tab_EN_undersmooth,
+      null_trunc_tab_EN_markov=null_trunc_tab_EN_markov,
+      null_trunc_tab_EN_undersmooth_markov=null_trunc_tab_EN_undersmooth_markov
     ),
     truth=data.frame(time=1:10, RR=rep(1,10), RD=rep(0,10)), 
     time=10

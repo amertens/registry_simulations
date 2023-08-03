@@ -15,7 +15,19 @@ calc_realistic_truth <- function(A_name = "glp1", nsamp=100000, return_data=FALS
 
   d.always <- clean_sim_data(d.always, N_time=10)
   d.never <- clean_sim_data(d.never, N_time=10)
+
+  Ya1_t1 <- mean(d.always$dementia_1,na.rm=T)
+  Ya1_t2 <- mean(d.always$dementia_2,na.rm=T)
+  Ya1_t3 <- mean(d.always$dementia_3,na.rm=T)
+  Ya1_t4 <- mean(d.always$dementia_4,na.rm=T)
+  Ya1_t5 <- mean(d.always$dementia_5,na.rm=T)
+  Ya1_t6 <- mean(d.always$dementia_6,na.rm=T)
+  Ya1_t7 <- mean(d.always$dementia_7,na.rm=T)
+  Ya1_t8 <- mean(d.always$dementia_8,na.rm=T)
+  Ya1_t9 <- mean(d.always$dementia_9,na.rm=T)
+  Ya1_t10 <- mean(d.always$dementia_10,na.rm=T)
   
+    
   tRR1 <- mean(d.always$dementia_1,na.rm=T)/mean(d.never$dementia_1,na.rm=T)
   tRR2 <- mean(d.always$dementia_2,na.rm=T)/mean(d.never$dementia_2,na.rm=T)
   tRR3 <- mean(d.always$dementia_3,na.rm=T)/mean(d.never$dementia_3,na.rm=T)
@@ -38,7 +50,19 @@ calc_realistic_truth <- function(A_name = "glp1", nsamp=100000, return_data=FALS
   tRD9 <- mean(d.always$dementia_9,na.rm=T) - mean(d.never$dementia_9,na.rm=T)
   tRD10 <- mean(d.always$dementia_10,na.rm=T) - mean(d.never$dementia_10,na.rm=T)
   
-  truth_df <- data.frame(time=1:10, RR=c(tRR1,tRR2,tRR3,tRR4,tRR5,tRR6,tRR7,tRR8,tRR9,tRR10), RD=c(tRD1,tRD2,tRD3,tRD4,tRD5,tRD6,tRD7,tRD8,tRD9,tRD10))
+  truth_df <- data.frame(time=1:10, 
+                         Ya1=c(  Ya1_t1,
+                                 Ya1_t2,
+                                 Ya1_t3,
+                                 Ya1_t4,
+                                 Ya1_t5,
+                                 Ya1_t6,
+                                 Ya1_t7,
+                                 Ya1_t8,
+                                 Ya1_t9,
+                                 Ya1_t10),
+                         RR=c(tRR1,tRR2,tRR3,tRR4,tRR5,tRR6,tRR7,tRR8,tRR9,tRR10), 
+                         RD=c(tRD1,tRD2,tRD3,tRD4,tRD5,tRD6,tRD7,tRD8,tRD9,tRD10))
 
   if(return_data){
     return(list(truth_df=truth_df, dA1=d.always, dA0=d.never))
