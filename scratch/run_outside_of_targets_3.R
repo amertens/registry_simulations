@@ -11,6 +11,7 @@ lapply(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","matrix
   do.call("require", list(X)) 
 })
 
+cat("Running set 3:\n")
 
 
 #Set number of cores to parallelize the branches over

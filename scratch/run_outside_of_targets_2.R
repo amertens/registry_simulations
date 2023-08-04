@@ -97,9 +97,11 @@ seed2=sample(1000001:2000000, 250, replace=FALSE)
 # save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
 
-
+cat("Hello word\n")
 system.time({res_ridge_undersmooth_untruncated_2=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed ridge",seeds=seed2, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
 save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
+cat("1: res_ridge_undersmooth_untruncated_2 run\n")
+
 system.time({res_EN_untruncated_2=mclapply_targets_ltmle_simulation(n_cores=90, estimator="EN",seeds=seed2, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))})
 save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
 system.time({res_EN_undersmooth_untruncated_2=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed EN",seeds=seed2, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
