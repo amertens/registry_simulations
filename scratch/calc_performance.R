@@ -18,11 +18,15 @@ load(paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed3.Rdata"))
 
-res1=mget(ls(pattern = "res_"))
+res=mget(ls(pattern = "res_"))
 
-res1= data.table::rbindlist(l=res1, use.names=TRUE, fill=TRUE, idcol="analysis")
-res1$analysis<-gsub("_[0-9]+$","",res1$analysis)
-table(res1$analysis)
+res= data.table::rbindlist(l=res, use.names=TRUE, fill=TRUE, idcol="analysis")
+res$estimator<-gsub("_[0-9]+$","",res$analysis)
+res$estimator = gsub("res_","",res$estimator)
+res$estimator = gsub("_tr","",res$estimator)
+table(res$estimator)
+saveRDS(res, file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
+
 # 
 # res2=list( tar_read(res_glm_1),
 #              tar_read(res_glmnet_1),
@@ -70,7 +74,6 @@ table(res1$analysis)
 # 
 # 
 # res=bind_rows(res1, res2)
-res=res1
 #res=c(res1,res2)
 # drop <- rep(FALSE, length(res))
 # for(i in 1:length(res)){
@@ -81,18 +84,21 @@ res=res1
 # 
 # res[drop] <- NULL
 truth=tar_read(truth)
-time=10
-
-res$estimator = gsub("res_","",res$analysis)
-res$estimator = gsub("_tr","",res$estimator)
-res$estimator = gsub("_[0-9]+$","",res$estimator)
-table(res$estimator)
 sim_perf_tab = calc_sim_performance(
   res=res,
   truth=tar_read(truth),
   time=10)
 sim_perf_tab
 
+truth_med=truth
+truth_med[10,3] = (-0.0072)
+sim_perf_tab2 = calc_sim_performance(
+  res=res,
+  truth=truth_med,
+  time=10)
+sim_perf_tab2
+
+sim_perf_tab2 %>% filter(N_reps<500) %>% subset(., select=c(estimator,N_reps))
 
 
 
