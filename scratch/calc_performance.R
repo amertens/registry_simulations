@@ -101,4 +101,10 @@ sim_perf_tab2
 sim_perf_tab2 %>% filter(N_reps<500) %>% subset(., select=c(estimator,N_reps))
 
 
+truth_rep=tar_read(truth_rep) %>% filter(time==10)
+
+truth <- truth_rep %>% group_by(time) %>%
+  summarise(meanRR=mean(RR), meanRD=mean(RD), medianRR=median(RR), medianRD=median(RD)) %>%
+  as.data.frame()
+truth
 
