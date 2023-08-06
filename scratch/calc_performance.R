@@ -16,10 +16,12 @@ nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE)
 
 load(paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_seed3.Rdata"))
 
 res1=mget(ls(pattern = "res_"))
 
 res1= data.table::rbindlist(l=res1, use.names=TRUE, fill=TRUE, idcol="analysis")
+res1$analysis<-gsub("_[0-9]+$","",res1$analysis)
 table(res1$analysis)
 # 
 # res2=list( tar_read(res_glm_1),
@@ -83,8 +85,7 @@ time=10
 
 res$estimator = gsub("res_","",res$analysis)
 res$estimator = gsub("_tr","",res$estimator)
-res$estimator = gsub("_1","",res$estimator)
-res$estimator = gsub("_2","",res$estimator)
+res$estimator = gsub("_[0-9]+$","",res$estimator)
 table(res$estimator)
 sim_perf_tab = calc_sim_performance(
   res=res,
