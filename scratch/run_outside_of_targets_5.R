@@ -54,7 +54,7 @@ Markov_variables=c("heart.failure","renal.disease","chronic.pulmonary.disease", 
 
 #seedlists
 set.seed(12345)
-seed4=sample(3000001:4000000, 500, replace=FALSE)
+seed5=sample(4000001:5000000, 200, replace=FALSE)
 
 #run extra iteractions for estimation methods that have failed for some runs:
 #                                 estimator N_reps
@@ -65,21 +65,5 @@ seed4=sample(3000001:4000000, 500, replace=FALSE)
 # 5  ridge_undersmooth_markov_untruncated    494
 # 6         ridge_undersmooth_untruncated    430
 
-system.time({res_EN_undersmooth_markov_untruncated_4=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed ridge markov",seeds=seed4[1:80], gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
-system.time({res_EN_undersmooth_untruncated_4=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed EN",seeds=seed4[1:360], gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
-save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed4.Rdata"))
-
-system.time({res_glmnet_undersmooth_markov_untruncated_4=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed lasso markov",seeds=seed4[1:80], gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))})
-save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed4.Rdata"))
- system.time({res_glmnet_undersmooth_untruncated_4=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed lasso",seeds=seed4[1:360], gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))})
- save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed4.Rdata"))
-
- 
- system.time({res_ridge_undersmooth_markov_untruncated_4=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed ridge markov",seeds=seed4[1:15], gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
- save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed4.Rdata"))
- 
-  system.time({res_ridge_undersmooth_untruncated_4=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed ridge",seeds=seed4[1:90], gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
-  save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed4.Rdata"))
-
-  
-  
+system.time({res_EN_undersmooth_untruncated_4=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed EN",seeds=seed5, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed5.Rdata"))
