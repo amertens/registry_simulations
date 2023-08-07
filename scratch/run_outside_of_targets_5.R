@@ -65,5 +65,15 @@ seed5=sample(4000001:5000000, 200, replace=FALSE)
 # 5  ridge_undersmooth_markov_untruncated    494
 # 6         ridge_undersmooth_untruncated    430
 
-system.time({res_EN_undersmooth_untruncated_4=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed EN",seeds=seed5, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
+load(paste0(here::here(),"/data/sim_results/sim_res_seed5.Rdata"))
+res_EN_undersmooth_untruncated_5=res_EN_undersmooth_untruncated_4
+rm(res_EN_undersmooth_untruncated_4)
+# system.time({res_EN_undersmooth_untruncated_5=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed EN",seeds=seed5, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
+# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed5.Rdata"))
+
+
+system.time({res_glmnet_undersmooth_untruncated_2=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed lasso",seeds=seed5[1:200], gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed5.Rdata"))
+
+system.time({res_EN_undersmooth_untruncated_2=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed EN",seeds=seed5[1:200], gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
 save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seed5.Rdata"))
