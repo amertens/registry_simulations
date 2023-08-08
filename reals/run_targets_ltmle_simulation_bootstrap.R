@@ -19,9 +19,17 @@
 
 run_targets_ltmle_simulation_bootstrap = function(library="glm",
                                                SL.Control=NULL,
+                                               seed=NULL,
+                                               gbounds=gbounds,
                                                n, time=2,
                                                n_bootstrap_samples=200,
                                                Markov_variables=NULL){
+  
+  if(!is.null(seed)){
+    set.seed(seed)
+  }
+  nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
+  nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
   
   # source("data/coefs.txt")
   # model= get_lava_model(time_horizon = time, coefs = coefs)
@@ -40,6 +48,7 @@ run_targets_ltmle_simulation_bootstrap = function(library="glm",
                   baseline_data=simulated_data_list$sim_baseline_covariates,
                   timevar_data=simulated_data_list$sim_time_covariates,
                   det.Q.function=NULL,# now build-in
+                  gbounds=gbounds,
                   B_bootstrap_samples=n_bootstrap_samples,
                   SL.library=library,
                   Markov=Markov_variables,
