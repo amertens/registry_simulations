@@ -8,7 +8,7 @@
 # SL.Control=list(selector="undersmooth",alpha=0)
 # gbounds=c(0.01,1)
 
-mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
+mclapply_targets_ltmle_bootstrap_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               library="glm",
                                               SL.Control=NULL,
                                               time=10,
@@ -22,7 +22,7 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
   
   cl <- makeCluster(n_cores)
   clusterExport(cl, c("seeds",
-                      "run_targets_ltmle_simulation",  "library",
+                      "run_targets_ltmle_simulation_bootstrap",  "library",
                       "SL.Control",
                       "n_bootstrap_samples",
                       "Markov_variables",
@@ -34,7 +34,8 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
   }))
 
 
-  res=parLapply(cl=cl,seeds, function(z) run_targets_ltmle_simulation(seed=z,
+  
+  res=parLapply(cl=cl,seeds, function(z) run_targets_ltmle_simulation_bootstrap(seed=z,
                                                             library=library,
                                                             SL.Control=SL.Control,
                                                             n_bootstrap_samples=n_bootstrap_samples,
@@ -49,6 +50,7 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
     if(class(res[[i]])[1]!="data.table"){
       drop[i] <- TRUE
     }
+    res[[i]]$sim_iter <- i
   }
   
   res[drop] <- NULL

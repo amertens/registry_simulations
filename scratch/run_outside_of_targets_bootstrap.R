@@ -1,4 +1,5 @@
 
+rm(list=ls())
 shh <-try(setwd("C:/Users/andre/Documents/jici/registry_simulations/"),silent = TRUE)
 shh <-try(setwd("~/research/Methods/registry_simulations/"),silent = TRUE)
 library(targets)
@@ -8,10 +9,6 @@ library(tidyverse)
 library(parallel)
 
 gc()
-shh <-try(setwd("C:/Users/andre/Documents/jici/registry_simulations/"),silent = TRUE)
-shh <-try(setwd("~/research/Methods/registry_simulations/"),silent = TRUE)
-library(targets)
-library(tarchetypes)
 
 
 
@@ -37,13 +34,24 @@ Markov_variables=c("heart.failure","renal.disease","chronic.pulmonary.disease", 
                    "loop","mra","copd_med"  )
 
 #seedlists
-#seedlists
 set.seed(12345)
-seed1=sample(1:1000000, 500, replace=FALSE)
+seeds_bootstrap<-sample(1:1000000, 500, replace=FALSE)
 
-test=mclapply_targets_ltmle_simulation(n_bootstrap_samples=2, time=2, n_cores=90, estimator="undersmoothed ridge markov",seeds=seeds1[1:2], Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))
+N_bootstraps=200
+#test=mclapply_targets_ltmle_simulation(n_bootstrap_samples=2, time=2, n_cores=90, estimator="undersmoothed ridge markov",seeds=seeds1[1:2], Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))
 
-#res_ridge_undersmooth_markov_boot=mclapply_targets_ltmle_simulation(n_cores=90, estimator="undersmoothed ridge markov",seeds=seeds1, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))
+system.time({res_ridge_undersmooth_markov_boot1=mclapply_targets_ltmle_bootstrap_simulation(n_bootstrap_samples=N_bootstraps, n_cores=90, estimator="undersmoothed ridge markov",seeds=seeds_bootstrap[1:100], Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
+saveRDS(res_ridge_undersmooth_markov_boot1, file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot1.RDS"))
 
-#saveRDS(res_ridge_undersmooth_markov_boot, file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot.RDS"))
+system.time({res_ridge_undersmooth_markov_boot2=mclapply_targets_ltmle_bootstrap_simulation(n_bootstrap_samples=N_bootstraps, n_cores=90, estimator="undersmoothed ridge markov",seeds=seeds_bootstrap[101:200], Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
+saveRDS(res_ridge_undersmooth_markov_boot2, file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot2.RDS"))
+
+system.time({res_ridge_undersmooth_markov_boot3=mclapply_targets_ltmle_bootstrap_simulation(n_bootstrap_samples=N_bootstraps, n_cores=90, estimator="undersmoothed ridge markov",seeds=seeds_bootstrap[201:300], Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
+saveRDS(res_ridge_undersmooth_markov_boot3, file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot3.RDS"))
+
+system.time({res_ridge_undersmooth_markov_boot4=mclapply_targets_ltmle_bootstrap_simulation(n_bootstrap_samples=N_bootstraps, n_cores=90, estimator="undersmoothed ridge markov",seeds=seeds_bootstrap[301:400], Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
+saveRDS(res_ridge_undersmooth_markov_boot4, file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot4.RDS"))
+
+system.time({res_ridge_undersmooth_markov_boot5=mclapply_targets_ltmle_bootstrap_simulation(n_bootstrap_samples=N_bootstraps, n_cores=90, estimator="undersmoothed ridge markov",seeds=seeds_bootstrap[401:500], Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
+saveRDS(res_ridge_undersmooth_markov_boot5, file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot5.RDS"))
 
