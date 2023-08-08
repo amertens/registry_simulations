@@ -1,21 +1,12 @@
 
-# seeds=c(1,2)
-# n_df=10000
-# n_cores=5
-# library="glm"
-# SL.Control=NULL
-# time=10
-# gbounds=c(0.01,1)
-# n_bootstrap_samples=0
-# Markov_variables=NULL
-# 
-# estimator="undersmoothed ridge"
-# seeds=seeds1
-# gbounds=c(0,1)
-# library="glmnet"
-# SL.Control=list(selector="undersmooth",alpha=0)
-
-
+n_bootstrap_samples=2
+time=2
+n_cores=90
+estimator="undersmoothed ridge markov"
+seeds=seeds1[1:2]
+library="glmnet"
+SL.Control=list(selector="undersmooth",alpha=0)
+gbounds=c(0.01,1)
 
 mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               library="glm",
@@ -27,16 +18,6 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               estimator=""){
   #browser()
   start=Sys.time()
-  # res= mclapply(seeds, function(z) run_targets_ltmle_simulation(seed=z,
-  #                                                               library=library,
-  #                                                               SL.Control=SL.Control,
-  #                                                               n_bootstrap_samples=n_bootstrap_samples,
-  #                                                               Markov_variables=Markov_variables,
-  #                                                               gbounds=gbounds,
-  #                                                               n=n_df,
-  #                                                               time=time),
-  #                                   mc.set.seed =FALSE,
-  #                                   mc.cores=n_cores)
 
   
   cl <- makeCluster(n_cores)
@@ -51,18 +32,7 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
     do.call("require", list(X)) 
   }))
 
-    #library(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","Publish","matrixStats","speedglm","parallel","caret","foreach","clustermq")))
-  
 
-  # test=run_targets_ltmle_simulation(seed=seeds[3],
-  #                                   library=library,
-  #                                   SL.Control=SL.Control,
-  #                                   n_bootstrap_samples=n_bootstrap_samples,
-  #                                   Markov_variables=Markov_variables,
-  #                                   gbounds=gbounds,
-  #                                   n=n_df,
-  #                                   time=time)
-  
   res=parLapply(cl=cl,seeds, function(z) run_targets_ltmle_simulation(seed=z,
                                                             library=library,
                                                             SL.Control=SL.Control,

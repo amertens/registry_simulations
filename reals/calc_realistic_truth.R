@@ -74,7 +74,8 @@ calc_realistic_truth <- function(A_name = "glp1", nsamp=100000, return_data=FALS
 
 average_truth <- function(truth){
   truth <- truth %>% group_by(time) %>%
-    summarise(RR=mean(RR), RD=mean(RD)) %>%
+    summarise(meanYa1=mean(Ya1), meanRR=mean(RR), meanRD=mean(RD),
+              medianYa1=median(Ya1), medianRR=median(RR), medianRD=median(RD)) %>%
     as.data.frame()
   return(truth)
 }
