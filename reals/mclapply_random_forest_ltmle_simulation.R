@@ -1,12 +1,6 @@
 
-# n_bootstrap_samples=2
-# time=2
-# n_cores=90
-# estimator="undersmoothed ridge markov"
-# seeds=seeds1[1:2]
-# library="glmnet"
-# SL.Control=list(selector="undersmooth",alpha=0)
-# gbounds=c(0.01,1)
+
+
 
 mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               library="glm",
