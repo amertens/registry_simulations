@@ -12,53 +12,24 @@ library(tidyverse)
 # load and clean results
 # -------------------------------------------------------------------------------------------------------------
 
+df <- readRDS( file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
 
-df <- bind_rows(
-        data.frame(estimator="glm",tar_read( sim_res_tab_glm)),   
-        data.frame(estimator="glmnet",tar_read( sim_res_tab_glmnet)),   
-        data.frame(estimator="glmnet_undersmooth", tar_read(sim_res_tab_glmnet_undersmooth)),   
-        #data.frame(tar_read(estimator="glmnet_markov", sim_res_tab_glmnet_markov)),   
-        #data.frame(tar_read(estimator="glmnet_undersmooth_markov", sim_res_tab_glmnet_undersmooth_markov)),   
-        data.frame(estimator="ridge", tar_read( sim_res_tab_ridge)),   
-        data.frame(estimator="ridge_undersmooth", tar_read( sim_res_tab_ridge_undersmooth)),   
-        #data.frame(tar_read(estimator="", sim_res_tab_ridge_markov)),   
-        #data.frame(tar_read(estimator="", sim_res_tab_ridge_undersmooth_markov)),   
-        data.frame(estimator="EN", tar_read(sim_res_tab_EN)),   
-        data.frame(estimator="EN_undersmooth", tar_read(sim_res_tab_EN_undersmooth)),  
-        #data.frame(tar_read(estimator="", sim_res_tab_EN_markov)), 
-        #data.frame(tar_read(estimator="", sim_res_tab_EN_undersmooth_markov)),  
-
-        data.frame(estimator="untruncated_g_glm", tar_read(sim_trunc_tab_glm)),   
-        data.frame(estimator="untruncated_g_glmnet", tar_read(sim_trunc_tab_glmnet)),   
-        data.frame(estimator="untruncated_g_glmnet_undersmooth",tar_read( sim_trunc_tab_glmnet_undersmooth)),   
-        #data.frame(tar_read(estimator="", sim_trunc_tab_glmnet_markov)),   
-        #data.frame(tar_read(estimator="", sim_trunc_tab_glmnet_undersmooth_markov)),  
-        data.frame(estimator="untruncated_g_ridge",tar_read( sim_trunc_tab_ridge)),   
-        data.frame(estimator="untruncated_g_ridge_undersmooth", tar_read(sim_trunc_tab_ridge_undersmooth)),   
-        #data.frame(tar_read(estimator="", sim_trunc_tab_ridge_markov)),   
-        #data.frame(tar_read(estimator="", sim_trunc_tab_ridge_undersmooth_markov)),   
-        data.frame(estimator="untruncated_g_EN", tar_read(sim_trunc_tab_EN)),   
-        data.frame(estimator="untruncated_g_EN_undersmooth", tar_read(sim_trunc_tab_EN_undersmooth))#,   
-        #data.frame(tar_read(estimator="", sim_trunc_tab_EN_markov)),   
-        #data.frame(tar_read(estimator="", sim_trunc_tab_EN_undersmooth_markov))
-        )
-
-
-
-df_null <- bind_rows(
-                data.frame(tar_read(estimator="", null_res_tab_glm)),  
-                data.frame(tar_read(estimator="", null_res_tab_glmnet)),   
-                data.frame(tar_read(estimator="", null_res_tab_glmnet_undersmooth)),   
-                data.frame(tar_read(estimator="", null_res_tab_glmnet_markov)),  
-                data.frame(tar_read(estimator="", null_res_tab_glmnet_undersmooth_markov)),   
-                data.frame(tar_read(estimator="", null_res_tab_ridge)),   
-                data.frame(tar_read(estimator="", null_res_tab_ridge_undersmooth)),   
-                data.frame(tar_read(estimator="", null_res_tab_ridge_markov)),   
-                data.frame(tar_read(estimator="", null_res_tab_ridge_undersmooth_markov)),   
-                data.frame(tar_read(estimator="", null_res_tab_EN)),   
-                data.frame(tar_read(estimator="", null_res_tab_EN_undersmooth)),   
-                data.frame(tar_read(estimator="", null_res_tab_EN_markov)), 
-                data.frame(tar_read(estimator="", null_res_tab_EN_undersmooth_markov)))
+# 
+# 
+# df_null <- bind_rows(
+#                 data.frame(tar_read(estimator="", null_res_tab_glm)),  
+#                 data.frame(tar_read(estimator="", null_res_tab_glmnet)),   
+#                 data.frame(tar_read(estimator="", null_res_tab_glmnet_undersmooth)),   
+#                 data.frame(tar_read(estimator="", null_res_tab_glmnet_markov)),  
+#                 data.frame(tar_read(estimator="", null_res_tab_glmnet_undersmooth_markov)),   
+#                 data.frame(tar_read(estimator="", null_res_tab_ridge)),   
+#                 data.frame(tar_read(estimator="", null_res_tab_ridge_undersmooth)),   
+#                 data.frame(tar_read(estimator="", null_res_tab_ridge_markov)),   
+#                 data.frame(tar_read(estimator="", null_res_tab_ridge_undersmooth_markov)),   
+#                 data.frame(tar_read(estimator="", null_res_tab_EN)),   
+#                 data.frame(tar_read(estimator="", null_res_tab_EN_undersmooth)),   
+#                 data.frame(tar_read(estimator="", null_res_tab_EN_markov)), 
+#                 data.frame(tar_read(estimator="", null_res_tab_EN_undersmooth_markov)))
 
 
 
@@ -111,7 +82,7 @@ plot_se <- function(res, xlimit=c(0.1,0.5), target_parameter="ATE", Title="Estim
 # -------------------------------------------------------------------------------------------------------------
 
 
-bias_boxplots_ATE <- plot_bias(df, xlimit=c(-0.02, 0.005), Title="Estimator bias boxplots- Risk difference")
+bias_boxplots_ATE <- plot_bias(df, xlimit=c(-0.02, 0.005),truth=(-0.007200), Title="Estimator bias boxplots- Risk difference")
 bias_boxplots_ATE
 ggsave(bias_boxplots_ATE,  file=paste0(here::here(),"/figures/bias_boxplots_ATE.png"), height=5, width=8)
 
