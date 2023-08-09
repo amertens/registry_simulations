@@ -1,9 +1,5 @@
 
-<<<<<<< HEAD
-#An_bootstrap_samples=2
-=======
 # n_bootstrap_samples=2
->>>>>>> b0c65959b6456eb5bb947be843abf5bc2ee4b43a
 # time=2
 # n_cores=90
 # estimator="undersmoothed ridge markov"
