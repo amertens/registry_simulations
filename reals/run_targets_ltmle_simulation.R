@@ -36,17 +36,20 @@ run_targets_ltmle_simulation <- function(library="glm",
                                                gbounds=gbounds,
                                                null_sim=FALSE,
                                                n_bootstrap_samples=0,
-                                               Markov_variables=NULL){
+                                               Markov_variables=NULL,
+                                               astarget=TRUE){
   
   if(!is.null(seed)){
     set.seed(seed)
   }
   nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
   nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
-  
-  # source("data/coefs.txt")
-  # model= get_lava_model(time_horizon = time, coefs = coefs)
-  model <- targets::tar_read_raw("lava_model")
+  if(astarget==FALSE){
+   source("data/coefs.txt")
+   model= get_lava_model(time_horizon = time, coefs = coefs)
+  }else{
+   model <- targets::tar_read_raw("lava_model")
+  }
   simulated_data = simulate_data(lava_model = model, n = n)
   simulated_data = clean_sim_data(simulated_data, N_time=time)
   
