@@ -7,7 +7,6 @@
 # library="glmnet"
 # SL.Control=list(selector="undersmooth",alpha=0)
 # gbounds=c(0.01,1)
-<<<<<<< HEAD
 # 
 # null_sim=TRUE
 # n_cores=22
@@ -16,8 +15,6 @@
 # library="glm"
 # n_df=100000
 # n_bootstrap_samples=0
-=======
->>>>>>> b0c65959b6456eb5bb947be843abf5bc2ee4b43a
 
 mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               library="glm",
@@ -32,14 +29,8 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
 
   
   cl <- makeCluster(n_cores)
-<<<<<<< HEAD
   clusterExport(cl, c("seeds","run_targets_ltmle_simulation",  "library",
                       "SL.Control","null_sim",
-=======
-  clusterExport(cl, c("seeds",
-                      "run_targets_ltmle_simulation",  "library",
-                      "SL.Control",
->>>>>>> b0c65959b6456eb5bb947be843abf5bc2ee4b43a
                       "n_bootstrap_samples",
                       "Markov_variables",
                       "gbounds",
