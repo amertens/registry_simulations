@@ -84,6 +84,7 @@ run_targets_ltmle_simulation <- function(library="glm",
     #res
 
     output=summary(res$Ltmle_fit)
-    output
+    output_iptw= summary(res$Ltmle_fit, estimator="iptw")
+    output=bind_rows(output, output_iptw)
 }
 
