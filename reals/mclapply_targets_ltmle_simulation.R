@@ -1,27 +1,4 @@
 
-<<<<<<< HEAD
-#An_bootstrap_samples=2
-=======
-# n_bootstrap_samples=2
->>>>>>> b0c65959b6456eb5bb947be843abf5bc2ee4b43a
-# time=2
-# n_cores=90
-# estimator="undersmoothed ridge markov"
-# seeds=seeds1[1:2]
-# library="glmnet"
-# SL.Control=list(selector="undersmooth",alpha=0)
-# gbounds=c(0.01,1)
-<<<<<<< HEAD
-# 
-# null_sim=TRUE
-# n_cores=22
-# estimator="glm"
-# seeds=seeds_null
-# library="glm"
-# n_df=100000
-# n_bootstrap_samples=0
-=======
->>>>>>> b0c65959b6456eb5bb947be843abf5bc2ee4b43a
 
 mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               library="glm",
@@ -36,19 +13,14 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
 
   
   cl <- makeCluster(n_cores)
-<<<<<<< HEAD
   clusterExport(cl, c("seeds","run_targets_ltmle_simulation",  "library",
                       "SL.Control","null_sim",
-=======
-  clusterExport(cl, c("seeds",
-                      "run_targets_ltmle_simulation",  "library",
-                      "SL.Control",
->>>>>>> b0c65959b6456eb5bb947be843abf5bc2ee4b43a
                       "n_bootstrap_samples",
                       "Markov_variables",
                       "gbounds",
                       "n_df",
                       "time"), envir=environment())
+  
   clusterEvalQ(cl,lapply(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","matrixStats","speedglm","parallel","caret","foreach","clustermq"), FUN = function(X) {
     do.call("require", list(X)) 
   }))
