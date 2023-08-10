@@ -34,6 +34,7 @@ run_targets_ltmle_simulation <- function(library="glm",
                                                seed=NULL,
                                                n, time=2,
                                                gbounds=gbounds,
+                                               null_sim=FALSE,
                                                n_bootstrap_samples=0,
                                                Markov_variables=NULL){
   
@@ -48,6 +49,16 @@ run_targets_ltmle_simulation <- function(library="glm",
   model <- targets::tar_read_raw("lava_model")
   simulated_data = simulate_data(lava_model = model, n = n)
   simulated_data = clean_sim_data(simulated_data, N_time=time)
+  
+  if(null_sim){
+    simulated_data = data.frame(simulated_data)
+    Y = simulated_data[,grepl("dementia",colnames(simulated_data))|grepl("Dead",colnames(simulated_data))|grepl("Censored_",colnames(simulated_data))]
+    Y <- Y[sample(nrow(Y)),]
+    simulated_data = simulated_data[,!(grepl("dementia",colnames(simulated_data))|grepl("Dead",colnames(simulated_data))|grepl("Censored_",colnames(simulated_data)))]
+    simulated_data<- bind_cols(simulated_data, Y)
+    simulated_data = as.data.table(simulated_data)
+  }
+  
      
     # # #set up analysis:
      simulated_data_list <- get_simulated_data_list(simulated_data = simulated_data, time_horizon=time)
