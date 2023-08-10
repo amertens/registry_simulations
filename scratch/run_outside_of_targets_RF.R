@@ -1,6 +1,12 @@
 
 rm(list=ls())
 gc()
+setwd("./registry_simulations")
+file.sources = paste0("./functions/",list.files(path="./functions/",pattern="*.R"))
+sapply(file.sources,source,.GlobalEnv)
+##file.sources = paste0("./reals/",list.files(path="./reals/",pattern="*.R"))
+##sapply(file.sources,source,.GlobalEnv)
+source("./reals/run_targets_ltmle_simulation.R")
 shh <-try(setwd("C:/Users/andre/Documents/jici/registry_simulations/"),silent = TRUE)
 shh <-try(setwd("~/research/Methods/registry_simulations/"),silent = TRUE)
 library(ranger)
@@ -100,7 +106,8 @@ for(i in 1:seeds_rf){
                                                                         Markov_variables=Markov_variables,
                                                                         gbounds=c(0.01,1),
                                                                         n=100000,
-                                                                        time=10)})
+                                                                        time=10,
+                                                  astarget=FALSE)})
     res$estimator="random forest markov"
     rf_res_list[[i]] <- res
     saveRDS(rf_res_list,  file=paste0(here::here(),"/data/sim_results/sim_res_RF.RDS"))
