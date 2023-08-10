@@ -1,7 +1,7 @@
 
 rm(list=ls())
 gc()
-setwd("./registry_simulations")
+#setwd("./registry_simulations")
 file.sources = paste0("./functions/",list.files(path="./functions/",pattern="*.R"))
 sapply(file.sources,source,.GlobalEnv)
 ##file.sources = paste0("./reals/",list.files(path="./reals/",pattern="*.R"))
