@@ -39,6 +39,8 @@ saveRDS(res, file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
 
 
 truth=tar_read(truth)
+saveRDS(truth, file=paste0(here::here(),"/data/sim_results/truth.rds"))
+
 sim_perf_tab = calc_sim_performance(
   res=res,
   truth=tar_read(truth),
@@ -59,57 +61,36 @@ sim_perf_tab2 %>% filter(N_reps<500) %>% subset(., select=c(estimator,N_reps))
 colnames(sim_perf_tab)
 
 
-res <- bind_rows( 
-  sim_perf_tab %>% arrange(abs_bias_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
-  sim_perf_tab %>% arrange(bias_se_ratio_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
-  #sim_perf_tab %>% arrange(coverage_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
-  sim_perf_tab %>% arrange(O_coverage_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
-  
-sim_perf_tab %>% arrange(abs_bias_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
-sim_perf_tab %>% arrange(bias_se_ratio_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
-#sim_perf_tab %>% arrange(coverage_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
- sim_perf_tab %>% arrange(O_coverage_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
-
-sim_perf_tab %>% arrange(abs_log_bias_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
-sim_perf_tab %>% arrange(bias_se_ratio_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
-#sim_perf_tab %>% arrange(coverage_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
-sim_perf_tab %>% arrange(O_coverage_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
-
-sim_perf_tab2 %>% arrange(abs_bias_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
-sim_perf_tab2 %>% arrange(bias_se_ratio_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
-#sim_perf_tab2 %>% arrange(coverage_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
-sim_perf_tab2 %>% arrange(O_coverage_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
-
-sim_perf_tab2 %>% arrange(abs_bias_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
-sim_perf_tab2 %>% arrange(bias_se_ratio_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
-#sim_perf_tab2 %>% arrange(coverage_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
-sim_perf_tab2 %>% arrange(O_coverage_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
-
-sim_perf_tab2 %>% arrange(abs_log_bias_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
-sim_perf_tab2 %>% arrange(bias_se_ratio_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
-#sim_perf_tab2 %>% arrange(coverage_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
-sim_perf_tab2 %>% arrange(O_coverage_RR) %>% slice(1:5) %>% subset(., select=c(estimator))
-)
-
-table(res$estimator)
-
-ridge_undersmooth    
-ridge_undersmooth_markov 
-ridge 
-ridge_undersmooth_untruncated 
-ridge_undersmooth_markov_untruncated
-ridge_undersmooth_untruncated
-
-glmnet_markov 
-EN_markov
-EN_markov_untruncated
-ridge_undersmooth_markov 
-ridge_undersmooth             
-
-# truth_rep=tar_read(truth_rep) %>% filter(time==10)
+# res <- bind_rows( 
+#   sim_perf_tab %>% arrange(abs_bias_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
+#   sim_perf_tab %>% arrange(bias_se_ratio_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
+#   #sim_perf_tab %>% arrange(coverage_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
+#   sim_perf_tab %>% arrange(O_coverage_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
+#   
+# sim_perf_tab %>% arrange(abs_bias_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# sim_perf_tab %>% arrange(bias_se_ratio_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# #sim_perf_tab %>% arrange(coverage_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
+#  sim_perf_tab %>% arrange(O_coverage_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
 # 
-# truth <- truth_rep %>% group_by(time) %>%
-#   summarise(meanRR=mean(RR), meanRD=mean(RD), medianRR=median(RR), medianRD=median(RD)) %>%
-#   as.data.frame()
-# truth
-
+# sim_perf_tab %>% arrange(abs_log_bias_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# sim_perf_tab %>% arrange(bias_se_ratio_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# #sim_perf_tab %>% arrange(coverage_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# sim_perf_tab %>% arrange(O_coverage_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# 
+# sim_perf_tab2 %>% arrange(abs_bias_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# sim_perf_tab2 %>% arrange(bias_se_ratio_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# #sim_perf_tab2 %>% arrange(coverage_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# sim_perf_tab2 %>% arrange(O_coverage_Ya1) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# 
+# sim_perf_tab2 %>% arrange(abs_bias_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# sim_perf_tab2 %>% arrange(bias_se_ratio_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# #sim_perf_tab2 %>% arrange(coverage_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# sim_perf_tab2 %>% arrange(O_coverage_RD) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# 
+# sim_perf_tab2 %>% arrange(abs_log_bias_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# sim_perf_tab2 %>% arrange(bias_se_ratio_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# #sim_perf_tab2 %>% arrange(coverage_RR) %>% slice(1:5) %>% subset(., select=c(estimator)),
+# sim_perf_tab2 %>% arrange(O_coverage_RR) %>% slice(1:5) %>% subset(., select=c(estimator))
+# )
+# 
+# table(res$estimator)
