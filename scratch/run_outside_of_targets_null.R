@@ -36,7 +36,11 @@ Markov_variables=c("heart.failure","renal.disease","chronic.pulmonary.disease", 
 set.seed(12345)
 seeds_null=sample(0:1000000, 500, replace=FALSE)
 
+<<<<<<< HEAD
 # system.time({test= mclapply_targets_ltmle_simulation(null_sim=TRUE, time=2, n_cores=96, estimator="glm",seeds=seeds_null[1:2], library="glm")})
+=======
+# system.time({test= mclapply_targets_ltmle_simulation(null_sim=TRUE, time=2, n_cores=22, estimator="glm",seeds=seeds_null[1:2], library="glm")})
+>>>>>>> 36afa53ed098c22d959bbdf0c0e99a70d5ad92d7
 # test
 # 
 # 
