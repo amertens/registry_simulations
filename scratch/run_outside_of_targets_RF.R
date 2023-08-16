@@ -51,14 +51,14 @@ seeds_rf=c(seeds1, seeds2, seeds3)
 # Custom RF function
 #-------------------------------------------------------
 
-SL.ranger.custom<-function (Y, X, newX, family, obsWeights, num.trees = 100, mtry = floor(sqrt(ncol(X))), 
+SL.ranger.custom<-function (Y, X, newX, family, obsWeights, num.trees = 10, mtry = floor(sqrt(ncol(X))), 
                             write.forest = TRUE, probability = family$family == "binomial", 
                             min.node.size = ifelse(family$family == "gaussian", 
                                                    5, 1), replace = TRUE, sample.fraction = ifelse(replace, 
                                                                                                    1, 0.632), 
                             #number of cores to use:
-                            num.threads = 10, 
-                            verbose = T, ...) 
+                            num.threads = 90, 
+                            verbose = F, ...) 
 {
   SuperLearner:::.SL.require("ranger")
   if (family$family == "binomial") {
@@ -91,7 +91,7 @@ rf_res_list <- vector("list", length(seeds_rf))
 #-------------------------------------------------------
 
 
-for(i in 300:seeds_rf){
+for(i in 1:seeds_rf){
     
   cat(i,"\n")
     res=NULL
