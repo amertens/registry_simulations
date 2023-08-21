@@ -109,3 +109,21 @@ for(i in 1:seeds_rf){
 
 
 
+for(i in 1:seeds_rf){
+  
+  cat(i,"\n")
+  res=NULL
+  system.time({res=run_targets_ltmle_simulation(seed=seeds_rf[i], library="SL.ranger.custom",
+                                                SL.Control=NULL,
+                                                n_bootstrap_samples=0,
+                                                Markov_variables=Markov_variables,
+                                                gbounds=c(0.01,1),
+                                                n=100000,
+                                                time=10)})
+  res$estimator="random forest markov"
+  rf_res_list[[i]] <- res
+  saveRDS(rf_res_list,  file=paste0(here::here(),"/data/sim_results/sim_res_RF.RDS"))
+}
+
+
+
