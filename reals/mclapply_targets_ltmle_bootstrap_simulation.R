@@ -17,6 +17,7 @@ mclapply_targets_ltmle_bootstrap_simulation <- function(seeds, n_df=100000, n_co
                                               Markov_variables=NULL,
                                               estimator=""){
   #browser()
+  cat(paste0(estimator, " running\n"))
   start=Sys.time()
 
   
