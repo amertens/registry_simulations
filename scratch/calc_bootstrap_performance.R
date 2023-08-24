@@ -22,7 +22,9 @@ ic_res <- read.csv(file=paste0(here::here(),"/data/sim_perf_500reps.csv"))
 boot1 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot1.RDS")) %>% mutate(boot_run=1)
 boot2 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot2.RDS")) %>% mutate(boot_run=2)
 boot3 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot3.RDS")) %>% mutate(boot_run=3)
-boot_res <- bind_rows(boot1, boot2, boot3)
+boot4 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot4.RDS")) %>% mutate(boot_run=4)
+boot5 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot4.RDS")) %>% mutate(boot_run=5)
+boot_res <- bind_rows(boot1, boot2, boot3, boot4, boot5)
 bootCIs <- boot_res %>% group_by(Target_parameter, sim_iter, boot_run) %>%
   summarise(
     boot.CI1=quantile(estimate,.025),
