@@ -8,22 +8,13 @@ Andrew Mertens
 
 - Iterations: 500
 
-- True $Y_{\bar{A}=1}$: `R truth[10,2]`
+- True $Y_{\bar{A}=1}$: 0.0082798
 
-- True RD: `R truth[10,4]`
+- True RD: -0.0071862
 
-- True RR: `R truth[10,3]`
+- True RR: 0.5356286
 
 ## Simulation results
-
-    ##  [1] "X"                      "Estimator"              "estimator"             
-    ##  [4] "N_reps"                 "abs_bias_Ya1"           "estimator_variance_Ya1"
-    ##  [7] "mean_variance_Ya1"      "bias_se_ratio_Ya1"      "coverage_Ya1"          
-    ## [10] "O_coverage_Ya1"         "abs_bias_RD"            "estimator_variance_RD" 
-    ## [13] "mean_variance_RD"       "bias_se_ratio_RD"       "coverage_RD"           
-    ## [16] "O_coverage_RD"          "abs_log_bias_RR"        "estimator_variance_RR" 
-    ## [19] "mean_variance_RR"       "bias_se_ratio_RR"       "coverage_RR"           
-    ## [22] "O_coverage_RR"
 
 #### Comparison of IPTW and TMLE estimators
 
@@ -45,46 +36,33 @@ nodes in $g$ and $Q$ estimation.
 
 RF= random forest
 
-| Estimator | Algorithm | Y\_{A=1} bias | Y\_{A=1} variance | Y\_{A=1} bias SE ratio | Y\_{A=1} oracle 95% coverage | RD bias | RD variance | RD bias SE ratio | RD oracle 95% coverage | RR log-transformed bias | RR variance | RR bias SE ratio | RR oracle 95% coverage |
-|:----------|:----------|--------------:|------------------:|-----------------------:|-----------------------------:|--------:|------------:|-----------------:|-----------------------:|------------------------:|------------:|-----------------:|-----------------------:|
-| tmle      | EN        |       0.00182 |                 0 |                1.15564 |                         88.0 | 0.00243 |           0 |          1.45972 |                   74.6 |                 0.29780 |     0.05324 |          1.29068 |                   83.8 |
-| tmle      | glm       |       0.00226 |                 0 |                1.09648 |                         91.8 | 0.00207 |           0 |          0.96961 |                   95.8 |                 0.22751 |     0.04808 |          1.03758 |                   95.4 |
-| tmle      | glmnet    |       0.00181 |                 0 |                1.16584 |                         88.0 | 0.00244 |           0 |          1.48472 |                   74.6 |                 0.29728 |     0.05170 |          1.30745 |                   83.4 |
-| tmle      | RF        |       0.00319 |                 0 |                2.96372 |                         86.4 | 0.00277 |           0 |          2.32506 |                   92.0 |                 0.28096 |     0.01065 |          2.72232 |                   92.2 |
-| tmle      | ridge     |       0.00189 |                 0 |                1.00184 |                         84.4 | 0.00253 |           0 |          1.28295 |                   69.2 |                 0.31387 |     0.08017 |          1.10851 |                   80.2 |
+| Estimator | Algorithm Alpha | Y\_{A=1} bias | Y\_{A=1} variance | Y\_{A=1} bias SE ratio | Y\_{A=1} oracle 95% coverage | RD bias | RD variance | RD bias SE ratio | RD oracle 95% coverage | RR log-transformed bias | RR variance | RR bias SE ratio | RR oracle 95% coverage |
+|:----------|:----------------|--------------:|------------------:|-----------------------:|-----------------------------:|--------:|------------:|-----------------:|-----------------------:|------------------------:|------------:|-----------------:|-----------------------:|
+| tmle      | Elastic Net     |       0.00182 |                 0 |                1.15564 |                         88.0 | 0.00243 |           0 |          1.45972 |                   74.6 |                 0.29780 |     0.05324 |          1.29068 |                   83.8 |
+| tmle      | NA              |       0.00226 |                 0 |                1.09648 |                         91.8 | 0.00207 |           0 |          0.96961 |                   95.8 |                 0.22751 |     0.04808 |          1.03758 |                   95.4 |
+| tmle      | Lasso           |       0.00181 |                 0 |                1.16584 |                         88.0 | 0.00244 |           0 |          1.48472 |                   74.6 |                 0.29728 |     0.05170 |          1.30745 |                   83.4 |
+| tmle      | NA              |       0.00319 |                 0 |                2.96372 |                         86.4 | 0.00277 |           0 |          2.32506 |                   92.0 |                 0.28096 |     0.01065 |          2.72232 |                   92.2 |
+| tmle      | Ridge           |       0.00189 |                 0 |                1.00184 |                         84.4 | 0.00253 |           0 |          1.28295 |                   69.2 |                 0.31387 |     0.08017 |          1.10851 |                   80.2 |
 
 Result: Ridge performs best
 
 #### Comparison of penalized regression setup
 
-Define different options
+All from Ridge models
 
-All from Lasso models
+<!-- = $\lambda$ selected at the minimum cross-validated SE -->
+<!-- penalized regressions with $\lambda$ selected at the minimum cross-validated SE, truncation of $g$ at \< 0.01, and using all prior L nodes in $g$ and $Q$ estimation. -->
 
-= $\lambda$ selected at the minimum cross-validated SE
-
-penalized regressions with $\lambda$ selected at the minimum
-cross-validated SE, truncation of $g$ at \< 0.01, and using all prior L
-nodes in $g$ and $Q$ estimation.
-
-| Estimator | Algorithm                            | Y\_{A=1} bias | Y\_{A=1} variance | Y\_{A=1} bias SE ratio | Y\_{A=1} oracle 95% coverage | RD bias | RD variance | RD bias SE ratio | RD oracle 95% coverage | RR log-transformed bias | RR variance | RR bias SE ratio | RR oracle 95% coverage |
-|:----------|:-------------------------------------|--------------:|------------------:|-----------------------:|-----------------------------:|--------:|------------:|-----------------:|-----------------------:|------------------------:|------------:|-----------------:|-----------------------:|
-| iptw      | ridge                                |       0.00324 |             0e+00 |                1.70973 |                     70.80000 | 0.00426 |       0e+00 |          2.14167 |               55.40000 |                 0.16829 |     0.02933 |          0.98258 |               93.40000 |
-| iptw      | ridge_markov                         |       0.00324 |             0e+00 |                1.71849 |                     70.80000 | 0.00426 |       0e+00 |          2.15277 |               55.40000 |                 0.16829 |     0.02903 |          0.98769 |               93.40000 |
-| iptw      | ridge_markov_untruncated             |       0.00324 |             0e+00 |                1.56001 |                     70.80000 | 0.00426 |       0e+00 |          1.97011 |               55.40000 |                 0.16829 |     0.03501 |          0.89944 |               93.40000 |
-| iptw      | ridge_undersmooth                    |       0.00324 |             1e-05 |                1.42939 |                     70.80000 | 0.00426 |       1e-05 |          1.86101 |               55.40000 |                 0.16829 |     0.04117 |          0.82938 |               93.40000 |
-| iptw      | ridge_undersmooth_markov             |       0.00324 |             1e-05 |                1.43083 |                     70.80000 | 0.00426 |       1e-05 |          1.86325 |               55.40000 |                 0.16829 |     0.04106 |          0.83052 |               93.40000 |
-| iptw      | ridge_undersmooth_markov_untruncated |       0.00324 |             1e-05 |                0.96640 |                     70.94188 | 0.00426 |       1e-05 |          1.26567 |               55.31062 |                 0.16859 |     0.08796 |          0.56843 |               93.38677 |
-| iptw      | ridge_undersmooth_untruncated        |       0.00323 |             1e-05 |                0.94901 |                     70.74830 | 0.00427 |       1e-05 |          1.24725 |               55.32880 |                 0.16717 |     0.09098 |          0.55423 |               93.42404 |
-| iptw      | ridge_untruncated                    |       0.00324 |             0e+00 |                1.52670 |                     70.80000 | 0.00426 |       0e+00 |          1.93036 |               55.40000 |                 0.16829 |     0.03654 |          0.88037 |               93.40000 |
-| tmle      | ridge                                |       0.00189 |             0e+00 |                1.00184 |                     84.40000 | 0.00253 |       0e+00 |          1.28295 |               69.20000 |                 0.31387 |     0.08017 |          1.10851 |               80.20000 |
-| tmle      | ridge_markov                         |       0.00188 |             0e+00 |                1.00531 |                     84.20000 | 0.00249 |       0e+00 |          1.26925 |               70.60000 |                 0.31116 |     0.07926 |          1.10523 |               80.60000 |
-| tmle      | ridge_markov_untruncated             |       0.00185 |             0e+00 |                0.89516 |                     88.60000 | 0.00240 |       0e+00 |          1.11740 |               77.00000 |                 0.29864 |     0.08773 |          1.00822 |               84.60000 |
-| tmle      | ridge_undersmooth                    |       0.00186 |             1e-05 |                0.83031 |                     94.60000 | 0.00185 |       1e-05 |          0.81642 |               96.20000 |                 0.20352 |     0.06227 |          0.81556 |               95.20000 |
-| tmle      | ridge_undersmooth_markov             |       0.00194 |             1e-05 |                0.86738 |                     93.60000 | 0.00186 |       1e-05 |          0.82423 |               96.20000 |                 0.20619 |     0.05989 |          0.84253 |               96.00000 |
-| tmle      | ridge_undersmooth_markov_untruncated |       0.00236 |             1e-05 |                0.71299 |                     92.98597 | 0.00226 |       1e-05 |          0.68211 |               96.19238 |                 0.24777 |     0.10804 |          0.75380 |               94.78958 |
-| tmle      | ridge_undersmooth_untruncated        |       0.00231 |             1e-05 |                0.68792 |                     93.19728 | 0.00222 |       1e-05 |          0.66002 |               95.91837 |                 0.23960 |     0.11118 |          0.71859 |               95.46485 |
-| tmle      | ridge_untruncated                    |       0.00185 |             0e+00 |                0.87856 |                     89.60000 | 0.00242 |       0e+00 |          1.10716 |               77.40000 |                 0.30002 |     0.09028 |          0.99853 |               84.80000 |
+| Estimator | Truncation  | Y\_{A=1} bias | Y\_{A=1} variance | Y\_{A=1} bias SE ratio | Y\_{A=1} oracle 95% coverage | RD bias | RD variance | RD bias SE ratio | RD oracle 95% coverage | RR log-transformed bias | RR variance | RR bias SE ratio | RR oracle 95% coverage |
+|:----------|:------------|--------------:|------------------:|-----------------------:|-----------------------------:|--------:|------------:|-----------------:|-----------------------:|------------------------:|------------:|-----------------:|-----------------------:|
+| tmle      | g \< 0.01   |       0.00189 |             0e+00 |                1.00184 |                     84.40000 | 0.00253 |       0e+00 |          1.28295 |               69.20000 |                 0.31387 |     0.08017 |          1.10851 |               80.20000 |
+| tmle      | g \< 0.01   |       0.00188 |             0e+00 |                1.00531 |                     84.20000 | 0.00249 |       0e+00 |          1.26925 |               70.60000 |                 0.31116 |     0.07926 |          1.10523 |               80.60000 |
+| tmle      | Untruncated |       0.00185 |             0e+00 |                0.89516 |                     88.60000 | 0.00240 |       0e+00 |          1.11740 |               77.00000 |                 0.29864 |     0.08773 |          1.00822 |               84.60000 |
+| tmle      | g \< 0.01   |       0.00186 |             1e-05 |                0.83031 |                     94.60000 | 0.00185 |       1e-05 |          0.81642 |               96.20000 |                 0.20352 |     0.06227 |          0.81556 |               95.20000 |
+| tmle      | g \< 0.01   |       0.00194 |             1e-05 |                0.86738 |                     93.60000 | 0.00186 |       1e-05 |          0.82423 |               96.20000 |                 0.20619 |     0.05989 |          0.84253 |               96.00000 |
+| tmle      | Untruncated |       0.00236 |             1e-05 |                0.71299 |                     92.98597 | 0.00226 |       1e-05 |          0.68211 |               96.19238 |                 0.24777 |     0.10804 |          0.75380 |               94.78958 |
+| tmle      | Untruncated |       0.00231 |             1e-05 |                0.68792 |                     93.19728 | 0.00222 |       1e-05 |          0.66002 |               95.91837 |                 0.23960 |     0.11118 |          0.71859 |               95.46485 |
+| tmle      | Untruncated |       0.00185 |             0e+00 |                0.87856 |                     89.60000 | 0.00242 |       0e+00 |          1.10716 |               77.40000 |                 0.30002 |     0.09028 |          0.99853 |               84.80000 |
 
 Result: Undersmoothed Ridge with default truncation and markov process
 for L works best

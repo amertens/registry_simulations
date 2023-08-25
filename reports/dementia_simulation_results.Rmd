@@ -5,7 +5,6 @@ author: "Andrew Mertens"
 output: github_document
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
@@ -33,23 +32,22 @@ truth<- readRDS(file=paste0(here::here(),"/data/sim_results/truth.rds"))
 
 ## Simulation setup
 
-
 -   N: 100,000
 
 -   Iterations: 500
 
--   True $Y_{\bar{A}=1}$: `R truth[10,2]`
+-   True $Y_{\bar{A}=1}$: `r truth[10,2]`
 
--   True RD: `R truth[10,4]`
+-   True RD: `r truth[10,4]`
 
--   True RR: `R truth[10,3]`
+-   True RR: `r truth[10,3]`
 
 ## Simulation results
 
 ```{r,  echo=F}
 
 ic_res <- read.csv(file=paste0(here::here(),"/data/sim_perf_500reps.csv"))
-colnames(ic_res)
+#colnames(ic_res)
 ic_res <- ic_res %>% subset(., select = -c(N_reps))
 ic_res <- ic_res %>% rename(Algorithm=estimator,
                             `Y_{A=1} bias`=abs_bias_Ya1,
@@ -75,7 +73,7 @@ ic_res <- ic_res %>% rename(Algorithm=estimator,
 
 #### Comparison of IPTW and TMLE estimators
 
-Both from Lasso models with $\lambda$ selected at the minimum cross-validated SE
+Both from Lasso models with $\lambda$ selected at the minimum cross-validated SE. All tables below are sorted by the RD bias.
 
 ```{r,  echo=F}
 
@@ -84,7 +82,7 @@ iptw_res <- ic_res %>% filter(Algorithm=="glmnet") %>%
                             `Y_{A=1} bias`,
                             `Y_{A=1} variance`, `Y_{A=1} bias SE ratio`, `Y_{A=1} oracle 95% coverage`,
                             `RD bias`,`RD variance`,`RD bias SE ratio`, `RD oracle 95% coverage`,
-                            `RR log-transformed bias`,`RR variance`,`RR bias SE ratio`, `RR oracle 95% coverage`))
+                            `RR log-transformed bias`,`RR variance`,`RR bias SE ratio`, `RR oracle 95% coverage`)) %>% arrange(`RD bias`)
 
 
 knitr::kable(iptw_res, digits =5)
@@ -95,20 +93,23 @@ Result: TMLE performs better
 
 #### Comparison of algorithms
 
-All penalized regressions with $\lambda$ selected at the minimum cross-validated SE, truncation of $g$ at < 0.01, and using all prior L nodes in $g$ and $Q$ estimation.
+All penalized regressions with $\lambda$ selected at the minimum cross-validated SE, truncation of $g$ at \< 0.01, and using all prior L nodes in $g$ and $Q$ estimation.
 
 RF= random forest
-
 
 ```{r,  echo=F}
 
 algo_res <- ic_res %>% filter(Estimator=="tmle") %>%
   filter(!grepl("_untruncated", Algorithm), !grepl("_markov", Algorithm), !grepl("_undersmooth", Algorithm)) %>%
-  subset(., select = c(Estimator, Algorithm,
+  mutate( `Algorithm Alpha`=case_when(grepl("EN",Algorithm)~"Elastic Net",
+                  grepl("ridge",Algorithm)~"Ridge",
+                  grepl("glmnet",Algorithm)~"Lasso",
+                  )) %>%
+  subset(., select = c(Estimator, `Algorithm Alpha`,
                             `Y_{A=1} bias`,
                             `Y_{A=1} variance`, `Y_{A=1} bias SE ratio`, `Y_{A=1} oracle 95% coverage`,
                             `RD bias`,`RD variance`,`RD bias SE ratio`, `RD oracle 95% coverage`,
-                            `RR log-transformed bias`,`RR variance`,`RR bias SE ratio`, `RR oracle 95% coverage`))
+                            `RR log-transformed bias`,`RR variance`,`RR bias SE ratio`, `RR oracle 95% coverage`)) %>% arrange(`RD bias`)
 
 knitr::kable(algo_res, digits =5)
 
@@ -118,30 +119,33 @@ Result: Ridge performs best
 
 #### Comparison of penalized regression setup
 
-Define different options
+All from Ridge models
 
-All from Lasso models 
+<!-- = $\lambda$ selected at the minimum cross-validated SE -->
 
- = $\lambda$ selected at the minimum cross-validated SE
+<!-- penalized regressions with $\lambda$ selected at the minimum cross-validated SE, truncation of $g$ at \< 0.01, and using all prior L nodes in $g$ and $Q$ estimation. -->
 
-
-
- penalized regressions with $\lambda$ selected at the minimum cross-validated SE, truncation of $g$ at < 0.01, and using all prior L nodes in $g$ and $Q$ estimation.
- 
 ```{r,  echo=F}
 
-sim_res <- ic_res %>% filter(grepl("ridge", Algorithm)) %>%
+ic_res<-ic_res %>%
+  mutate(
+  Undersmoothed=ifelse(grepl("_undersmooth",Algorithm),"Undersmoothed Lambda","Min SE Lambda"),
+  Truncation=ifelse(grepl("_untruncated",Algorithm),"Untruncated","g < 0.01"),
+  Markov=ifelse(grepl("_markov",Algorithm),"Markov L","All prior L"),
+  
+  )
+
+sim_res <- ic_res %>% filter(grepl("ridge", Algorithm)) %>% filter(Estimator=="tmle") %>%
   #filter(!grepl("_untruncated", Algorithm), !grepl("_markov", Algorithm), !grepl("_undersmooth", Algorithm)) %>%
-  subset(., select = c(Estimator, Algorithm,
+  subset(., select = c(Undersmoothed, Truncation, Markov, 
                             `Y_{A=1} bias`,
                             `Y_{A=1} variance`, `Y_{A=1} bias SE ratio`, `Y_{A=1} oracle 95% coverage`,
                             `RD bias`,`RD variance`,`RD bias SE ratio`, `RD oracle 95% coverage`,
-                            `RR log-transformed bias`,`RR variance`,`RR bias SE ratio`, `RR oracle 95% coverage`))
+                            `RR log-transformed bias`,`RR variance`,`RR bias SE ratio`, `RR oracle 95% coverage`)) %>% arrange(`RD bias`)
 
 knitr::kable(sim_res, digits =5)
 
 ```
-
 
 Result: Undersmoothed Ridge with default truncation and markov process for L works best
 
@@ -175,12 +179,11 @@ knitr::kable(boot_res_tab)
 
 ```
 
-Results: Bootstrap has better coverage for RR and especially RD, but slightly worse that for the mean of  $Y_{A=1}$
+Results: Bootstrap has better coverage for RR and especially RD, but slightly worse that for the mean of $Y_{A=1}$
 
 ## Boxplots
 
-- Make two boxplots of bootstrap vs IC
-
+-   Make two boxplots of bootstrap vs IC
 
 ## Updated needed in the registry analysis
 
