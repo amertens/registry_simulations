@@ -37,8 +37,7 @@ calc_sim_performance <- function(res, truth, time=10, mean=TRUE){
     )
     resRD <- res %>% filter(Target_parameter=="ATE") %>%
     group_by(Estimator, estimator) %>% 
-    summarise(N_reps=n(),
-              abs_bias_RD=mean(abs(estimate-trueRD)),
+    summarise(abs_bias_RD=mean(abs(estimate-trueRD)),
               estimator_variance_RD=mean(((estimate)-mean((estimate)))^2),
               mean_variance_RD=mean((std.err)^2),
               bias_se_ratio_RD=abs_bias_RD/sqrt(mean_variance_RD),

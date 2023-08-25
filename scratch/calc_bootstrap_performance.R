@@ -23,7 +23,7 @@ boot1 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmoo
 boot2 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot2.RDS")) %>% mutate(boot_run=2)
 boot3 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot3.RDS")) %>% mutate(boot_run=3)
 boot4 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot4.RDS")) %>% mutate(boot_run=4)
-boot5 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot4.RDS")) %>% mutate(boot_run=5)
+boot5 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot5.RDS")) %>% mutate(boot_run=5)
 boot_res <- bind_rows(boot1, boot2, boot3, boot4, boot5)
 bootCIs <- boot_res %>% group_by(Target_parameter, sim_iter, boot_run) %>%
   summarise(
@@ -42,3 +42,6 @@ res_tab <- data.frame(`Variance estimator`=c("Influence curve","Bootstrap","TMLE
                       `RD Coverage`=c(ic_res$coverage_RD, boot_res_RD, 100),
                       `RR Coverage`=c(ic_res$coverage_RR, boot_res_RR, 100))
 knitr::kable(res_tab)
+
+#Make two boxplots of bootstrap vs IC
+bootCIs
