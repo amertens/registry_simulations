@@ -200,7 +200,7 @@ For the coverage of the risk difference (Red line is true RD)
 
 ```{r}
 
- ic_plot_df <- res %>% filter(Estimator=="tmle",Target_parameter=="ATE",grepl("ridge_undersmooth_markov", estimator))
+ ic_plot_df <- res %>% filter(Estimator=="tmle",Target_parameter=="ATE",grepl("ridge_undersmooth_markov", estimator),!grepl("untrunc", estimator))
 
  ggplot(ic_plot_df %>% arrange(lower) %>%
           mutate(iteration=row_number()), aes(x=iteration)) +
