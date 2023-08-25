@@ -14,35 +14,44 @@ Andrew Mertens
 
 - True RR: 0.5356286
 
+## Calculate simulation performance
+
+    ## `summarise()` has grouped output by 'Estimator'. You can override using the
+    ## `.groups` argument.
+    ## `summarise()` has grouped output by 'Estimator'. You can override using the
+    ## `.groups` argument.
+    ## `summarise()` has grouped output by 'Estimator'. You can override using the
+    ## `.groups` argument.
+
 ## Simulation results
 
 #### Comparison of IPTW and TMLE estimators
 
 Both from Lasso models with $\lambda$ selected at the minimum
-cross-validated SE
+cross-validated SE. All tables below are sorted by the RD bias.
 
 | Estimator | Algorithm | Y\_{A=1} bias | Y\_{A=1} variance | Y\_{A=1} bias SE ratio | Y\_{A=1} oracle 95% coverage | RD bias | RD variance | RD bias SE ratio | RD oracle 95% coverage | RR log-transformed bias | RR variance | RR bias SE ratio | RR oracle 95% coverage |
 |:----------|:----------|--------------:|------------------:|-----------------------:|-----------------------------:|--------:|------------:|-----------------:|-----------------------:|------------------------:|------------:|-----------------:|-----------------------:|
+| tmle      | glmnet    |       0.00184 |                 0 |                1.19893 |                         86.9 | 0.00249 |           0 |          1.52618 |                   74.0 |                 0.30534 |     0.05190 |          1.34024 |                   83.1 |
 | iptw      | glmnet    |       0.00324 |                 0 |                2.08002 |                         70.8 | 0.00426 |           0 |          2.57546 |                   55.4 |                 0.16829 |     0.01981 |          1.19573 |                   93.4 |
-| tmle      | glmnet    |       0.00181 |                 0 |                1.16584 |                         88.0 | 0.00244 |           0 |          1.48472 |                   74.6 |                 0.29728 |     0.05170 |          1.30745 |                   83.4 |
 
 Result: TMLE performs better
 
 #### Comparison of algorithms
 
-All penalized regressions with $\lambda$ selected at the minimum
-cross-validated SE, truncation of $g$ at \< 0.01, and using all prior L
-nodes in $g$ and $Q$ estimation.
+All penalized regressions with $\lambda$ selected with undersmoothing,
+truncation of $g$ at \< 0.01, and using the t-1 prior L nodes in $g$ and
+$Q$ estimation.
 
 RF= random forest
 
-| Estimator | Algorithm Alpha | Y\_{A=1} bias | Y\_{A=1} variance | Y\_{A=1} bias SE ratio | Y\_{A=1} oracle 95% coverage | RD bias | RD variance | RD bias SE ratio | RD oracle 95% coverage | RR log-transformed bias | RR variance | RR bias SE ratio | RR oracle 95% coverage |
-|:----------|:----------------|--------------:|------------------:|-----------------------:|-----------------------------:|--------:|------------:|-----------------:|-----------------------:|------------------------:|------------:|-----------------:|-----------------------:|
-| tmle      | Elastic Net     |       0.00182 |                 0 |                1.15564 |                         88.0 | 0.00243 |           0 |          1.45972 |                   74.6 |                 0.29780 |     0.05324 |          1.29068 |                   83.8 |
-| tmle      | NA              |       0.00226 |                 0 |                1.09648 |                         91.8 | 0.00207 |           0 |          0.96961 |                   95.8 |                 0.22751 |     0.04808 |          1.03758 |                   95.4 |
-| tmle      | Lasso           |       0.00181 |                 0 |                1.16584 |                         88.0 | 0.00244 |           0 |          1.48472 |                   74.6 |                 0.29728 |     0.05170 |          1.30745 |                   83.4 |
-| tmle      | NA              |       0.00319 |                 0 |                2.96372 |                         86.4 | 0.00277 |           0 |          2.32506 |                   92.0 |                 0.28096 |     0.01065 |          2.72232 |                   92.2 |
-| tmle      | Ridge           |       0.00189 |                 0 |                1.00184 |                         84.4 | 0.00253 |           0 |          1.28295 |                   69.2 |                 0.31387 |     0.08017 |          1.10851 |                   80.2 |
+| Estimator | Algorithm                 | Algorithm Alpha | Y\_{A=1} bias | Y\_{A=1} variance | Y\_{A=1} bias SE ratio | Y\_{A=1} oracle 95% coverage | RD bias | RD variance | RD bias SE ratio | RD oracle 95% coverage | RR log-transformed bias | RR variance | RR bias SE ratio | RR oracle 95% coverage |
+|:----------|:--------------------------|:----------------|--------------:|------------------:|-----------------------:|-----------------------------:|--------:|------------:|-----------------:|-----------------------:|------------------------:|------------:|-----------------:|-----------------------:|
+| tmle      | ridge_undersmooth_markov  | Ridge           |       0.00188 |                 0 |                0.84774 |                         93.3 | 0.00186 |       1e-05 |          0.82992 |                   96.1 |                 0.20412 |     0.06025 |          0.83158 |                   96.0 |
+| tmle      | EN_undersmooth_markov     | Elastic Net     |       0.00203 |                 0 |                1.01708 |                         92.7 | 0.00198 |       0e+00 |          0.97798 |                   95.9 |                 0.21796 |     0.04768 |          0.99822 |                   95.6 |
+| tmle      | glmnet_undersmooth_markov | Lasso           |       0.00203 |                 0 |                1.01669 |                         92.9 | 0.00198 |       0e+00 |          0.97747 |                   95.9 |                 0.21807 |     0.04777 |          0.99768 |                   95.6 |
+| tmle      | glm                       | NA              |       0.00220 |                 0 |                1.07738 |                         92.0 | 0.00206 |       0e+00 |          0.97150 |                   95.4 |                 0.22486 |     0.04822 |          1.02396 |                   95.7 |
+| tmle      | RF                        | NA              |       0.00319 |                 0 |                2.96372 |                         86.4 | 0.00277 |       0e+00 |          2.32506 |                   92.0 |                 0.28096 |     0.01065 |          2.72232 |                   92.2 |
 
 Result: Ridge performs best
 
@@ -53,16 +62,16 @@ All from Ridge models
 <!-- = $\lambda$ selected at the minimum cross-validated SE -->
 <!-- penalized regressions with $\lambda$ selected at the minimum cross-validated SE, truncation of $g$ at \< 0.01, and using all prior L nodes in $g$ and $Q$ estimation. -->
 
-| Estimator | Truncation  | Y\_{A=1} bias | Y\_{A=1} variance | Y\_{A=1} bias SE ratio | Y\_{A=1} oracle 95% coverage | RD bias | RD variance | RD bias SE ratio | RD oracle 95% coverage | RR log-transformed bias | RR variance | RR bias SE ratio | RR oracle 95% coverage |
-|:----------|:------------|--------------:|------------------:|-----------------------:|-----------------------------:|--------:|------------:|-----------------:|-----------------------:|------------------------:|------------:|-----------------:|-----------------------:|
-| tmle      | g \< 0.01   |       0.00189 |             0e+00 |                1.00184 |                     84.40000 | 0.00253 |       0e+00 |          1.28295 |               69.20000 |                 0.31387 |     0.08017 |          1.10851 |               80.20000 |
-| tmle      | g \< 0.01   |       0.00188 |             0e+00 |                1.00531 |                     84.20000 | 0.00249 |       0e+00 |          1.26925 |               70.60000 |                 0.31116 |     0.07926 |          1.10523 |               80.60000 |
-| tmle      | Untruncated |       0.00185 |             0e+00 |                0.89516 |                     88.60000 | 0.00240 |       0e+00 |          1.11740 |               77.00000 |                 0.29864 |     0.08773 |          1.00822 |               84.60000 |
-| tmle      | g \< 0.01   |       0.00186 |             1e-05 |                0.83031 |                     94.60000 | 0.00185 |       1e-05 |          0.81642 |               96.20000 |                 0.20352 |     0.06227 |          0.81556 |               95.20000 |
-| tmle      | g \< 0.01   |       0.00194 |             1e-05 |                0.86738 |                     93.60000 | 0.00186 |       1e-05 |          0.82423 |               96.20000 |                 0.20619 |     0.05989 |          0.84253 |               96.00000 |
-| tmle      | Untruncated |       0.00236 |             1e-05 |                0.71299 |                     92.98597 | 0.00226 |       1e-05 |          0.68211 |               96.19238 |                 0.24777 |     0.10804 |          0.75380 |               94.78958 |
-| tmle      | Untruncated |       0.00231 |             1e-05 |                0.68792 |                     93.19728 | 0.00222 |       1e-05 |          0.66002 |               95.91837 |                 0.23960 |     0.11118 |          0.71859 |               95.46485 |
-| tmle      | Untruncated |       0.00185 |             0e+00 |                0.87856 |                     89.60000 | 0.00242 |       0e+00 |          1.10716 |               77.40000 |                 0.30002 |     0.09028 |          0.99853 |               84.80000 |
+| Undersmoothed        | Truncation  | Markov      | Y\_{A=1} bias | Y\_{A=1} variance | Y\_{A=1} bias SE ratio | Y\_{A=1} oracle 95% coverage | RD bias | RD variance | RD bias SE ratio | RD oracle 95% coverage | RR log-transformed bias | RR variance | RR bias SE ratio | RR oracle 95% coverage |
+|:---------------------|:------------|:------------|--------------:|------------------:|-----------------------:|-----------------------------:|--------:|------------:|-----------------:|-----------------------:|------------------------:|------------:|-----------------:|-----------------------:|
+| Undersmoothed Lambda | g \< 0.01   | Markov L    |       0.00188 |             0e+00 |                0.84774 |                     93.30000 | 0.00186 |       1e-05 |          0.82992 |               96.10000 |                 0.20412 |     0.06025 |          0.83158 |               96.00000 |
+| Undersmoothed Lambda | g \< 0.01   | All prior L |       0.00182 |             0e+00 |                0.81819 |                     94.20000 | 0.00186 |       1e-05 |          0.82993 |               95.20000 |                 0.20325 |     0.06245 |          0.81335 |               95.40000 |
+| Undersmoothed Lambda | Untruncated | Markov L    |       0.00229 |             1e-05 |                0.69915 |                     93.35317 | 0.00226 |       1e-05 |          0.68722 |               96.13095 |                 0.24666 |     0.10853 |          0.74872 |               94.94048 |
+| Undersmoothed Lambda | Untruncated | All prior L |       0.00229 |             1e-05 |                0.69113 |                     93.22034 | 0.00228 |       1e-05 |          0.68574 |               95.55085 |                 0.24603 |     0.11046 |          0.74028 |               95.02119 |
+| Min SE Lambda        | Untruncated | Markov L    |       0.00190 |             0e+00 |                0.92971 |                     87.90000 | 0.00247 |       0e+00 |          1.16188 |               76.70000 |                 0.31022 |     0.08788 |          1.04643 |               84.00000 |
+| Min SE Lambda        | Untruncated | All prior L |       0.00191 |             0e+00 |                0.91316 |                     88.80000 | 0.00250 |       0e+00 |          1.15055 |               77.20000 |                 0.31154 |     0.09037 |          1.03632 |               84.00000 |
+| Min SE Lambda        | g \< 0.01   | Markov L    |       0.00193 |             0e+00 |                1.03908 |                     82.80000 | 0.00255 |       0e+00 |          1.31246 |               69.60000 |                 0.32078 |     0.07935 |          1.13874 |               80.30000 |
+| Min SE Lambda        | g \< 0.01   | All prior L |       0.00193 |             0e+00 |                1.03628 |                     83.20000 | 0.00259 |       0e+00 |          1.32561 |               67.70000 |                 0.32335 |     0.08021 |          1.14175 |               80.10000 |
 
 Result: Undersmoothed Ridge with default truncation and markov process
 for L works best
@@ -74,7 +83,7 @@ for L works best
 
 | Variance.estimator | Y\_.A.1..Coverage | RD.Coverage | RR.Coverage |
 |:-------------------|------------------:|------------:|------------:|
-| Influence curve    |              95.2 |        91.4 |        94.2 |
+| Influence curve    |              94.7 |        90.3 |        94.2 |
 | Bootstrap          |              94.2 |        94.8 |        95.4 |
 
 Results: Bootstrap has better coverage for RR and especially RD, but

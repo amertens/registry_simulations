@@ -15,19 +15,27 @@ nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
 nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
 
 list.files(paste0(here::here(),"/data/sim_results/"))
-load(paste0(here::here(),"/data/sim_results/sim_res_full.Rdata"))
-#load(paste0(here::here(),"/data/sim_results/sim_res_seeds_null.Rdata"))
+# load(paste0(here::here(),"/data/sim_results/sim_res_full.Rdata"))
+# res_iptw=mget(ls(pattern = "res_"))
+# res_iptw= data.table::rbindlist(l=res_iptw, use.names=TRUE, fill=TRUE, idcol="analysis")
+# res_iptw$estimator<-gsub("_[0-9]+$","",res_iptw$analysis)
+# res_iptw$estimator = gsub("res_","",res_iptw$estimator)
+# res_iptw$estimator = gsub("_tr","",res_iptw$estimator)
+# saveRDS(res_iptw, paste0(here::here(),"/data/sim_results/sim_res_iptw.RDS"))
+
+
+load(paste0(here::here(),"/data/sim_results/sim_res_seeds_null.Rdata"))
 res_RF=readRDS(paste0(here::here(),"/data/sim_results/sim_res_RF.RDS"))
 res_RF = data.table::rbindlist(res_RF)
 
 
 #NOTE! Need to recover the extra reps for the runs that failes
-# load(paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
-# load(paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
-# load(paste0(here::here(),"/data/sim_results/sim_res_seed3.Rdata"))
-# load(paste0(here::here(),"/data/sim_results/sim_res_seed4.Rdata"))
-# load(paste0(here::here(),"/data/sim_results/sim_res_seed5.Rdata"))
-# load(paste0(here::here(),"/data/sim_results/sim_res_seed6.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_seed3.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_seed4.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_seed5.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_seed6.Rdata"))
 
 res=mget(ls(pattern = "res_"))
 
@@ -35,6 +43,8 @@ res= data.table::rbindlist(l=res, use.names=TRUE, fill=TRUE, idcol="analysis")
 res$estimator<-gsub("_[0-9]+$","",res$analysis)
 res$estimator = gsub("res_","",res$estimator)
 res$estimator = gsub("_tr","",res$estimator)
+res_iptw=readRDS(paste0(here::here(),"/data/sim_results/sim_res_iptw.RDS"))
+res=bind_rows(res, res_iptw)
 
 #res <- res %>% group_by(estimator) %>% slice(1:4000)
 table(res$estimator)

@@ -42,11 +42,24 @@ truth<- readRDS(file=paste0(here::here(),"/data/sim_results/truth.rds"))
 
 -   True RR: `r truth[10,3]`
 
+## Calculate simulation performance
+
+```{r}
+
+res = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
+
+ic_res = calc_sim_performance(
+  res=res,
+  truth=truth,
+  time=10)
+
+
+```
+
 ## Simulation results
 
 ```{r,  echo=F}
 
-ic_res <- read.csv(file=paste0(here::here(),"/data/sim_perf_500reps.csv"))
 #colnames(ic_res)
 ic_res <- ic_res %>% subset(., select = -c(N_reps))
 ic_res <- ic_res %>% rename(Algorithm=estimator,
@@ -93,19 +106,19 @@ Result: TMLE performs better
 
 #### Comparison of algorithms
 
-All penalized regressions with $\lambda$ selected at the minimum cross-validated SE, truncation of $g$ at \< 0.01, and using all prior L nodes in $g$ and $Q$ estimation.
+All penalized regressions with $\lambda$ selected with undersmoothing, truncation of $g$ at \< 0.01, and using the t-1 prior L nodes in $g$ and $Q$ estimation.
 
 RF= random forest
 
 ```{r,  echo=F}
 
 algo_res <- ic_res %>% filter(Estimator=="tmle") %>%
-  filter(!grepl("_untruncated", Algorithm), !grepl("_markov", Algorithm), !grepl("_undersmooth", Algorithm)) %>%
+  filter(!grepl("_untruncated", Algorithm), grepl("_markov", Algorithm) & grepl("_undersmooth", Algorithm) | grepl("RF", Algorithm) | Algorithm=="glm") %>%
   mutate( `Algorithm Alpha`=case_when(grepl("EN",Algorithm)~"Elastic Net",
                   grepl("ridge",Algorithm)~"Ridge",
                   grepl("glmnet",Algorithm)~"Lasso",
                   )) %>%
-  subset(., select = c(Estimator, `Algorithm Alpha`,
+  subset(., select = c(Estimator, Algorithm, `Algorithm Alpha`,
                             `Y_{A=1} bias`,
                             `Y_{A=1} variance`, `Y_{A=1} bias SE ratio`, `Y_{A=1} oracle 95% coverage`,
                             `RD bias`,`RD variance`,`RD bias SE ratio`, `RD oracle 95% coverage`,
