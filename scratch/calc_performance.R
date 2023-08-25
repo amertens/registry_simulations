@@ -46,7 +46,7 @@ res$estimator = gsub("_tr","",res$estimator)
 res_iptw=readRDS(paste0(here::here(),"/data/sim_results/sim_res_iptw.RDS"))
 res=bind_rows(res, res_iptw)
 
-#res <- res %>% group_by(estimator) %>% slice(1:4000)
+res <- res %>% group_by(estimator) %>% slice(1:4000)
 table(res$estimator)
 
 saveRDS(res, file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
