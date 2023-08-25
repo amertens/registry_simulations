@@ -194,9 +194,30 @@ knitr::kable(boot_res_tab)
 
 Results: Bootstrap has better coverage for RR and especially RD, but slightly worse that for the mean of $Y_{A=1}$
 
-## Boxplots
+## Plots of IC vs Bootstrap coverage
 
--   Make two boxplots of bootstrap vs IC
+For the coverage of the risk difference (Red line is true RD)
+
+<!-- # ```{r} -->
+<!-- #  -->
+<!-- # ic_plot_df <- res %>% filter(Estimator="tmle") -->
+<!-- #  -->
+<!-- # ggplot(ic_plot_df %>% -->
+<!-- #          mutate(iteration=row_number()), aes(x=iteration)) + -->
+<!-- #          geom_linerange(aes(ymin=boot.CI1, ymax=boot.CI2), alpha=0.5) + -->
+<!-- #          coord_flip() + -->
+<!-- #          geom_hline(yintercept = truth[10,4]) + ggtitle("IC") -->
+<!-- #           -->
+<!-- # ggplot(sim_res %>% filter(Target_parameter=="ATE") %>% arrange(boot.CI1) %>% ungroup() %>% -->
+<!-- #          mutate(iteration=row_number()), aes(x=iteration)) + -->
+<!-- #          geom_linerange(aes(ymin=boot.CI1, ymax=boot.CI2), alpha=0.5) + -->
+<!-- #          coord_flip() + -->
+<!-- #          geom_hline(yintercept = truth[10,4]) + ggtitle("Bootstrap") -->
+<!-- #           -->
+<!-- #         -->
+<!-- #  -->
+<!-- # ``` -->
+
 
 ## Updated needed in the registry analysis
 
