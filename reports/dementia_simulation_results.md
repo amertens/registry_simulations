@@ -149,25 +149,10 @@ slightly worse that for the mean of $Y_{A=1}$
 
 For the coverage of the risk difference (Red line is true RD)
 
-<!-- # ```{r} -->
-<!-- #  -->
-<!-- # ic_plot_df <- res %>% filter(Estimator="tmle") -->
-<!-- #  -->
-<!-- # ggplot(ic_plot_df %>% -->
-<!-- #          mutate(iteration=row_number()), aes(x=iteration)) + -->
-<!-- #          geom_linerange(aes(ymin=boot.CI1, ymax=boot.CI2), alpha=0.5) + -->
-<!-- #          coord_flip() + -->
-<!-- #          geom_hline(yintercept = truth[10,4]) + ggtitle("IC") -->
-<!-- #           -->
-<!-- # ggplot(sim_res %>% filter(Target_parameter=="ATE") %>% arrange(boot.CI1) %>% ungroup() %>% -->
-<!-- #          mutate(iteration=row_number()), aes(x=iteration)) + -->
-<!-- #          geom_linerange(aes(ymin=boot.CI1, ymax=boot.CI2), alpha=0.5) + -->
-<!-- #          coord_flip() + -->
-<!-- #          geom_hline(yintercept = truth[10,4]) + ggtitle("Bootstrap") -->
-<!-- #           -->
-<!-- #         -->
-<!-- #  -->
-<!-- # ``` -->
+![](dementia_simulation_results_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->![](dementia_simulation_results_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+
+(Notes, feel free to give visualization tips for comparing the bootstrap
+and IC. Like should I do boxplots of the SE’s?)
 
 ## Updated needed in the registry analysis
 
