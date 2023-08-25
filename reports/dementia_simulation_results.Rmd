@@ -44,7 +44,7 @@ truth<- readRDS(file=paste0(here::here(),"/data/sim_results/truth.rds"))
 
 ## Calculate simulation performance
 
-```{r}
+```{r, echo=TRUE}
 
 res = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
 
@@ -52,7 +52,7 @@ ic_res = calc_sim_performance(
   res=res,
   truth=truth,
   time=10)
-
+head(ic_res)
 
 ```
 
