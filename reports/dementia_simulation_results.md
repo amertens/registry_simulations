@@ -125,6 +125,12 @@ how do I export the update so it’s on Statistics Denmark?
 
 undersmoothed ridge with markov=TRUE
 
+``` r
+v=run_ltmle(OUT="dementia",k=10,test=FALSE,treatment_regimens=treatment_regimens,outcomes=outcomes,baseline_covariates=baseline_covariates,timevar_covariates=timevar_covariates,det.Q.function=det.Q.function,abar="try",
+            SL.library="glmnet",SL.cvControl=list(selector="undersmooth",alpha=1), 
+            Markov=Markov_vars)
+```
+
 With Markov_vars being all time-varying L nodes
 
 ## Updated needed in the registry analysis
@@ -143,155 +149,3 @@ functions, because right now Dnodes are automatically set to be any
 variable with “dead” within the name. But do I do that on Statistics
 Denmark or make the changes on Ltmle_for_breakfast, and if the latter,
 how do I export the update so it’s on Statistics Denmark?
-
-<!-- # ```{r,  echo=F} -->
-<!-- # # for(x in 1:nrow(d)){ -->
-<!-- # #   #they just need to follow until they get the outcome or until censored (take min) -->
-<!-- # #   max_fu <- min(match(1, data[x,..Ynodes]),match(1, data[x,..Cnodes]),N_time,na.rm=T) -->
-<!-- # #   a_sub <- Anodes[1:max_fu] -->
-<!-- # #   data$regime_fu <- max_fu -->
-<!-- # #   #if sum of subsetted A nodes is = to follw up time, then they followed full regime -->
-<!-- # #   data$full_regime_1[[x]] <- ifelse(sum(data[x,..a_sub])==max_fu,TRUE, FALSE) -->
-<!-- # #   #if sum of subsetted a nodes is 0 then they had no glp1 throughout follow up -->
-<!-- # #   data$full_regime_0[[x]] <- ifelse(sum(data[x,..a_sub])==0,TRUE, FALSE) -->
-<!-- # # } -->
-<!-- #  -->
-<!-- #  -->
-<!-- #   data[,maxfu_y:= N_time-rowSums(.SD),.SDcols=c(Ynodes)]#max fu y -->
-<!-- #   data[,maxfu_c:= N_time-rowSums(.SD),.SDcols=c(Cnodes)]#max fu c -->
-<!-- #   data[,maxfu_total:= min(N_time,maxfu_y,maxfu_c)] #total time fu (taking min) -->
-<!-- #   a_sub <- Anodes[1:max_fu] -->
-<!-- #   data$regime_fu <- max_fu -->
-<!-- #   data[,a_sub_sum:= rowSums(.SD),.SDcols=a_sub]#manodes follow in fu -->
-<!-- #  -->
-<!-- #   #if sum of subsetted A nodes is = to follw up time, then they followed full regime -->
-<!-- #   data[a_sub_sum==max_fu,full_regime_1:=T,] -->
-<!-- #    -->
-<!-- #   #if sum of subsetted a nodes is 0 then they had no glp1 throughout follow up -->
-<!-- #   data$full_regime_0[[x]] <- ifelse(sum(data[x,..a_sub])==0,TRUE, FALSE) -->
-<!-- # } -->
-<!-- # data$switchers<- ifelse(data$full_regime_1==F & data$full_regime_0==F, TRUE,FALSE) -->
-<!-- #  -->
-<!-- # tab <- CreateCatTable(c("full_regime_1","full_regime_0","switchers","regime_fu"),data=data) -->
-<!-- # kableone(tab) -->
-<!-- #  -->
-<!-- #  -->
-<!-- # ``` -->
-<!-- #  -->
-<!-- #  -->
-<!-- # ## Outcome -->
-<!-- #  -->
-<!-- # ```{r} -->
-<!-- #  -->
-<!-- # tab <- CreateCatTable(c(Ynodes),data=data) -->
-<!-- # kableone(tab) -->
-<!-- #  -->
-<!-- #  -->
-<!-- # ``` -->
-<!-- #  -->
-<!-- #  -->
-<!-- #  -->
-<!-- # ## Regime support stratified by outcome (overall) -->
-<!-- #  -->
-<!-- # ```{r} -->
-<!-- #  -->
-<!-- # tab <- CreateCatTable(c("full_regime_1","full_regime_0","switchers"),data=data, strata="event_dementia_10") -->
-<!-- # kableone(tab) -->
-<!-- #  -->
-<!-- # ``` -->
-<!-- #  -->
-<!-- # ## Censoring -->
-<!-- #  -->
-<!-- # ```{r, echo=F} -->
-<!-- #  -->
-<!-- # # for(i in 1:(N_time-2)){ -->
-<!-- # #   cens.node <- (paste0("censor_",(i+1))) -->
-<!-- # #   data[get(paste0("censor_",i))==1,get(cens.node) := replace(.SD, .SD == 0, 1), .SDcols = cens.node] -->
-<!-- # # } -->
-<!-- # #  -->
-<!-- # # d[sum_death < sum_dementia, (death.nodes) := replace(.SD, .SD == 1, 0), .SDcols = death.nodes] -->
-<!-- # tab <- CreateCatTable(c(Cnodes),data=data) -->
-<!-- # kableone(tab) -->
-<!-- #  -->
-<!-- # ``` -->
-<!-- #  -->
-<!-- #  -->
-<!-- # ## Covariate characteristics by those following treatment rules at distinct time points -->
-<!-- #  -->
-<!-- # ```{r,include=F,echo=FALSE} -->
-<!-- #  -->
-<!-- # find_followup <- function(data,t){ -->
-<!-- #     #subset to risk set (no outcome or censor at time t) -->
-<!-- #     data2 <- data[get(paste0("censor_",t))!=1 & get(paste0("event_dementia_",t))!=1]  -->
-<!-- #      -->
-<!-- #   for(x in 1:nrow(data2)){ -->
-<!-- #     #subset Anodes to check   -->
-<!-- #     a_sub <- Anodes[1:t] -->
-<!-- #     #if sum of subsetted A nodes is = to follw up time, then they followed full regime -->
-<!-- #     data2$full_regime_1[[x]] <- ifelse(sum(data2[x,..a_sub])==t,TRUE, FALSE) -->
-<!-- #     #if sum of subsetted a nodes is 0 then they had no glp1 throughout follow up -->
-<!-- #     data2$full_regime_0[[x]] <- ifelse(sum(data2[x,..a_sub])==0,TRUE, FALSE) -->
-<!-- #      -->
-<!-- #   } -->
-<!-- #    -->
-<!-- #   names <- c("insulin_","any.malignancy_", "chronic.pulmonary.disease_", -->
-<!-- #              "hypertension_", "myocardial.infarction_","ischemic.heart.disease_", "heart.failure_","renal.disease_","sglt2_inhib_", "event_dementia_") -->
-<!-- #   cov_timedep <- outer(names,0:t,paste0) -->
-<!-- #   #updated exposure var, drop folks who do not follow either rule for the purposes of the table -->
-<!-- #   data_sub <- data2[data2$full_regime_1==T | data2$full_regime_0==T,] -->
-<!-- #   data_sub$exposure_regime <- ifelse(data_sub$full_regime_1==T,"Full GLP1", "No GLP1") -->
-<!-- #   cov_set <- c("sex",cov_timedep) -->
-<!-- #  -->
-<!-- #  -->
-<!-- # return(list(cov_set,data_sub)) -->
-<!-- # } -->
-<!-- #  -->
-<!-- #  -->
-<!-- # # kableone(find_followup(data=data,t=2)) -->
-<!-- #  -->
-<!-- # ``` -->
-<!-- #  -->
-<!-- #  -->
-<!-- # ####  t=2 -->
-<!-- #  -->
-<!-- # ```{r,echo=FALSE} -->
-<!-- #  -->
-<!-- # t <- find_followup(data=data,t=2) -->
-<!-- # tab <- CreateCatTable(t[[1]],data=t[[2]], strata="exposure_regime") -->
-<!-- # kableone(tab) -->
-<!-- # ``` -->
-<!-- #  -->
-<!-- # #### t=3 -->
-<!-- #  -->
-<!-- # ```{r,echo=FALSE} -->
-<!-- #  -->
-<!-- # t <- find_followup(data=data,t=3) -->
-<!-- # tab <- CreateCatTable(t[[1]],data=t[[2]], strata="exposure_regime") -->
-<!-- # kableone(tab) -->
-<!-- # ``` -->
-<!-- #  -->
-<!-- # ## Unbounded g weights from LTMLE run, TCP 1 -->
-<!-- #  -->
-<!-- #  -->
-<!-- # ```{r, echo=FALSE,warning=F} -->
-<!-- # load("../data/NOTRANSFER_glp1_any_static11.RData") -->
-<!-- # cum.g.unbounded <- res_RR$cum.g.unbounded -->
-<!-- #  -->
-<!-- # tx1 <- cbind(cum.g.unbounded[,,1],rep(1,nrow(cum.g.unbounded[,,1]))) -->
-<!-- # tx0 <- cbind(cum.g.unbounded[,,2],rep(0,nrow(cum.g.unbounded[,,2]))) -->
-<!-- #  -->
-<!-- # all<-as.data.frame(rbind(tx1,tx0)) -->
-<!-- #  -->
-<!-- # names(all)<- c("A1","C1","A2","C2","A3","C3","A4","C4", "A5","C5", -->
-<!-- #                "A6","C6","A7","C7","A8","C8","A9","C9","A10","C10","regime") -->
-<!-- # gathered <- tidyr::gather(data.frame(all),key="node",value="value",1:20) -->
-<!-- # gathered$regime <- as.character(gathered$regime) -->
-<!-- #  -->
-<!-- # gather_sub <- gathered[gathered$node%in%c(names(all)[grep("A",names(all))]),] -->
-<!-- #  -->
-<!-- # library(ggplot2) -->
-<!-- # ggplot(gather_sub, aes(x=value, fill=regime)) + -->
-<!-- #   geom_histogram(position="identity", alpha=0.2)+  -->
-<!-- #   theme_classic() + -->
-<!-- #   facet_wrap((~node))+theme(legend.position ="right") -->
-<!-- # ``` -->

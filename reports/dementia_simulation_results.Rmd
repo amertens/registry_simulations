@@ -194,7 +194,7 @@ I think I just need to update both the run_tmle() and prepare_tmle() functions t
 
 undersmoothed ridge with markov=TRUE
 
-```{r, asis=TRUE}
+```{r, eval=FALSE, echo=TRUE}
 
 v=run_ltmle(OUT="dementia",k=10,test=FALSE,treatment_regimens=treatment_regimens,outcomes=outcomes,baseline_covariates=baseline_covariates,timevar_covariates=timevar_covariates,det.Q.function=det.Q.function,abar="try",
             SL.library="glmnet",SL.cvControl=list(selector="undersmooth",alpha=1), 
