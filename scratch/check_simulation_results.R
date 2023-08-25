@@ -3,8 +3,10 @@ shh <-try(setwd("~/research/Methods/registry_simulations/"),silent = TRUE)
 library(targets)
 library(tarchetypes)
 library(parallel)
+library(ggplot2)
+library(ggpubr)
 u=lapply(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","matrixStats","speedglm","parallel","caret","foreach","clustermq"), FUN = function(X) {
-  do.call("require", list(X)) 
+    do.call("require", list(X)) 
 })
 nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
 nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
@@ -12,20 +14,25 @@ truth<- readRDS(file=paste0(here::here(),"/data/sim_results/truth.rds"))
 res = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
 setDT(res)
 setDT(truth)
+# restrict to analyses _2!? they have 500 repetitions. _1 have 50 and _3 have 200 ...
 res2 <- res[grepl("_2",analysis)]
-ridge <- res2[Estimator=="tmle" & grepl("ridge",estimator)]
+# merge with truth
 tt <- truth[time==10,.(Target_parameter=c("Risk(A=1)","Risk(A=0)","ATE","RelativeRisk"),
                        true_value=c(meanYa1,meanYa1-meanRD,meanRD,meanRR))]
-ridge <- tt[ridge,on="Target_parameter"]
-## ridge[,table(analysis)]
-xp=lapply(tt$Target_parameter,function(tp){
-  ggplot(ridge[Target_parameter==tp],aes(y=estimate,x=estimator))+geom_boxplot()+geom_abline(intercept=ridge[Target_parameter==tp]$true_value[1],slope=0)
-})
-# Boxplot for Risk(A=1) vs truth
-xp[[1]]
-# Boxplot for Risk(A=0) vs truth
-xp[[2]]
-# Boxplot for ATE vs truth
-xp[[3]]
-# Boxplot for RR vs truth
-xp[[4]]
+res2 <- tt[res2,on="Target_parameter"]
+
+# plot function to visualize the results
+plot_simulation <- function(x,est){
+    X <- x[Estimator=="tmle" & grepl(est,estimator)]
+    xp=lapply(c("Risk(A=1)","Risk(A=0)","ATE","RelativeRisk"),
+              function(tp){
+                  ggplot(X[Target_parameter==tp],aes(y=estimate,x=estimator))+geom_boxplot()+geom_abline(intercept=X[Target_parameter==tp]$true_value[1],slope=0)
+              })
+    ggarrange(xp[[1]],xp[[2]],xp[[3]],xp[[4]],
+              labels = c("Risk(A=1)","Risk(A=0)","ATE","RelativeRisk"),
+              ncol = 2, nrow = 2)
+}
+
+plot_simulation(res2,est = "ridge")
+plot_simulation(res2,est = "glmnet")
+plot_simulation(res2,est = "EN")
