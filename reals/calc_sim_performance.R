@@ -26,7 +26,7 @@ calc_sim_performance <- function(res, truth, time=10, mean=TRUE){
   
 
   res_Ya1 <- res %>% filter(Target_parameter=="Risk(A=1)") %>%
-    group_by(estimator) %>% 
+    group_by(Estimator , estimator) %>% 
     summarise(N_reps=n(),
               abs_bias_Ya1=mean(abs(estimate-trueYa1)),
               estimator_variance_Ya1=mean(((estimate)-mean((estimate)))^2),
@@ -36,9 +36,8 @@ calc_sim_performance <- function(res, truth, time=10, mean=TRUE){
               O_coverage_Ya1=mean(estimate-1.96*sd(estimate)< trueYa1 & trueYa1 < estimate+1.96*sd(estimate))*100
     )
     resRD <- res %>% filter(Target_parameter=="ATE") %>%
-    group_by(estimator) %>% 
-    summarise(N_reps=n(),
-              abs_bias_RD=mean(abs(estimate-trueRD)),
+    group_by(Estimator, estimator) %>% 
+    summarise(abs_bias_RD=mean(abs(estimate-trueRD)),
               estimator_variance_RD=mean(((estimate)-mean((estimate)))^2),
               mean_variance_RD=mean((std.err)^2),
               bias_se_ratio_RD=abs_bias_RD/sqrt(mean_variance_RD),
@@ -47,7 +46,7 @@ calc_sim_performance <- function(res, truth, time=10, mean=TRUE){
     )
   
   resRR <- res %>% filter(Target_parameter=="RelativeRisk") %>%
-    group_by(estimator) %>% 
+    group_by(Estimator, estimator) %>% 
     summarise(abs_log_bias_RR=mean(abs(log(estimate)-log(trueRR))),
               estimator_variance_RR=mean(((estimate)-mean((estimate)))^2),
               mean_variance_RR=mean((std.err)^2),
@@ -57,8 +56,8 @@ calc_sim_performance <- function(res, truth, time=10, mean=TRUE){
                                    log(trueRR) < log(estimate)+1.96*sd(log(estimate)))*100
     )
   
-  tab = merge(res_Ya1, resRD, by=c("estimator"))
-  tab = merge(tab, resRR, by=c("estimator"))
+  tab = merge(res_Ya1, resRD, by=c("Estimator","estimator"))
+  tab = merge(tab, resRR, by=c("Estimator","estimator"))
   
   return(tab)
 }
