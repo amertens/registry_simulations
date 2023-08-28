@@ -38,8 +38,8 @@ seeds_null=sample(0:1000000, 500, replace=FALSE)
 
 
 
-# system.time({res_glm_2= mclapply_targets_ltmle_simulation(null_sim=TRUE,n_cores=96, estimator="glm",seeds=seeds_null, library="glm")})
-# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seeds_null.Rdata"))
+system.time({res_glm_2= mclapply_targets_ltmle_simulation(null_sim=TRUE, time=2, n_cores=96, estimator="glm",seeds=seeds_null[1:10], library="glm")})
+#save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seeds_null.Rdata"))
 # 
 #  system.time({res_glmnet_2=mclapply_targets_ltmle_simulation(null_sim=TRUE,n_cores=96, estimator="lasso",seeds=seeds_null, library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))})
 #  save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_seeds_null.Rdata"))
