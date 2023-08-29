@@ -194,30 +194,30 @@ knitr::kable(boot_res_tab)
 
 Results: Bootstrap has better coverage for RR and especially RD, but slightly worse that for the mean of $Y_{A=1}$
 
-## Plots of IC vs Bootstrap coverage
+<!-- ## Plots of IC vs Bootstrap coverage -->
 
-For the coverage of the risk difference (Red line is true RD)
+<!-- For the coverage of the risk difference (Red line is true RD) -->
 
-```{r}
+<!-- ```{r} -->
 
- ic_plot_df <- res %>% filter(Estimator=="tmle",Target_parameter=="ATE",grepl("ridge_undersmooth_markov", estimator),!grepl("untrunc", estimator))
+<!--  ic_plot_df <- res %>% filter(Estimator=="tmle",Target_parameter=="ATE",grepl("ridge_undersmooth_markov", estimator),!grepl("untrunc", estimator)) -->
 
- ggplot(ic_plot_df %>% arrange(lower) %>%
-          mutate(iteration=row_number()), aes(x=iteration)) +
-          geom_linerange(aes(ymin=lower, ymax=upper), alpha=0.5) +
-          coord_flip() +
-          geom_hline(yintercept = truth[10,4]) + ggtitle("IC")
+<!--  ggplot(ic_plot_df %>% arrange(lower) %>% -->
+<!--           mutate(iteration=row_number()), aes(x=iteration)) + -->
+<!--           geom_linerange(aes(ymin=lower, ymax=upper), alpha=0.5) + -->
+<!--           coord_flip() + -->
+<!--           geom_hline(yintercept = truth[10,4]) + ggtitle("IC") -->
 
- ggplot(bootCIs %>% filter(Target_parameter=="ATE") %>% arrange(boot.CI1) %>% ungroup() %>%
-          mutate(iteration=row_number()), aes(x=iteration)) +
-         geom_linerange(aes(ymin=boot.CI1, ymax=boot.CI2), alpha=0.5) +
-         coord_flip() +
-         geom_hline(yintercept = truth[10,4]) + ggtitle("Bootstrap")
+<!--  ggplot(bootCIs %>% filter(Target_parameter=="ATE") %>% arrange(boot.CI1) %>% ungroup() %>% -->
+<!--           mutate(iteration=row_number()), aes(x=iteration)) + -->
+<!--          geom_linerange(aes(ymin=boot.CI1, ymax=boot.CI2), alpha=0.5) + -->
+<!--          coord_flip() + -->
+<!--          geom_hline(yintercept = truth[10,4]) + ggtitle("Bootstrap") -->
 
 
-```
+<!-- ``` -->
 
-(Notes, feel free to give visualization tips for comparing the bootstrap and IC. Like should I do boxplots of the SE's?)
+<!-- (Notes, feel free to give visualization tips for comparing the bootstrap and IC. Like should I do boxplots of the SE's?) -->
 
 
 ## Updated needed in the registry analysis
@@ -241,11 +241,3 @@ v=run_ltmle(OUT="dementia",k=10,test=FALSE,treatment_regimens=treatment_regimens
 ```
 
 With Markov_vars being all time-varying L nodes
-
-## Updated needed in the registry analysis
-
-Bochra was helping us rerun the analysis on the Danish registry based on the updated simulation results with 500 iterations (undersmoothed ridge won). Because of updated in (I think) TMLE_for_breakfast, there are now D nodes for competing events, and when we run the old code we get the error:
-
-"Cannot both specify determistic.Q.nodes and Dnodes"
-
-I think I just need to update both the run_tmle() and prepare_tmle() functions to be able to pass a Dnodes=NULL argument through the functions, because right now Dnodes are automatically set to be any variable with "dead" within the name. But do I do that on Statistics Denmark or make the changes on Ltmle_for_breakfast, and if the latter, how do I export the update so it's on Statistics Denmark?
