@@ -79,7 +79,7 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
   
   ## adding rows for specifications of weights and lambda
   res_table[grep("untruncated",Algorithm),Truncation:="Untruncated"]
-  res_table[is.na(Truncation),Truncation:="$<$ 0.01"]
+  res_table[is.na(Truncation),Truncation:="0.01"]
   
   res_table[grep("undersmooth",Algorithm),Lambda:="Undersmoothed"]
   res_table[is.na(Lambda) & grepl("ridge|glmnet|EN_",Algorithm)==TRUE,Lambda:="CV-minimum SE"]
@@ -146,7 +146,6 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
   
   
   save_kable(res_xtable, file=paste0(here::here(),"/tables/",filename,".tex"),float = FALSE,format="latex")
-  
 }
 
 create_sim_latex_tab(null_res_tab, filename="RR_results_null_table", measure="RR",bold=FALSE)
