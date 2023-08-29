@@ -14,7 +14,8 @@ run_ltmle <- function(name_outcome,
                       B_bootstrap_samples=0,
                       seeds,
                       verbose=FALSE,
-                      reduce=TRUE){
+                      reduce=TRUE,
+                      tmle_var=FALSE){
     require(foreach,quietly=TRUE)
     require(data.table,quietly=TRUE)
     result <- foreach(tk=time_horizon)%do%{
@@ -64,6 +65,12 @@ run_ltmle <- function(name_outcome,
             
             #add truncation
             pl$gbounds = gbounds
+            if(tmle_var){
+              pl$deterministic.Q.function=deterministic.Q.function=NULL
+              pl$variance.method = "tmle"
+              pl$data[is.na(pl$data)] <- 0
+              pl$data[is.na(pl$data)] <- "censored"
+            }
             
             if (verbose){
                 cat("Run Ltmle for regimen ",

@@ -80,7 +80,8 @@ rf_res_list <- readRDS(paste0(here::here(),"/data/sim_results/sim_res_RF_NULL.RD
 #-------------------------------------------------------
 
 
-for(i in 1:seeds_null){
+for(i in 22:seeds_null){
+#for(i in 1:seeds_null){
     
   cat(i,"\n")
     res=NULL

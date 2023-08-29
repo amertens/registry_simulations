@@ -8,7 +8,8 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               null_sim=FALSE,
                                               n_bootstrap_samples=0,
                                               Markov_variables=NULL,
-                                              estimator=""){
+                                              estimator="",
+                                              tmle_var=FALSE){
 
 
   
@@ -19,7 +20,7 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                       "Markov_variables",
                       "gbounds",
                       "n_df",
-                      "time"), envir=environment())
+                      "time","tmle_var"), envir=environment())
   
   clusterEvalQ(cl,lapply(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","matrixStats","speedglm","parallel","caret","foreach","clustermq"), FUN = function(X) {
     do.call("require", list(X)) 
@@ -34,7 +35,8 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                                             Markov_variables=Markov_variables,
                                                             gbounds=gbounds,
                                                             n=n_df,
-                                                            time=time))
+                                                            time=time,
+                                                            tmle_var=tmle_var))
   stopCluster(cl)
 
   drop <- rep(FALSE, length(res))

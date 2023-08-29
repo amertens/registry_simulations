@@ -36,7 +36,9 @@ run_targets_ltmle_simulation <- function(library="glm",
                                                gbounds=gbounds,
                                                null_sim=FALSE,
                                                n_bootstrap_samples=0,
-                                               Markov_variables=NULL){
+                                               Markov_variables=NULL,
+                                                tmle_var=tmle_var
+                                         ){
   
   if(!is.null(seed)){
     set.seed(seed)
@@ -76,6 +78,7 @@ run_targets_ltmle_simulation <- function(library="glm",
                                              SL.library=library,
                                              Markov=Markov_variables,
                                              SL.cvControl=SL.Control,
+                                             tmle_var=tmle_var,
                                              verbose=TRUE)
     
     

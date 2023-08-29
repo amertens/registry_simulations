@@ -1,5 +1,5 @@
 det.Q.function<-function(data, current.node, nodes, called.from.estimate.g){
-    compete.index <- grep("^event_death",names(data))
+    compete.index <- grep("^Dead",names(data))
     hist.compete.index <- compete.index[compete.index < current.node]
     if(length(hist.compete.index)==0)
         return(NULL)
