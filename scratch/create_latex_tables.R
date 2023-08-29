@@ -7,6 +7,8 @@ shh <-try(setwd("~/research/Methods/registry_simulations/"),silent = TRUE)
 library(targets)
 library(tarchetypes)
 library(parallel)
+library(kableExtra)
+library(tidyverse)
 
 lapply(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","matrixStats","speedglm","parallel","caret","foreach","clustermq"), FUN = function(X) {
   do.call("require", list(X)) 
@@ -66,29 +68,62 @@ null_res_tab <- null_res_tab %>% subset(., select = -c(N_reps)) %>% rename(Algor
 
 
 
-#Need to updated and apply the below code (doesn't need to be a function)
-create_sim_latex_tab <- function(res_table){
+
+
+create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
   
+  res_table <- data.table(res_table)
+  
+  ## keep only markvov property estimates 
+  res_table <- res_table[grep("markov",Algorithm),]
+  
+  ## adding rows for specifications of weights and lambda
+  res_table[grep("untruncated",Algorithm),Truncation:="Untruncated"]
+  res_table[is.na(Truncation),Truncation:="$<$ 0.01"]
+  
+  res_table[grep("undersmooth",Algorithm),Lambda:="Undersmoothed"]
+  res_table[is.na(Lambda) & grepl("ridge|glmnet|EN_",Algorithm)==TRUE,Lambda:="CV-minimum SE"]
+  res_table[is.na(Lambda),Lambda:="N/A"]
+  
+  
+  ##updating naming 
+  res_table[,Estimator:=toupper(Estimator)]
+  
+  res_table[,alg_old := Algorithm]
+  res_table[grep("glmnet",alg_old),Algorithm:="LASSO"]
+  res_table[grep("EN_",alg_old),Algorithm:="Elastic Net"]
+  res_table[grep("ridge",alg_old),Algorithm:="Ridge"]
+  res_table[grep("glm_",alg_old),Algorithm:="GLM"]
+    
+  # sort 
+  names(res_table)
+  ##res_table <- setorder(res_table, -Estimator,-`RD oracle 95% coverage` ,`RD bias`)
+  res_table <- setorder(res_table, -Estimator,-`RR oracle 95% coverage` ,`RR log-transformed bias`)
+
+  head(res_table)
   # identify index of rows to highlight
-  row.i.1 <- which(res_table$filenames=="sim_res_DetQ_ic_v3")
+  ## keep only estimates for the measure of interest (RR or RD)
   
-  res_table <- res_table %>% select(filenames,  iptw,
-                                    estimator, Qint,
-                                    bias,variance,bias_se_ratio,oracle.coverage) %>%
-    rename(Algorithm=estimator,  `Q-int`=Qint,  Estimator=iptw, `Bias/SE`=bias_se_ratio,
-           Bias=bias, Variance=variance, `Oracle coverage`=oracle.coverage)
-  
-  row.i.1 <- which(res_table$filenames=="sim_res_DetQ_ic_v3")
+                            if(measure=="RR"){
+                              res_table <- res_table[,.(Estimator, 
+                                                        Algorithm, 
+                                                        Lambda, 
+                                                        Truncation,                            
+                                                        `RR oracle 95% coverage`,
+                                                        `RR log-transformed bias`,
+                                                        `RR variance`)]
+                            }else if (measure=="RD"){
+                              res_table <- res_table[,.(Estimator, 
+                                                        Algorithm, 
+                                                        Lambda, 
+                                                        Truncation,
+                                                        `RD oracle 95% coverage`,
+                                                        `RD bias`,
+                                                        `RD variance`)] 
+                            }
   
   
   #save for html file
-  res_table_protective <- res_table
-  res_table_protective_raw <- res_diff_raw
-  
-  res_table <- res_table %>% subset(., select = -c(filenames))
-  
-  print(as.data.frame(res_table))
-  
   res_xtable <- res_table %>%
     knitr::kable(
       format = "latex",
@@ -102,11 +137,20 @@ create_sim_latex_tab <- function(res_table){
       # latex_options = c("striped", "repeat_header"),
       # stripe_color = "gray!15"
     ) %>%
-    kable_styling()%>%
-    row_spec(row.i.1-1, hline_after = T) %>%
-    row_spec(row.i.1, bold=T,hline_after = T)
+    kable_styling() 
+  if(bold==TRUE){ 
+    res_xtable <- res_xtable %>%
+    row_spec(1, hline_after = T) %>%
+    row_spec(1, bold=T,hline_after = T)
+    } 
   
   
-  #save_kable(res_xtable, file="C:/Users/andre/Documents/jici/diab-dementia-server-code/tables/sim_results_table.tex",float = FALSE)
+  save_kable(res_xtable, file=paste0(here::here(),"/tables/",filename,".tex"),float = FALSE,format="latex")
   
 }
+
+create_sim_latex_tab(null_res_tab, filename="RR_results_null_table", measure="RR",bold=FALSE)
+create_sim_latex_tab(res_tab, filename="RR_results_sig_table", measure="RR",bold=TRUE)
+create_sim_latex_tab(null_res_tab, filename="RD_results_null_table", measure="RD",bold=FALSE)
+create_sim_latex_tab(res_tab, filename="RD_results_sig_table", measure="RD",bold=FALSE)
+
