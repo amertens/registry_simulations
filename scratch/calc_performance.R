@@ -15,7 +15,7 @@ nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
 nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
 
 list.files(paste0(here::here(),"/data/sim_results/"))
-# load(paste0(here::here(),"/data/sim_results/sim_res_full.Rdata"))
+#load(paste0(here::here(),"/data/sim_results/sim_res_full.Rdata"))
 # res_iptw=mget(ls(pattern = "res_"))
 # res_iptw= data.table::rbindlist(l=res_iptw, use.names=TRUE, fill=TRUE, idcol="analysis")
 # res_iptw$estimator<-gsub("_[0-9]+$","",res_iptw$analysis)
@@ -24,12 +24,12 @@ list.files(paste0(here::here(),"/data/sim_results/"))
 # saveRDS(res_iptw, paste0(here::here(),"/data/sim_results/sim_res_iptw.RDS"))
 
 
-load(paste0(here::here(),"/data/sim_results/sim_res_seeds_null.Rdata"))
+#load(paste0(here::here(),"/data/sim_results/sim_res_seeds_null.Rdata"))
 res_RF=readRDS(paste0(here::here(),"/data/sim_results/sim_res_RF.RDS"))
 res_RF = data.table::rbindlist(res_RF)
 
 
-#NOTE! Need to recover the extra reps for the runs that failes
+#NOTE! Need to recover the extra reps for the runs that fails
 load(paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed3.Rdata"))
@@ -46,8 +46,9 @@ res$estimator = gsub("_tr","",res$estimator)
 res_iptw=readRDS(paste0(here::here(),"/data/sim_results/sim_res_iptw.RDS"))
 res=bind_rows(res, res_iptw)
 
-res <- res %>% group_by(estimator) %>% slice(1:4000)
+res <- res %>% group_by(estimator, Estimator) %>% slice(1:2000)
 table(res$estimator)
+table(res$analysis)
 
 saveRDS(res, file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
 
@@ -65,7 +66,7 @@ sim_perf_tab = calc_sim_performance(
   truth=tar_read(truth),
   time=10)
 sim_perf_tab
-
+sim_perf_tab[sim_perf_tab$estimator=="ridge_undersmooth_markov" & sim_perf_tab$Estimator=="tmle",]
 
 write.csv(sim_perf_tab, paste0(here::here(),"/data/sim_perf_500reps.csv"))
 

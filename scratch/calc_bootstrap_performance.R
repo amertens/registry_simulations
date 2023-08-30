@@ -53,7 +53,6 @@ res_tab <- data.frame(`Variance estimator`=c("Influence curve","Bootstrap","TMLE
                       `Y_{A=1} Coverage`=c(ic_res$coverage_Ya1, boot_res_A1,  tmle_res$coverage_Ya1),
                       `RD Coverage`=c(ic_res$coverage_RD, boot_res_RD, tmle_res$coverage_RD),
                       `RR Coverage`=c(ic_res$coverage_RR, boot_res_RR, tmle_res$coverage_RR))
-knitr::kable(res_tab)
+knitr::kable(res_tab, format="simple")
 
-#Make two boxplots of bootstrap vs IC
-bootCIs
+
