@@ -19,13 +19,13 @@
 #(ideally across many estimation hyperparameters)
 
 # seed=1234
-# library="glmnet"
-# SL.Control=list(selector="undersmooth",alpha=1)
+# library="glm"
+# SL.Control=NULL
 # n=10000
 # time=2
 # Markov_variables=Markov_variables
 # n_bootstrap_samples=0
-
+# null_sim=FALSE
 
 
 
@@ -43,7 +43,7 @@ run_targets_ltmle_simulation <- function(library="glm",
   if(!is.null(seed)){
     set.seed(seed)
   }
-  nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
+  nn=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
   nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
   
   # source("data/coefs.txt")
@@ -89,5 +89,7 @@ run_targets_ltmle_simulation <- function(library="glm",
     output=summary(res$Ltmle_fit)
     output_iptw= summary(res$Ltmle_fit, estimator="iptw")
     output=bind_rows(output, output_iptw)
+   output$seed <- seed
+   output
 }
 

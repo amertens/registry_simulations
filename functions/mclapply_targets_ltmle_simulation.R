@@ -1,4 +1,17 @@
-
+# 
+# time=2
+# estimator="glm"
+# seeds=seeds1[1:2]
+# n_df=100000
+# n_cores=50
+# library="glm"
+# SL.Control=NULL
+# gbounds=c(0.01,1)
+# null_sim=FALSE
+# n_bootstrap_samples=0
+# Markov_variables=NULL
+# estimator=""
+# tmle_var=FALSE
 
 mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               library="glm",
@@ -12,6 +25,7 @@ mclapply_targets_ltmle_simulation <- function(seeds, n_df=100000, n_cores=50,
                                               tmle_var=FALSE){
 
 
+  cat(paste0(estimator,"\n"))
   
   cl <- makeCluster(n_cores)
   clusterExport(cl, c("seeds","run_targets_ltmle_simulation",  "library",

@@ -1,5 +1,12 @@
 
-
+  # res=list(
+  #   tar_read(res_glm_t2),
+  #   tar_read(res_glmnet_t2)
+  # 
+  # )
+#   truth=tar_read(truth)
+#   time=10
+# mean=TRUE
 
 
 

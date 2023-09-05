@@ -87,81 +87,57 @@ list(
             batches = 4, reps = 25, rep_workers = 25),
     tar_target(truth, average_truth(truth_rep)),
 
-   tar_target(test, mclapply_targets_ltmle_simulation(estimator="test", seeds=seeds_1[1:2], library="glm",time=2))#,
-  # tar_target(test2, mclapply_targets_ltmle_simulation(estimator="",seeds=seeds_1, library="glmnet",time=2, SL.Control=list(selector="undersmooth",alpha=1))),
-  
+  #tar_target(test, mclapply_targets_ltmle_simulation(estimator="test", seeds=seeds[1:2], library="glm",time=2))#,
+  tar_target(res_glm_t2, mclapply_targets_ltmle_simulation(estimator="res_glm_t2", seeds=seeds[1:50], library="glm",time=2)),
+  tar_target(res_glmnet_t2, mclapply_targets_ltmle_simulation(estimator="res_glmnet_t2", seeds=seeds[1:50], library="glmnet",SL.Control=list(selector="undersmooth",alpha=1),time=2)),
+
   #---------------------------------------------------------
   # Run different estimation options
   #---------------------------------------------------------
-  #  tar_target(res_glm_1, mclapply_targets_ltmle_simulation(estimator="glm",seeds=seeds_1, library="glm")),
-  #  tar_target(res_glmnet_1, mclapply_targets_ltmle_simulation(estimator="lasso",seeds=seeds_1, library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))),
-  #  tar_target(res_glmnet_undersmooth_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso",seeds=seeds_1, library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))),
-  #  tar_target(res_ridge_1, mclapply_targets_ltmle_simulation(estimator="ridge",seeds=seeds_1, library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))),
-  #  tar_target(res_ridge_undersmooth_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge",seeds=seeds_1, library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))),
-  #  tar_target(res_EN_1, mclapply_targets_ltmle_simulation(estimator="EN",seeds=seeds_1, library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))),
-  #  tar_target(res_EN_undersmooth_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed EN",seeds=seeds_1, library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))),
+  #  tar_target(res_glm, mclapply_targets_ltmle_simulation(estimator="glm",seeds=seeds, library="glm")),
+  #  tar_target(res_glmnet, mclapply_targets_ltmle_simulation(estimator="lasso",seeds=seeds, library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))),
+  #  tar_target(res_glmnet_undersmooth, mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso",seeds=seeds, library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))),
+  #  tar_target(res_ridge, mclapply_targets_ltmle_simulation(estimator="ridge",seeds=seeds, library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))),
+  #  tar_target(res_ridge_undersmooth, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge",seeds=seeds, library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))),
+  #  tar_target(res_EN, mclapply_targets_ltmle_simulation(estimator="EN",seeds=seeds, library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))),
+  #  tar_target(res_EN_undersmooth, mclapply_targets_ltmle_simulation(estimator="undersmoothed EN",seeds=seeds, library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))),
   # 
-  # tar_target(res_glm_markov_1, mclapply_targets_ltmle_simulation(estimator="glm markov",seeds=seeds_1, Markov_variables=Markov_variables, library="glm")),
-  # tar_target(res_glmnet_markov_1, mclapply_targets_ltmle_simulation(estimator="lasso markov",seeds=seeds_1, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))),
-  # tar_target(res_glmnet_undersmooth_markov_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso markov",seeds=seeds_1, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))),
-  # tar_target(res_ridge_markov_1, mclapply_targets_ltmle_simulation(estimator="ridge markov",seeds=seeds_1, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))),
-  # tar_target(res_ridge_undersmooth_markov_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge markov",seeds=seeds_1, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))),
-  # tar_target(res_EN_markov_1, mclapply_targets_ltmle_simulation(estimator="EN markov",seeds=seeds_1, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))),
-  # tar_target(res_EN_undersmooth_markov_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge markov",seeds=seeds_1, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))),
+  # tar_target(res_glm_markov, mclapply_targets_ltmle_simulation(estimator="glm markov",seeds=seeds, Markov_variables=Markov_variables, library="glm")),
+  # tar_target(res_glmnet_markov, mclapply_targets_ltmle_simulation(estimator="lasso markov",seeds=seeds, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))),
+  # tar_target(res_glmnet_undersmooth_markov, mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso markov",seeds=seeds, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))),
+  # tar_target(res_ridge_markov, mclapply_targets_ltmle_simulation(estimator="ridge markov",seeds=seeds, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))),
+  # tar_target(res_ridge_undersmooth_markov, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge markov",seeds=seeds, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))),
+  # tar_target(res_EN_markov, mclapply_targets_ltmle_simulation(estimator="EN markov",seeds=seeds, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))),
+  # tar_target(res_EN_undersmooth_markov, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge markov",seeds=seeds, Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))),
   # 
-  # tar_target(res_glm_untruncated_1, mclapply_targets_ltmle_simulation(estimator="glm",seeds=seeds_1, gbounds=c(0,1), library="glm"))#,
-  # tar_target(res_glmnet_untruncated_1, mclapply_targets_ltmle_simulation(estimator="lasso",seeds=seeds_1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))),
-  # tar_target(res_glmnet_undersmooth_untruncated_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso",seeds=seeds_1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))),
-  # tar_target(res_ridge_untruncated_1, mclapply_targets_ltmle_simulation(estimator="ridge",seeds=seeds_1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))),
-  # tar_target(res_ridge_undersmooth_untruncated_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge",seeds=seeds_1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))),
-  # tar_target(res_EN_untruncated_1, mclapply_targets_ltmle_simulation(estimator="EN",seeds=seeds_1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))),
-  # tar_target(res_EN_undersmooth_untruncated_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed EN",seeds=seeds_1, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))),
+  # tar_target(res_glm_untruncated, mclapply_targets_ltmle_simulation(estimator="glm",seeds=seeds, gbounds=c(0,1), library="glm"))#,
+  # tar_target(res_glmnet_untruncated, mclapply_targets_ltmle_simulation(estimator="lasso",seeds=seeds, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))),
+  # tar_target(res_glmnet_undersmooth_untruncated, mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso",seeds=seeds, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))),
+  # tar_target(res_ridge_untruncated, mclapply_targets_ltmle_simulation(estimator="ridge",seeds=seeds, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))),
+  # tar_target(res_ridge_undersmooth_untruncated, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge",seeds=seeds, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))),
+  # tar_target(res_EN_untruncated, mclapply_targets_ltmle_simulation(estimator="EN",seeds=seeds, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))),
+  # tar_target(res_EN_undersmooth_untruncated, mclapply_targets_ltmle_simulation(estimator="undersmoothed EN",seeds=seeds, gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))),
   # 
-  # tar_target(res_glm_markov_untruncated_1, mclapply_targets_ltmle_simulation(estimator="glm markov",seeds=seeds_1, gbounds=c(0,1), Markov_variables=Markov_variables, library="glm")),
-  # tar_target(res_glmnet_markov_untruncated_1, mclapply_targets_ltmle_simulation(estimator="lasso markov",seeds=seeds_1, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))),
-  # tar_target(res_glmnet_undersmooth_markov_untruncated_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso markov",seeds=seeds_1, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))),
-  # tar_target(res_ridge_markov_untruncated_1, mclapply_targets_ltmle_simulation(estimator="ridge markov",seeds=seeds_1, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))),
-  # tar_target(res_ridge_undersmooth_markov_untruncated_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge markov",seeds=seeds_1, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))),
-  # tar_target(res_EN_markov_untruncated_1, mclapply_targets_ltmle_simulation(estimator="EN markov",seeds=seeds_1, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))),
-  # tar_target(res_EN_undersmooth_markov_untruncated_1, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge markov",seeds=seeds_1, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))),
+  # tar_target(res_glm_markov_untruncated, mclapply_targets_ltmle_simulation(estimator="glm markov",seeds=seeds, gbounds=c(0,1), Markov_variables=Markov_variables, library="glm")),
+  # tar_target(res_glmnet_markov_untruncated, mclapply_targets_ltmle_simulation(estimator="lasso markov",seeds=seeds, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))),
+  # tar_target(res_glmnet_undersmooth_markov_untruncated, mclapply_targets_ltmle_simulation(estimator="undersmoothed lasso markov",seeds=seeds, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))),
+  # tar_target(res_ridge_markov_untruncated, mclapply_targets_ltmle_simulation(estimator="ridge markov",seeds=seeds, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))),
+  # tar_target(res_ridge_undersmooth_markov_untruncated, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge markov",seeds=seeds, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))),
+  # tar_target(res_EN_markov_untruncated, mclapply_targets_ltmle_simulation(estimator="EN markov",seeds=seeds, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))),
+  # tar_target(res_EN_undersmooth_markov_untruncated, mclapply_targets_ltmle_simulation(estimator="undersmoothed ridge markov",seeds=seeds, gbounds=c(0,1), Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))),
 
   #---------------------------------------------------------
   # Calculate simulation performance
   #---------------------------------------------------------
-  # tar_target(sim_performance, calc_sim_performance(
-  #   res=list(
-  #     res_glm_1,
-  #     res_glmnet_1,
-  #     res_glmnet_undersmooth_1,
-  #     res_ridge_1,
-  #     res_ridge_undersmooth_1,
-  #     res_EN_1,
-  #     res_EN_undersmooth_1,
-  #     res_glm_markov_1,
-  #     res_glmnet_markov_1,
-  #     res_glmnet_undersmooth_markov_1,
-  #     res_ridge_markov_1,
-  #     res_ridge_undersmooth_markov_1,
-  #     res_EN_markov_1,
-  #     res_EN_undersmooth_markov_1,
-  #     res_glm_untruncated_1,
-  #     res_glmnet_untruncated_1,
-  #     res_glmnet_undersmooth_untruncated_1,
-  #     res_ridge_untruncated_1,
-  #     res_ridge_undersmooth_untruncated_1,
-  #     res_EN_untruncated_1,
-  #     res_EN_undersmooth_untruncated_1,
-  #     res_glm_markov_untruncated_1,
-  #     res_glmnet_markov_untruncated_1,
-  #     res_glmnet_undersmooth_markov_untruncated_1,
-  #     res_ridge_markov_untruncated_1,
-  #     res_ridge_undersmooth_markov_untruncated_1,
-  #     res_EN_markov_untruncated_1,
-  #     res_EN_undersmooth_markov_untruncated_1
-  #   ),
-  #   truth=truth,
-  #   time=10
-  # ))
+  tar_target(sim_performance, calc_sim_performance(
+    res=list(
+    res_glm_t2,
+    res_glmnet_t2
+
+     ),
+    truth=truth,
+    time=10
+  ))
 )
 
 

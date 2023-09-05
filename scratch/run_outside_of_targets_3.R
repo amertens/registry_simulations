@@ -35,7 +35,7 @@ cat("Running set 3:\n")
 # Configuration
 # -------------------------------------------------------------------------------------------------------------
 
-nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
+nn=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
 nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
 set.seed(12345)
 
