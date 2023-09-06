@@ -16,6 +16,7 @@ lapply(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","matrix
 
 nn=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
 nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
+nn=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
 
 truth<- readRDS(file=paste0(here::here(),"/data/sim_results/truth.rds"))
 res = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
@@ -31,6 +32,7 @@ head(res_tab)
 null_truth=truth
 null_truth[10,3]=1
 null_truth[10,4]=0
+null_truth
 
 null_res_tab = calc_sim_performance(
   res=res,
@@ -79,7 +81,7 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
   
   ## adding rows for specifications of weights and lambda
   res_table[grep("untruncated",Algorithm),Truncation:="Untruncated"]
-  res_table[is.na(Truncation),Truncation:="0.01"]
+  res_table[is.na(Truncation),Truncation:="Less than 0.01"]
   
   res_table[grep("undersmooth",Algorithm),Lambda:="Undersmoothed"]
   res_table[is.na(Lambda) & grepl("ridge|glmnet|EN_",Algorithm)==TRUE,Lambda:="CV-minimum SE"]
@@ -97,8 +99,6 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
     
   # sort 
   names(res_table)
-  ##res_table <- setorder(res_table, -Estimator,-`RD oracle 95% coverage` ,`RD bias`)
-  res_table <- setorder(res_table, -Estimator,-`RR oracle 95% coverage` ,`RR log-transformed bias`)
 
   head(res_table)
   # identify index of rows to highlight
@@ -112,6 +112,8 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
                                                         `RR oracle 95% coverage`,
                                                         `RR log-transformed bias`,
                                                         `RR variance`)]
+                              res_table <- setorder(res_table, -Estimator,-`RR oracle 95% coverage` ,`RR log-transformed bias`)
+                              
                             }else if (measure=="RD"){
                               res_table <- res_table[,.(Estimator, 
                                                         Algorithm, 
@@ -120,8 +122,12 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
                                                         `RD oracle 95% coverage`,
                                                         `RD bias`,
                                                         `RD variance`)] 
+                              res_table <- setorder(res_table, -Estimator,-`RD oracle 95% coverage` ,`RD bias`)
+                              
                             }
   
+  ##find row for highlight: Algorithm:="Ridge",Lambda:="Undersmoothed",Truncation:="Less than 0.01"
+  (tohighlight <- which(res_table$Estimator=="TMLE"&res_table$Algorithm=="Ridge"&res_table$Lambda=="Undersmoothed"&res_table$Truncation=="Less than 0.01"))
   
   #save for html file
   res_xtable <- res_table %>%
@@ -140,16 +146,16 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
     kable_styling() 
   if(bold==TRUE){ 
     res_xtable <- res_xtable %>%
-    row_spec(1, hline_after = T) %>%
-    row_spec(1, bold=T,hline_after = T)
+    row_spec(tohighlight-1, hline_after = T) %>%
+    row_spec(tohighlight, bold=T,hline_after = T)
     } 
   
   
   save_kable(res_xtable, file=paste0(here::here(),"/tables/",filename,".tex"),float = FALSE,format="latex")
 }
 
-create_sim_latex_tab(null_res_tab, filename="RR_results_null_table", measure="RR",bold=FALSE)
-create_sim_latex_tab(res_tab, filename="RR_results_sig_table", measure="RR",bold=TRUE)
-create_sim_latex_tab(null_res_tab, filename="RD_results_null_table", measure="RD",bold=FALSE)
-create_sim_latex_tab(res_tab, filename="RD_results_sig_table", measure="RD",bold=FALSE)
+create_sim_latex_tab(res_table=null_res_tab, filename="RR_results_null_table", measure="RR",bold=TRUE)
+create_sim_latex_tab(res_table=res_tab, filename="RR_results_sig_table", measure="RR",bold=TRUE)
+create_sim_latex_tab(null_res_tab, filename="RD_results_null_table", measure="RD",bold=TRUE)
+create_sim_latex_tab(res_tab, filename="RD_results_sig_table", measure="RD",bold=TRUE)
 
