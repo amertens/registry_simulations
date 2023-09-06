@@ -56,6 +56,23 @@ res_tab <- data.frame(`Variance estimator`=c("Influence curve","Bootstrap","TMLE
                       `RR Coverage`=c(ic_res$coverage_RR, boot_res_RR, tmle_res$coverage_RR))
 knitr::kable(res_tab, format="simple")
 
+res_xtable <- res_tab %>%
+  knitr::kable(
+    format = "latex",
+    align = "l",
+    booktabs = TRUE,
+    longtable = TRUE,
+    linesep = "",
+    digits =6) %>%
+  kableExtra::kable_styling(
+    position = "left"#,
+    # latex_options = c("striped", "repeat_header"),
+    # stripe_color = "gray!15"
+  )
+
+save_kable(res_xtable, file=paste0(here::here(),"/tables/variance_comp_tab.tex"),float = FALSE,format="latex")
+
+
 
 res_ic = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
 res_ic = res_ic %>% filter(Target_parameter=="RelativeRisk", Estimator=="tmle", grepl("ridge_undersmooth_markov",analysis))

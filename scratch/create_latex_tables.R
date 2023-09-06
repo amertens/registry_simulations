@@ -35,7 +35,7 @@ null_truth[10,4]=0
 null_truth
 
 null_res_tab = calc_sim_performance(
-  res=res,
+  res=res_null,
   truth=null_truth,
   time=10)
 
@@ -108,8 +108,9 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
                               res_table <- res_table[,.(Estimator, 
                                                         Algorithm, 
                                                         Lambda, 
-                                                        Truncation,                            
+                                                        Truncation,   
                                                         `RR oracle 95% coverage`,
+                                                        `RR bias SE ratio`,
                                                         `RR log-transformed bias`,
                                                         `RR variance`)]
                               res_table <- setorder(res_table, -Estimator,-`RR oracle 95% coverage` ,`RR log-transformed bias`)
@@ -120,6 +121,7 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
                                                         Lambda, 
                                                         Truncation,
                                                         `RD oracle 95% coverage`,
+                                                        `RD bias SE ratio`,
                                                         `RD bias`,
                                                         `RD variance`)] 
                               res_table <- setorder(res_table, -Estimator,-`RD oracle 95% coverage` ,`RD bias`)
