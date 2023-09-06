@@ -1,0 +1,35 @@
+
+\begin{longtable}[l]{lllllll}
+\toprule
+Estimator & Algorithm & Lambda & Truncation & RR oracle 95\% coverage & RR log-transformed bias & RR variance\\
+\midrule
+TMLE & GLM & N/A & Untruncated & 57.4 & 0.624910 & 0.095155\\
+TMLE & LASSO & Undersmoothed & Untruncated & 54.8 & 0.628059 & 0.082354\\
+TMLE & Elastic Net & Undersmoothed & Untruncated & 54.6 & 0.628005 & 0.081802\\
+TMLE & Ridge & Undersmoothed & Untruncated & 47.6 & 0.628885 & 0.109106\\
+TMLE & GLM & N/A & 0.01 & 44.8 & 0.594501 & 0.048942\\
+TMLE & LASSO & Undersmoothed & 0.01 & 38.4 & 0.624729 & 0.047957\\
+TMLE & Elastic Net & Undersmoothed & 0.01 & 38.4 & 0.624945 & 0.047860\\
+TMLE & Ridge & Undersmoothed & 0.01 & 31.8 & 0.637152 & 0.060364\\
+TMLE & Ridge & CV-minimum SE & Untruncated & 8.0 & 0.911531 & 0.087821\\
+TMLE & Elastic Net & CV-minimum SE & Untruncated & 4.6 & 0.915553 & 0.053289\\
+TMLE & LASSO & CV-minimum SE & Untruncated & 4.6 & 0.916570 & 0.051571\\
+TMLE & LASSO & CV-minimum SE & 0.01 & 4.2 & 0.920678 & 0.050618\\
+TMLE & Elastic Net & CV-minimum SE & 0.01 & 4.0 & 0.920208 & 0.052180\\
+TMLE & Ridge & CV-minimum SE & 0.01 & 2.8 & 0.935469 & 0.079366\\
+IPTW & Ridge & Undersmoothed & Untruncated & 5.6 & 0.719422 & 0.088856\\
+IPTW & Elastic Net & Undersmoothed & Untruncated & 5.4 & 0.727374 & 0.071788\\
+IPTW & LASSO & Undersmoothed & Untruncated & 5.4 & 0.727374 & 0.072546\\
+IPTW & Elastic Net & CV-minimum SE & 0.01 & 5.2 & 0.713758 & 0.019046\\
+IPTW & Elastic Net & CV-minimum SE & Untruncated & 5.2 & 0.713758 & 0.019844\\
+IPTW & Elastic Net & Undersmoothed & 0.01 & 5.2 & 0.713758 & 0.032605\\
+IPTW & GLM & N/A & 0.01 & 5.2 & 0.713758 & 0.034630\\
+IPTW & GLM & N/A & Untruncated & 5.2 & 0.713758 & 0.094947\\
+IPTW & LASSO & CV-minimum SE & 0.01 & 5.2 & 0.713758 & 0.018513\\
+IPTW & LASSO & CV-minimum SE & Untruncated & 5.2 & 0.713758 & 0.019193\\
+IPTW & LASSO & Undersmoothed & 0.01 & 5.2 & 0.713758 & 0.032680\\
+IPTW & Ridge & CV-minimum SE & 0.01 & 5.2 & 0.713758 & 0.028428\\
+IPTW & Ridge & Undersmoothed & 0.01 & 5.2 & 0.713758 & 0.040356\\
+IPTW & Ridge & CV-minimum SE & Untruncated & 5.0 & 0.718455 & 0.034048\\
+\bottomrule
+\end{longtable}

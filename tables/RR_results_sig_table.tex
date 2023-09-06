@@ -1,0 +1,37 @@
+
+\begin{longtable}[l]{lllllll}
+\toprule
+Estimator & Algorithm & Lambda & Truncation & RR oracle 95\% coverage & RR log-transformed bias & RR variance\\
+\midrule
+\textbf{TMLE} & \textbf{Ridge} & \textbf{Undersmoothed} & \textbf{0.01} & \textbf{96.2} & \textbf{0.201530} & \textbf{0.060364}\\
+\midrule
+\midrule
+TMLE & GLM & N/A & 0.01 & 96.0 & 0.224098 & 0.048942\\
+TMLE & Elastic Net & Undersmoothed & 0.01 & 95.2 & 0.215016 & 0.047860\\
+TMLE & LASSO & Undersmoothed & 0.01 & 95.2 & 0.215122 & 0.047957\\
+TMLE & Ridge & Undersmoothed & Untruncated & 94.8 & 0.242829 & 0.109106\\
+TMLE & Elastic Net & Undersmoothed & Untruncated & 94.6 & 0.262011 & 0.081802\\
+TMLE & LASSO & Undersmoothed & Untruncated & 94.6 & 0.262561 & 0.082354\\
+TMLE & GLM & N/A & Untruncated & 94.6 & 0.272594 & 0.095155\\
+TMLE & Ridge & CV-minimum SE & Untruncated & 83.2 & 0.321622 & 0.087821\\
+TMLE & Elastic Net & CV-minimum SE & Untruncated & 82.0 & 0.318879 & 0.053289\\
+TMLE & LASSO & CV-minimum SE & Untruncated & 82.0 & 0.319208 & 0.051571\\
+TMLE & LASSO & CV-minimum SE & 0.01 & 81.2 & 0.319909 & 0.050618\\
+TMLE & Elastic Net & CV-minimum SE & 0.01 & 80.8 & 0.319563 & 0.052180\\
+TMLE & Ridge & CV-minimum SE & 0.01 & 79.4 & 0.330107 & 0.079366\\
+IPTW & Ridge & Undersmoothed & Untruncated & 94.0 & 0.177282 & 0.088856\\
+IPTW & Elastic Net & CV-minimum SE & 0.01 & 93.8 & 0.173290 & 0.019046\\
+IPTW & Elastic Net & CV-minimum SE & Untruncated & 93.8 & 0.173290 & 0.019844\\
+IPTW & Elastic Net & Undersmoothed & 0.01 & 93.8 & 0.173290 & 0.032605\\
+IPTW & GLM & N/A & 0.01 & 93.8 & 0.173290 & 0.034630\\
+IPTW & GLM & N/A & Untruncated & 93.8 & 0.173290 & 0.094947\\
+IPTW & LASSO & CV-minimum SE & 0.01 & 93.8 & 0.173290 & 0.018513\\
+IPTW & LASSO & CV-minimum SE & Untruncated & 93.8 & 0.173290 & 0.019193\\
+IPTW & LASSO & Undersmoothed & 0.01 & 93.8 & 0.173290 & 0.032680\\
+IPTW & Ridge & CV-minimum SE & 0.01 & 93.8 & 0.173290 & 0.028428\\
+IPTW & Ridge & Undersmoothed & 0.01 & 93.8 & 0.173290 & 0.040356\\
+IPTW & Elastic Net & Undersmoothed & Untruncated & 93.6 & 0.182252 & 0.071788\\
+IPTW & LASSO & Undersmoothed & Untruncated & 93.6 & 0.182252 & 0.072546\\
+IPTW & Ridge & CV-minimum SE & Untruncated & 92.8 & 0.175544 & 0.034048\\
+\bottomrule
+\end{longtable}

@@ -11,7 +11,7 @@ lapply(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","matrix
   do.call("require", list(X)) 
 })
 
-nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
+nn=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
 nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
 
 
@@ -39,6 +39,7 @@ boot5 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmoo
 boot_res <- bind_rows(boot1, boot2, boot3, boot4, boot5)
 bootCIs <- boot_res %>% group_by(Target_parameter, sim_iter, boot_run) %>%
   summarise(
+    std.err=sd(estimate),
     boot.CI1=quantile(estimate,.025),
     boot.CI2=quantile(estimate,.975)
   )
@@ -56,3 +57,19 @@ res_tab <- data.frame(`Variance estimator`=c("Influence curve","Bootstrap","TMLE
 knitr::kable(res_tab, format="simple")
 
 
+res_ic = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
+res_ic = res_ic %>% filter(Target_parameter=="RelativeRisk", Estimator=="tmle", grepl("ridge_undersmooth_markov",analysis))
+plot_df=bind_rows(bootCIs%>% filter(Target_parameter=="RelativeRisk")%>% mutate(variance_estimator="ic"),
+                  res_ic)
+
+ggplot(plot_df, aes(x=std.err, group=variance_estimator )) + geom_boxplot() + geom_vline(xintercept = sd(res_ic$estimate), color="red")
+
+res_ic = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
+res_ic = res_ic %>% filter(Target_parameter=="RelativeRisk", Estimator=="tmle",
+                           !grepl("untrunc",analysis), grepl("ridge_undersmooth",analysis)|analysis=="res_glmnet_2"|analysis=="res_glmnet_1"|analysis=="res_glmnet_undersmooth_2"|analysis=="res_glmnet_undersmooth_1")
+table(res_ic$analysis)
+
+ggplot(res_ic, aes(x=log(estimate), group=estimator  )) + geom_boxplot() + geom_vline(xintercept = log(0.5356286 ), color="red") + theme_classic() + facet_grid(~estimator)
+
+
+#show undersmoothed ridge versus CV lasso

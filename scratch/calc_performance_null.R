@@ -11,7 +11,7 @@ lapply(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","matrix
   do.call("require", list(X)) 
 })
 
-nn=lapply(list.files("./reals/", full.names = TRUE, recursive=TRUE), source)
+nn=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
 nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
 
 list.files(paste0(here::here(),"/data/sim_results/"))

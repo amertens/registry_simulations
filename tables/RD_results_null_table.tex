@@ -1,0 +1,35 @@
+
+\begin{longtable}[l]{lllllll}
+\toprule
+Estimator & Algorithm & Lambda & Truncation & RD oracle 95\% coverage & RD bias & RD variance\\
+\midrule
+TMLE & GLM & N/A & Untruncated & 39.0 & 0.007160 & 1.1e-05\\
+TMLE & LASSO & Undersmoothed & Untruncated & 33.0 & 0.007261 & 9.0e-06\\
+TMLE & Elastic Net & Undersmoothed & Untruncated & 32.8 & 0.007261 & 9.0e-06\\
+TMLE & Ridge & Undersmoothed & Untruncated & 25.0 & 0.007331 & 1.1e-05\\
+TMLE & GLM & N/A & 0.01 & 22.4 & 0.006986 & 4.0e-06\\
+TMLE & LASSO & Undersmoothed & 0.01 & 15.2 & 0.007338 & 4.0e-06\\
+TMLE & Elastic Net & Undersmoothed & 0.01 & 15.2 & 0.007341 & 4.0e-06\\
+TMLE & Ridge & Undersmoothed & 0.01 & 8.8 & 0.007516 & 5.0e-06\\
+TMLE & Ridge & CV-minimum SE & Untruncated & 0.4 & 0.009481 & 4.0e-06\\
+TMLE & Elastic Net & CV-minimum SE & Untruncated & 0.2 & 0.009531 & 3.0e-06\\
+TMLE & LASSO & CV-minimum SE & Untruncated & 0.2 & 0.009562 & 3.0e-06\\
+TMLE & LASSO & CV-minimum SE & 0.01 & 0.2 & 0.009595 & 2.0e-06\\
+TMLE & Elastic Net & CV-minimum SE & 0.01 & 0.2 & 0.009569 & 3.0e-06\\
+TMLE & Ridge & CV-minimum SE & 0.01 & 0.2 & 0.009667 & 4.0e-06\\
+IPTW & Ridge & Undersmoothed & Untruncated & 0.0 & 0.011458 & 1.1e-05\\
+IPTW & Elastic Net & Undersmoothed & Untruncated & 0.0 & 0.011545 & 9.0e-06\\
+IPTW & LASSO & Undersmoothed & Untruncated & 0.0 & 0.011545 & 9.0e-06\\
+IPTW & Elastic Net & CV-minimum SE & 0.01 & 0.0 & 0.011400 & 3.0e-06\\
+IPTW & Elastic Net & CV-minimum SE & Untruncated & 0.0 & 0.011400 & 3.0e-06\\
+IPTW & Elastic Net & Undersmoothed & 0.01 & 0.0 & 0.011400 & 4.0e-06\\
+IPTW & GLM & N/A & 0.01 & 0.0 & 0.011400 & 5.0e-06\\
+IPTW & GLM & N/A & Untruncated & 0.0 & 0.011400 & 1.2e-05\\
+IPTW & LASSO & CV-minimum SE & 0.01 & 0.0 & 0.011400 & 3.0e-06\\
+IPTW & LASSO & CV-minimum SE & Untruncated & 0.0 & 0.011400 & 3.0e-06\\
+IPTW & LASSO & Undersmoothed & 0.01 & 0.0 & 0.011400 & 4.0e-06\\
+IPTW & Ridge & CV-minimum SE & 0.01 & 0.0 & 0.011400 & 4.0e-06\\
+IPTW & Ridge & Undersmoothed & 0.01 & 0.0 & 0.011400 & 5.0e-06\\
+IPTW & Ridge & CV-minimum SE & Untruncated & 0.0 & 0.011449 & 5.0e-06\\
+\bottomrule
+\end{longtable}
