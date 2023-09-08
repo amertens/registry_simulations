@@ -68,16 +68,16 @@ null_res_tab <- null_res_tab %>% subset(., select = -c(N_reps)) %>% rename(Algor
                                                                `RD oracle 95% coverage`=O_coverage_RD,
                                                                `RR oracle 95% coverage`=O_coverage_RR)
 
-
+table(res_tab$Algorithm)
 
 
 
 create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
   
-  res_table <- data.table(res_table)
-  
   ## keep only markvov property estimates 
-  res_table <- res_table[grep("markov",Algorithm),]
+  res_table <- res_table[grepl("markov",res_table$Algorithm)|res_table$Algorithm=="RF",]
+  
+  res_table <- data.table(res_table)
   
   ## adding rows for specifications of weights and lambda
   res_table[grep("untruncated",Algorithm),Truncation:="Untruncated"]
@@ -96,6 +96,7 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
   res_table[grep("EN_",alg_old),Algorithm:="Elastic Net"]
   res_table[grep("ridge",alg_old),Algorithm:="Ridge"]
   res_table[grep("glm_",alg_old),Algorithm:="GLM"]
+  res_table[grep("RF",alg_old),Algorithm:="Random Forest"]
     
   # sort 
   names(res_table)
@@ -105,26 +106,28 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
   ## keep only estimates for the measure of interest (RR or RD)
   
                             if(measure=="RR"){
+                              res_table <- setorder(res_table, -Estimator,`RR log-transformed bias`,`RR bias SE ratio`,-`RR oracle 95% coverage` )
+                              
                               res_table <- res_table[,.(Estimator, 
                                                         Algorithm, 
                                                         Lambda, 
                                                         Truncation,   
-                                                        `RR oracle 95% coverage`,
-                                                        `RR bias SE ratio`,
                                                         `RR log-transformed bias`,
-                                                        `RR variance`)]
-                              res_table <- setorder(res_table, -Estimator,-`RR oracle 95% coverage` ,`RR log-transformed bias`)
+                                                        `RR variance`,
+                                                        `RR bias SE ratio`,
+                                                        `RR oracle 95% coverage`)]
                               
                             }else if (measure=="RD"){
+                              res_table <- setorder(res_table, -Estimator,`RD bias`,`RD bias SE ratio`,-`RD oracle 95% coverage` )
+                              #res_table <-  res_table <- 
                               res_table <- res_table[,.(Estimator, 
                                                         Algorithm, 
                                                         Lambda, 
                                                         Truncation,
-                                                        `RD oracle 95% coverage`,
-                                                        `RD bias SE ratio`,
                                                         `RD bias`,
-                                                        `RD variance`)] 
-                              res_table <- setorder(res_table, -Estimator,-`RD oracle 95% coverage` ,`RD bias`)
+                                                        `RD variance`,
+                                                        `RD bias SE ratio`,
+                                                        `RD oracle 95% coverage`)] 
                               
                             }
   

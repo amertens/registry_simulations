@@ -28,9 +28,20 @@ list.files(paste0(here::here(),"/data/sim_results/"))
 res_RF=readRDS(paste0(here::here(),"/data/sim_results/sim_res_RF.RDS"))
 res_RF = data.table::rbindlist(res_RF)
 
+load(paste0(here::here(),"/data/sim_results/old/sim_res_seeds1.Rdata"))
+# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed2.Rdata"))
+# res_ridge_undersmooth_markov_old=res_ridge_undersmooth_markov_1
+# res_ridge_undersmooth_markov_old2=res_ridge_undersmooth_markov_2
+# head(res_ridge_undersmooth_markov_2)
+# head(res_ridge_undersmooth_markov_old2)
+# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed3.Rdata"))
+# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed4.Rdata"))
+# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed5.Rdata"))
+# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed6.Rdata"))
+
 
 #NOTE! Need to recover the extra reps for the runs that fails
-load(paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
+#load(paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed3.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed4.Rdata"))
@@ -43,10 +54,11 @@ res= data.table::rbindlist(l=res, use.names=TRUE, fill=TRUE, idcol="analysis")
 res$estimator<-gsub("_[0-9]+$","",res$analysis)
 res$estimator = gsub("res_","",res$estimator)
 res$estimator = gsub("_tr","",res$estimator)
-res_iptw=readRDS(paste0(here::here(),"/data/sim_results/sim_res_iptw.RDS"))
-res=bind_rows(res, res_iptw)
+# res_iptw=readRDS(paste0(here::here(),"/data/sim_results/sim_res_iptw.RDS"))
+# res=bind_rows(res, res_iptw)
 
-res <- res %>% group_by(estimator, Estimator) %>% slice(1:2000) %>% filter(estimator!="glm_test")
+res <- res %>% group_by(estimator, Estimator) %>% arrange(seed) %>% slice(1:2000) %>% 
+  filter(estimator!="glm_test")
 table(res$estimator)
 table(res$analysis)
 
@@ -60,10 +72,10 @@ saveRDS(res, file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
 # truth=tar_read(truth)
 # saveRDS(truth, file=paste0(here::here(),"/data/sim_results/truth.rds"))
 truth=readRDS(paste0(here::here(),"/data/sim_results/truth.rds"))
-
+truth_old =tar_read(truth)
 sim_perf_tab = calc_sim_performance(
   res=res,
-  truth=tar_read(truth),
+  truth=truth,
   time=10)
 sim_perf_tab
 sim_perf_tab[sim_perf_tab$estimator=="ridge_undersmooth_markov" & sim_perf_tab$Estimator=="tmle",]

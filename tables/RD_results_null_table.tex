@@ -1,37 +1,37 @@
 
 \begin{longtable}[l]{llllllll}
 \toprule
-Estimator & Algorithm & Lambda & Truncation & RD oracle 95\% coverage & RD bias SE ratio & RD bias & RD variance\\
+Estimator & Algorithm & Lambda & Truncation & RD bias & RD variance & RD bias SE ratio & RD oracle 95\% coverage\\
 \midrule
-TMLE & LASSO & CV-minimum SE & Less than 0.01 & 96.0 & 0.901633 & 0.001599 & 3e-06\\
-TMLE & LASSO & CV-minimum SE & Untruncated & 96.0 & 0.901413 & 0.001599 & 3e-06\\
-TMLE & Elastic Net & CV-minimum SE & Less than 0.01 & 96.0 & 0.884646 & 0.001602 & 3e-06\\
-TMLE & Elastic Net & CV-minimum SE & Untruncated & 96.0 & 0.884224 & 0.001602 & 3e-06\\
-TMLE & Ridge & CV-minimum SE & Untruncated & 95.8 & 0.662149 & 0.001629 & 6e-06\\
-TMLE & Ridge & CV-minimum SE & Less than 0.01 & 95.4 & 0.663841 & 0.001615 & 6e-06\\
-TMLE & GLM & N/A & Untruncated & 95.4 & 0.839255 & 0.001866 & 5e-06\\
-TMLE & Ridge & Undersmoothed & Untruncated & 95.0 & 0.677415 & 0.001738 & 7e-06\\
-TMLE & GLM & N/A & Less than 0.01 & 95.0 & 0.874241 & 0.001747 & 4e-06\\
-TMLE & Elastic Net & Undersmoothed & Untruncated & 94.8 & 0.886583 & 0.001819 & 4e-06\\
-TMLE & LASSO & Undersmoothed & Untruncated & 94.8 & 0.886609 & 0.001821 & 4e-06\\
+TMLE & LASSO & CV-minimum SE & Less than 0.01 & 0.001599 & 3e-06 & 0.901633 & 96.0\\
+TMLE & LASSO & CV-minimum SE & Untruncated & 0.001599 & 3e-06 & 0.901413 & 96.0\\
+TMLE & Elastic Net & CV-minimum SE & Less than 0.01 & 0.001602 & 3e-06 & 0.884646 & 96.0\\
+TMLE & Elastic Net & CV-minimum SE & Untruncated & 0.001602 & 3e-06 & 0.884224 & 96.0\\
+TMLE & Ridge & CV-minimum SE & Less than 0.01 & 0.001615 & 6e-06 & 0.663841 & 95.4\\
+TMLE & Ridge & CV-minimum SE & Untruncated & 0.001629 & 6e-06 & 0.662149 & 95.8\\
 \midrule
-\textbf{TMLE} & \textbf{Ridge} & \textbf{Undersmoothed} & \textbf{Less than 0.01} & \textbf{94.4} & \textbf{0.688838} & \textbf{0.001689} & \textbf{6e-06}\\
+\textbf{TMLE} & \textbf{Ridge} & \textbf{Undersmoothed} & \textbf{Less than 0.01} & \textbf{0.001689} & \textbf{6e-06} & \textbf{0.688838} & \textbf{94.4}\\
 \midrule
-TMLE & Elastic Net & Undersmoothed & Less than 0.01 & 94.4 & 0.912383 & 0.001736 & 4e-06\\
-TMLE & LASSO & Undersmoothed & Less than 0.01 & 94.4 & 0.913133 & 0.001737 & 4e-06\\
-IPTW & Elastic Net & CV-minimum SE & Less than 0.01 & 88.2 & 1.444487 & 0.002642 & 3e-06\\
-IPTW & Elastic Net & CV-minimum SE & Untruncated & 88.2 & 1.443315 & 0.002642 & 3e-06\\
-IPTW & Elastic Net & Undersmoothed & Less than 0.01 & 88.2 & 1.376521 & 0.002642 & 4e-06\\
-IPTW & Elastic Net & Undersmoothed & Untruncated & 88.2 & 1.268788 & 0.002642 & 4e-06\\
-IPTW & GLM & N/A & Less than 0.01 & 88.2 & 1.310899 & 0.002642 & 4e-06\\
-IPTW & GLM & N/A & Untruncated & 88.2 & 1.168190 & 0.002642 & 5e-06\\
-IPTW & LASSO & CV-minimum SE & Less than 0.01 & 88.2 & 1.475018 & 0.002642 & 3e-06\\
-IPTW & LASSO & CV-minimum SE & Untruncated & 88.2 & 1.474387 & 0.002642 & 3e-06\\
-IPTW & LASSO & Undersmoothed & Less than 0.01 & 88.2 & 1.377126 & 0.002642 & 4e-06\\
-IPTW & LASSO & Undersmoothed & Untruncated & 88.2 & 1.266778 & 0.002642 & 4e-06\\
-IPTW & Ridge & CV-minimum SE & Less than 0.01 & 88.2 & 1.071845 & 0.002642 & 6e-06\\
-IPTW & Ridge & CV-minimum SE & Untruncated & 88.2 & 1.058681 & 0.002642 & 6e-06\\
-IPTW & Ridge & Undersmoothed & Less than 0.01 & 88.2 & 1.064925 & 0.002642 & 6e-06\\
-IPTW & Ridge & Undersmoothed & Untruncated & 88.2 & 1.014801 & 0.002642 & 7e-06\\
+TMLE & Elastic Net & Undersmoothed & Less than 0.01 & 0.001736 & 4e-06 & 0.912383 & 94.4\\
+TMLE & LASSO & Undersmoothed & Less than 0.01 & 0.001737 & 4e-06 & 0.913133 & 94.4\\
+TMLE & Ridge & Undersmoothed & Untruncated & 0.001738 & 7e-06 & 0.677415 & 95.0\\
+TMLE & GLM & N/A & Less than 0.01 & 0.001747 & 4e-06 & 0.874241 & 95.0\\
+TMLE & Elastic Net & Undersmoothed & Untruncated & 0.001819 & 4e-06 & 0.886583 & 94.8\\
+TMLE & LASSO & Undersmoothed & Untruncated & 0.001821 & 4e-06 & 0.886609 & 94.8\\
+TMLE & GLM & N/A & Untruncated & 0.001866 & 5e-06 & 0.839255 & 95.4\\
+IPTW & Ridge & Undersmoothed & Untruncated & 0.002642 & 7e-06 & 1.014801 & 88.2\\
+IPTW & Ridge & CV-minimum SE & Untruncated & 0.002642 & 6e-06 & 1.058681 & 88.2\\
+IPTW & Ridge & Undersmoothed & Less than 0.01 & 0.002642 & 6e-06 & 1.064925 & 88.2\\
+IPTW & Ridge & CV-minimum SE & Less than 0.01 & 0.002642 & 6e-06 & 1.071845 & 88.2\\
+IPTW & GLM & N/A & Untruncated & 0.002642 & 5e-06 & 1.168190 & 88.2\\
+IPTW & LASSO & Undersmoothed & Untruncated & 0.002642 & 4e-06 & 1.266778 & 88.2\\
+IPTW & Elastic Net & Undersmoothed & Untruncated & 0.002642 & 4e-06 & 1.268788 & 88.2\\
+IPTW & GLM & N/A & Less than 0.01 & 0.002642 & 4e-06 & 1.310899 & 88.2\\
+IPTW & Elastic Net & Undersmoothed & Less than 0.01 & 0.002642 & 4e-06 & 1.376521 & 88.2\\
+IPTW & LASSO & Undersmoothed & Less than 0.01 & 0.002642 & 4e-06 & 1.377126 & 88.2\\
+IPTW & Elastic Net & CV-minimum SE & Untruncated & 0.002642 & 3e-06 & 1.443315 & 88.2\\
+IPTW & Elastic Net & CV-minimum SE & Less than 0.01 & 0.002642 & 3e-06 & 1.444487 & 88.2\\
+IPTW & LASSO & CV-minimum SE & Untruncated & 0.002642 & 3e-06 & 1.474387 & 88.2\\
+IPTW & LASSO & CV-minimum SE & Less than 0.01 & 0.002642 & 3e-06 & 1.475018 & 88.2\\
 \bottomrule
 \end{longtable}
