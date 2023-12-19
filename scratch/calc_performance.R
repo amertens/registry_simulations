@@ -28,20 +28,8 @@ list.files(paste0(here::here(),"/data/sim_results/"))
 res_RF=readRDS(paste0(here::here(),"/data/sim_results/sim_res_RF.RDS"))
 res_RF = data.table::rbindlist(res_RF)
 
-load(paste0(here::here(),"/data/sim_results/old/sim_res_seeds1.Rdata"))
-# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed2.Rdata"))
-# res_ridge_undersmooth_markov_old=res_ridge_undersmooth_markov_1
-# res_ridge_undersmooth_markov_old2=res_ridge_undersmooth_markov_2
-# head(res_ridge_undersmooth_markov_2)
-# head(res_ridge_undersmooth_markov_old2)
-# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed3.Rdata"))
-# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed4.Rdata"))
-# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed5.Rdata"))
-# load(paste0(here::here(),"/data/sim_results/old/sim_res_seed6.Rdata"))
-
-
 #NOTE! Need to recover the extra reps for the runs that fails
-#load(paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_seeds1.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed2.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed3.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_seed4.Rdata"))
@@ -82,5 +70,6 @@ sim_perf_tab[sim_perf_tab$estimator=="ridge_undersmooth_markov" & sim_perf_tab$E
 
 write.csv(sim_perf_tab, paste0(here::here(),"/data/sim_perf_500reps.csv"))
 
-
+#look for smallest variance with 1% of 95% oracle coverage
+sim_perf_tab %>% filter(abs(O_coverage_RD-95) <= 1) %>% arrange(mean_variance_RD )
 
