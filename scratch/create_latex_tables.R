@@ -29,6 +29,8 @@ res_tab = calc_sim_performance(
   time=10)
 head(res_tab)
 
+
+
 null_truth=truth
 null_truth[10,3]=1
 null_truth[10,4]=0
@@ -38,6 +40,14 @@ null_res_tab = calc_sim_performance(
   res=res_null,
   truth=null_truth,
   time=10)
+
+
+#scale variance and bias so its clearer
+res_tab$abs_bias_RD <- res_tab$abs_bias_RD * 100
+res_tab$mean_variance_RD <- res_tab$mean_variance_RD * 100
+#scale variance and bias so its clearer
+null_res_tab$abs_bias_RD <- null_res_tab$abs_bias_RD * 100
+null_res_tab$mean_variance_RD <- null_res_tab$mean_variance_RD * 100
 
 
 #clean up labels
@@ -131,8 +141,8 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
                               
                             }
   
-  ##find row for highlight: Algorithm:="Ridge",Lambda:="Undersmoothed",Truncation:="Less than 0.01"
-  (tohighlight <- which(res_table$Estimator=="TMLE"&res_table$Algorithm=="Ridge"&res_table$Lambda=="Undersmoothed"&res_table$Truncation=="Less than 0.01"))
+  ##find row for highlight: Algorithm:="EN",Lambda:="Undersmoothed",Truncation:="Less than 0.01"
+  (tohighlight <- which(res_table$Estimator=="TMLE"&res_table$Algorithm=="Elastic Net"&res_table$Lambda=="Undersmoothed"&res_table$Truncation=="Less than 0.01"))
   
   #save for html file
   res_xtable <- res_table %>%

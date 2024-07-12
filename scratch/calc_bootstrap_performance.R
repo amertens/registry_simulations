@@ -6,6 +6,7 @@ shh <-try(setwd("~/research/Methods/registry_simulations/"),silent = TRUE)
 library(targets)
 library(tarchetypes)
 library(parallel)
+library(kableExtra)
 
 lapply(c("fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","matrixStats","speedglm","parallel","caret","foreach","clustermq"), FUN = function(X) {
   do.call("require", list(X)) 
@@ -17,12 +18,12 @@ nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE)
 
 #IC variance res
 ic_res <- read.csv(file=paste0(here::here(),"/data/sim_perf_500reps.csv"))
-ic_res=ic_res[ic_res$estimator=="ridge_undersmooth_markov",]
+ic_res=ic_res[ic_res$estimator=="EN_undersmooth_markov",]
 ic_res=ic_res %>% filter(Estimator=="tmle")
 
 #TMLE variance res
 truth<- readRDS(file=paste0(here::here(),"/data/sim_results/truth.rds"))
-tmle_res <- readRDS(file=paste0(here::here(),"/data/sim_results/sim_res_undersmooth_ridge_markov_tmle.RDS"))
+tmle_res <- readRDS(file=paste0(here::here(),"/data/sim_results/sim_res_undersmooth_EN_markov_tmle.RDS"))
 
 tmle_res = calc_sim_performance(
   res=tmle_res,
@@ -31,11 +32,11 @@ tmle_res = calc_sim_performance(
 tmle_res=tmle_res %>% filter(Estimator=="tmle")
 
 #Bootstrap variance res
-boot1 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot1.RDS")) %>% mutate(boot_run=1)
-boot2 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot2.RDS")) %>% mutate(boot_run=2)
-boot3 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot3.RDS")) %>% mutate(boot_run=3)
-boot4 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot4.RDS")) %>% mutate(boot_run=4)
-boot5 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot5.RDS")) %>% mutate(boot_run=5)
+boot1 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot1.RDS")) %>% mutate(boot_run=1)
+boot2 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot2.RDS")) %>% mutate(boot_run=2)
+boot3 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot3.RDS")) %>% mutate(boot_run=3)
+boot4 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot4.RDS")) %>% mutate(boot_run=4)
+boot5 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot5.RDS")) %>% mutate(boot_run=5)
 boot_res <- bind_rows(boot1, boot2, boot3, boot4, boot5)
 bootCIs <- boot_res %>% group_by(Target_parameter, sim_iter, boot_run) %>%
   summarise(

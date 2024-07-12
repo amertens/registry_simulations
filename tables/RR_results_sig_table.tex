@@ -3,10 +3,10 @@
 \toprule
 Estimator & Algorithm & Lambda & Truncation & RR log-transformed bias & RR variance & RR bias SE ratio & RR oracle 95\% coverage\\
 \midrule
+TMLE & Ridge & Undersmoothed & Less than 0.01 & 0.202041 & 0.060604 & 0.820707 & 96.00000\\
 \midrule
-\textbf{TMLE} & \textbf{Ridge} & \textbf{Undersmoothed} & \textbf{Less than 0.01} & \textbf{0.202041} & \textbf{0.060604} & \textbf{0.820707} & \textbf{96.00000}\\
+\textbf{TMLE} & \textbf{Elastic Net} & \textbf{Undersmoothed} & \textbf{Less than 0.01} & \textbf{0.215724} & \textbf{0.048031} & \textbf{0.984328} & \textbf{95.20000}\\
 \midrule
-TMLE & Elastic Net & Undersmoothed & Less than 0.01 & 0.215724 & 0.048031 & 0.984328 & 95.20000\\
 TMLE & LASSO & Undersmoothed & Less than 0.01 & 0.215818 & 0.048127 & 0.983769 & 95.20000\\
 TMLE & GLM & N/A & Less than 0.01 & 0.225134 & 0.048902 & 1.018065 & 96.00000\\
 TMLE & Ridge & Undersmoothed & Untruncated & 0.244586 & 0.108915 & 0.741119 & 94.80000\\
