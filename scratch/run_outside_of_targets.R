@@ -69,7 +69,7 @@ seeds1=c(136632L, 702347L, 31157L, 652859L, 501151L, 344524L, 672750L,
 
 
 
-res_glm_1= mclapply_targets_ltmle_simulation(estimator="glm",seeds=seeds1, library="glm")
+res_glm_1= mclapply_targets_ltmle_simulation(estimator="glm",seeds=seeds1[1], library="glm", n_cores=1)
 system.time({res_glmnet_1=mclapply_targets_ltmle_simulation(estimator="lasso",seeds=seeds1, library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))})
 
 
