@@ -45,7 +45,8 @@ model <- targets::tar_read_raw("lava_model")
 seed=1366328
 simulated_data_list =NULL
 
-for(i in 1:800){
+for(i in 801:1000){
+#for(i in 1:800){
   cat(i, "\n")
   set.seed(seed+1)
   simulated_data = simulate_data(lava_model = model, n = n_df)
