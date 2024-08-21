@@ -1,6 +1,6 @@
 
-# registry_simulations
-Reproducible analysis pipeline for a longitudinal simulation study of the effect of 2nd line diabetes drugs from EHR data similar to the Danish registry
+# Registry data simulations for the analysis of GLP1 use and dementia in a cohort of diabetes patients
+Reproducible analysis pipeline for a longitudinal simulation study of the effect of 2nd line diabetes drugs from EHR data similar to the Danish registry. Simulation results found in the arXiv paper [here](https://arxiv.org/abs/2310.03235).
 
 
 ## Overview
