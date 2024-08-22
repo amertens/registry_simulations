@@ -1,6 +1,8 @@
 
 library(dagitty)
 library(ggdag)
+library(ggraph)
+library(cowplot)
 library(here)
 library(tidyverse)
 
@@ -24,6 +26,7 @@ dag <- dagitty('
     L1 -> D1
     D1 -> Y1
     D1 -> Y2
+    D1 -> D2
     A2 -> D2
     L1 -> D2
     D2 -> Y2
@@ -32,16 +35,39 @@ dag <- dagitty('
 
 # Set coordinates for better visualization
 coordinates(dag) <- list(
-  x=c(L0=0, A1=1, L1=2, A2=3, Y1=2, Y2=4, D1=1, D2=3),
+  x=c(L0=0, A1=1, L1=1.5, A2=3.5, Y1=3, Y2=5, D1=3, D2=5),
   y=c(L0=0, A1=1, L1=0, A2=1, Y1=2, Y2=2, D1=-1, D2=-1)
 )
 
 
-# Plot the DAG
-p <- ggdag(dag) +
-  theme_dag() +
-  ggtitle("Simplified DAG for Longitudinal Analysis of GLP-1RA Effect on Dementia")
-p
+# # Plot the DAG
+# p <- ggdag(dag, node=T) +
+#   theme_dag_blank() +
+#   ggtitle("Simplified DAG for Longitudinal Analysis of GLP-1RA Effect on Dementia")
+# p
+# 
+# temp<-dag %>% 
+#   tidy_dagitty(layout = "auto", seed = 12345) %>%
+#   arrange(name)
+# 
+# unique(temp$data$name)
+
+p <- dag %>% 
+  tidy_dagitty(layout = "auto", seed = 12345) %>%
+  arrange(name) %>% 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  #geom_dag_point() +
+  geom_dag_edges() +
+  geom_dag_text(colour="black", parse = TRUE, label = c(expression(tilde(A(t))),
+                                        expression(tilde(A(t+1))),
+                                        expression(tilde(D(t))),
+                                        expression(tilde(D(t+1))),
+                                        expression(tilde(L(0))), 
+                                        expression(tilde(L(t))), 
+                                        expression(tilde(Y(t))),
+                                        expression(tilde(Y(t+1))))) +  
+  theme_dag_blank()
+p  
 
 # Save the plot
-ggsave(p, file=paste0(here(),"/figures/longitudinal_dag.png"), width = 10, height = 6)
+ggsave(p, file=paste0(here(),"/figures/longitudinal_dag.png"), width = 5, height = 3)
