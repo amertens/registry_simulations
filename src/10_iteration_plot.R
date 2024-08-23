@@ -44,10 +44,9 @@ head(df)
 
 #df <- df %>% filter(dataset_num>1)
 
-ggplot(df , aes(x=dataset_num, y=bias)) + geom_point() + geom_line() + 
+p <- ggplot(df , aes(x=dataset_num, y=bias)) + geom_point() + geom_line() + 
   geom_hline(yintercept = mean_bias, linetype="dashed", color="red") + 
   geom_vline(xintercept = 1000, linetype="dashed") + 
   ggtitle("Mean Bias of ATE estimates as iterations increase") + xlab("Number of iterations") + ylab("Absolute bias")
-#ggplot(df, aes(x=dataset_num, y=cum_std.err)) + geom_point() + geom_line() 
+ggsave(p, file=paste0(here(),"/figures/iteration_plot.png"), width = 5, height = 3)
 
-#Caption for this figure:

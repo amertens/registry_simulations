@@ -58,14 +58,14 @@ p <- dag %>%
   ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
   #geom_dag_point() +
   geom_dag_edges() +
-  geom_dag_text(colour="black", parse = TRUE, label = c(expression(tilde(A(t))),
-                                        expression(tilde(A(t+1))),
-                                        expression(tilde(D(t))),
-                                        expression(tilde(D(t+1))),
-                                        expression(tilde(L(0))), 
-                                        expression(tilde(L(t))), 
-                                        expression(tilde(Y(t))),
-                                        expression(tilde(Y(t+1))))) +  
+  geom_dag_text(colour="black", parse = TRUE, label = c(expression(tilde(A)(t)),
+                                        expression(tilde(A)(t+1)),
+                                        expression(D(t)),
+                                        expression(D(t+1)),
+                                        expression(tilde(L)(0)), 
+                                        expression(tilde(L)(t)), 
+                                        expression(Y(t)),
+                                        expression(Y(t+1)))) +  
   theme_dag_blank()
 p  
 
