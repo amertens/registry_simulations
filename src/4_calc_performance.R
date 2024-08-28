@@ -51,7 +51,7 @@ sim_perf_tab = calc_sim_performance(
   time=10)
 sim_perf_tab %>% filter(Estimator=="tmle") %>% arrange(O_coverage_RD)
 
-sim_perf_tab[sim_perf_tab$estimator=="ridge_undersmooth_markov" & sim_perf_tab$Estimator=="tmle",]
+sim_perf_tab[sim_perf_tab$estimator=="res_ridge_markov_undersmooth" & sim_perf_tab$Estimator=="tmle",]
 
 write.csv(sim_perf_tab, paste0(here::here(),"/data/sim_perf_1000reps.csv"))
 
