@@ -1,6 +1,6 @@
 
-# registry_simulations
-Reproducible analysis pipeline for a longitudinal simulation study of the effect of 2nd line diabetes drugs from EHR data similar to the Danish registry
+# Registry data simulations for the analysis of GLP1 use and dementia in a cohort of diabetes patients
+Reproducible analysis pipeline for a longitudinal simulation study of the effect of 2nd line diabetes drugs from EHR data similar to the Danish registry. Simulation results found in the arXiv paper [here](https://arxiv.org/abs/2310.03235).
 
 
 ## Overview
@@ -21,7 +21,7 @@ This repository contains a pipeline for longitudinal simulation studies from EHR
 1. Install required packages by running:
 
 ```R
-   install.packages(c("tidyverse", "targets", "XXXXXX ADDD))
+   install.packages(c("tidyverse", "targets", "fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","Publish","matrixStats","speedglm","parallel","caret","foreach","clustermq"))
 ```
 
 ## Functions
@@ -44,6 +44,7 @@ source(here("5_calc_performance_null.R"))
 source(here("6_run_bootstrap_variance.R"))
 source(here("7_calc_bootstrap_performance.R"))
 source(here("8_create_latex_tables.R"))
+source(here("9_example_DAG.R"))
 ```
 
 
@@ -53,4 +54,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-For any questions or issues, please open an issue on the GitHub repository or contact the maintainer at maintainer@example.com.
+For any questions or issues, please open an issue on the GitHub repository or contact the maintainer at amertens@berkeley.edu.

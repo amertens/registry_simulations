@@ -8,6 +8,8 @@ source(here("5_calc_performance_null.R"))
 source(here("6_run_bootstrap_variance.R"))
 source(here("7_calc_bootstrap_performance.R"))
 source(here("8_create_latex_tables.R"))
+source(here("9_example_DAG.R"))
+source(here("10_iteration_plot.R"))
 
 
 

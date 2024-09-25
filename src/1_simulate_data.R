@@ -36,6 +36,7 @@ Markov_variables=c("heart.failure","renal.disease","chronic.pulmonary.disease", 
 #lava version 1.7.2.1
 model <- targets::tar_read_raw("lava_model")
 
+
 #set seed
 seed=1366328
 simulated_data_list =NULL
