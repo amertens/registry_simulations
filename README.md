@@ -31,9 +31,17 @@ The simulation study primarily runs off functions sourced from the Ltmle folder,
 
 ## Usage
 
-The scripts to reproduce the simulation are in the /src/ folder labeled in order, and the shell script `0_run_simulations.R` runs each script in order.
+The scripts to reproduce the simulation are in the /src/ folder labeled in order, and the script `0_run_simulations.R` runs each script in order. The file contents, in brief, are as follows:
 
-TO DO! ADD DETAILS ABOUT EACH SCRIPT AND CLEAN UP SCRIPT DOCUMENTATION:
+* `1_simulate_data.R`: using the lava package and exported coefficients using the Danish registry, we simulate the datasets to be used for the simulation and save this in the /data/ subfolder. 
+* `2_run_simulation_for_point_estimators.R`: use function `calc_realistic_truth` to intervene on the DGP to set desired causal contrasts and simulate from them with large N, approximating the truth.
+* `3_run_null_simulations_for_point_estimates.R`:
+* `4_calc_performance.R`:
+* `5_calc_performance_null.R`:
+* `6_run_bootstrap_variance.R`:
+* `7_calc_bootstrap_performance.R`:
+* `8_create_latex_tables.R`:
+* `9_example_DAG.R`: creates the example DAG used in the publication. 
 
 ``` R
 source(here("1_simulate_data.R"))
