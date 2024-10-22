@@ -58,6 +58,8 @@ source(here("9_example_DAG.R"))
 ## Notes
 - The deterministic Q function (which encodes the setting of the probability of the outcome dementia deterministically to 1 once death, the competing event, has occurred) is built into the updates to the ltmle package, found in the repo. The exact code used for this can be found here: Ltmle/Augmentation/event_node_manipulator.R
 
+- When using undersmoothed penalized regressions, we selected the lambda value by choosing the minimum penalization (i.e., the largest lambda value) across a range of candidate values that did not cause the algorithm to crash. The exact code used for this can be found on lines 80-96 here: Ltmle/Augmentation/ltmle.glmnet.R
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
