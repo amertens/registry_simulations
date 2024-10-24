@@ -18,15 +18,18 @@ nn=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
 nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE), source)
 nn=lapply(list.files("./functions/", full.names = TRUE, recursive=TRUE), source)
 
-truth<- readRDS(file=paste0(here::here(),"/data/sim_results/truth.rds"))
+truth<- readRDS(file=paste0(here::here(),"/data/sim_results/truth.rds")) %>% subset(., select=-c(meanYa0))
 res = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
 res_null = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res_null.rds"))
+
+table(res$analysis)
 
 #calc performance
 res_tab = calc_sim_performance(
   res=res,
   truth=truth,
-  time=10)
+  time=10, 
+  mean=FALSE)
 head(res_tab)
 
 
@@ -53,26 +56,26 @@ null_res_tab$mean_variance_RD <- null_res_tab$mean_variance_RD * 100
 #clean up labels
 res_tab <- res_tab %>% subset(., select = -c(N_reps)) %>% rename(Algorithm=estimator,
                             `Y_{A=1} bias`=abs_bias_Ya1,
-                            `Y_{A=1} variance`=mean_variance_Ya1,
+                            `Y_{A=1} variance`=estimator_variance_Ya1,
                             `Y_{A=1} bias SE ratio`=bias_se_ratio_Ya1,
                             `RD bias`=abs_bias_RD,
-                            `RD variance`=mean_variance_RD,
+                            `RD variance`=estimator_variance_RD,
                             `RD bias SE ratio`=bias_se_ratio_RD,
                             `RR log-transformed bias`=abs_log_bias_RR,
-                            `RR variance`=mean_variance_RR,
+                            `RR variance`=estimator_variance_RR,
                             `RR bias SE ratio`=bias_se_ratio_RR,
                             `Y_{A=1} oracle 95% coverage`=O_coverage_Ya1,
                             `RD oracle 95% coverage`=O_coverage_RD,
                             `RR oracle 95% coverage`=O_coverage_RR)
 null_res_tab <- null_res_tab %>% subset(., select = -c(N_reps)) %>% rename(Algorithm=estimator,
                                                                `Y_{A=1} bias`=abs_bias_Ya1,
-                                                               `Y_{A=1} variance`=mean_variance_Ya1,
+                                                               `Y_{A=1} variance`=estimator_variance_Ya1,
                                                                `Y_{A=1} bias SE ratio`=bias_se_ratio_Ya1,
                                                                `RD bias`=abs_bias_RD,
-                                                               `RD variance`=mean_variance_RD,
+                                                               `RD variance`=estimator_variance_RD,
                                                                `RD bias SE ratio`=bias_se_ratio_RD,
                                                                `RR log-transformed bias`=abs_log_bias_RR,
-                                                               `RR variance`=mean_variance_RR,
+                                                               `RR variance`=estimator_variance_RR,
                                                                `RR bias SE ratio`=bias_se_ratio_RR,
                                                                `Y_{A=1} oracle 95% coverage`=O_coverage_Ya1,
                                                                `RD oracle 95% coverage`=O_coverage_RD,
@@ -80,12 +83,15 @@ null_res_tab <- null_res_tab %>% subset(., select = -c(N_reps)) %>% rename(Algor
 
 table(res_tab$Algorithm)
 
+res_table = res_tab
 
 
-create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
+create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE, markov=T, simplify=FALSE){
   
-  ## keep only markvov property estimates 
-  res_table <- res_table[grepl("markov",res_table$Algorithm)|res_table$Algorithm=="RF",]
+  # ## keep only markov property estimates 
+  # if(markov){
+  #   res_table <- res_table[grepl("markov",res_table$Algorithm)|res_table$Algorithm=="RF",]
+  # }
   
   res_table <- data.table(res_table)
   
@@ -94,7 +100,7 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
   res_table[is.na(Truncation),Truncation:="Less than 0.01"]
   
   res_table[grep("undersmooth",Algorithm),Lambda:="Undersmoothed"]
-  res_table[is.na(Lambda) & grepl("ridge|glmnet|EN_",Algorithm)==TRUE,Lambda:="CV-minimum SE"]
+  res_table[is.na(Lambda) & grepl("ridge|glmnet|EN_|_EN",Algorithm)==TRUE,Lambda:="CV-minimum SE"]
   res_table[is.na(Lambda),Lambda:="N/A"]
   
   
@@ -102,12 +108,15 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
   res_table[,Estimator:=toupper(Estimator)]
   
   res_table[,alg_old := Algorithm]
-  res_table[grep("glmnet",alg_old),Algorithm:="LASSO"]
   res_table[grep("EN_",alg_old),Algorithm:="Elastic Net"]
+  res_table[grep("_EN",alg_old),Algorithm:="Elastic Net"]
   res_table[grep("ridge",alg_old),Algorithm:="Ridge"]
   res_table[grep("glm_",alg_old),Algorithm:="GLM"]
+  res_table[grep("res_glm",alg_old),Algorithm:="GLM"]
   res_table[grep("RF",alg_old),Algorithm:="Random Forest"]
-    
+  res_table[grep("random_forest",alg_old),Algorithm:="Random Forest"]
+  res_table[grep("glmnet",alg_old),Algorithm:="Lasso"]
+  
   # sort 
   names(res_table)
 
@@ -128,7 +137,7 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
                                                         `RR oracle 95% coverage`)]
                               
                             }else if (measure=="RD"){
-                              res_table <- setorder(res_table, -Estimator,`RD bias`,`RD bias SE ratio`,-`RD oracle 95% coverage` )
+                              res_table <- setorder(res_table, -Estimator,`RD bias`,`RD variance`,`RD bias SE ratio`,-`RD oracle 95% coverage` )
                               #res_table <-  res_table <- 
                               res_table <- res_table[,.(Estimator, 
                                                         Algorithm, 
@@ -138,11 +147,18 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
                                                         `RD variance`,
                                                         `RD bias SE ratio`,
                                                         `RD oracle 95% coverage`)] 
+                              if(simplify==TRUE){
+                                res_table <- res_table[,.(Estimator, 
+                                                         Algorithm,
+                                                        `RD oracle 95% coverage`, 
+                                                        `RD variance`,
+                                                        `RD bias`)]
+                              }
                               
                             }
   
-  ##find row for highlight: Algorithm:="EN",Lambda:="Undersmoothed",Truncation:="Less than 0.01"
-  (tohighlight <- which(res_table$Estimator=="TMLE"&res_table$Algorithm=="Elastic Net"&res_table$Lambda=="Undersmoothed"&res_table$Truncation=="Less than 0.01"))
+  ##find row for highlight: Algorithm:="Ridge",Lambda:="Undersmoothed",Truncation:="Less than 0.01"
+  (tohighlight <- which(res_table$Estimator=="TMLE"&res_table$Algorithm=="Ridge"&res_table$Lambda=="Undersmoothed"&res_table$Truncation=="Less than 0.01"))
   
   #save for html file
   res_xtable <- res_table %>%
@@ -165,12 +181,12 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE){
     row_spec(tohighlight, bold=T,hline_after = T)
     } 
   
-  
   save_kable(res_xtable, file=paste0(here::here(),"/tables/",filename,".tex"),float = FALSE,format="latex")
 }
 
-create_sim_latex_tab(res_table=null_res_tab, filename="RR_results_null_table", measure="RR",bold=TRUE)
+create_sim_latex_tab(res_table=null_res_tab, filename="RR_results_null_table", measure="RR",bold=TRUE, markov=F)
 create_sim_latex_tab(res_table=res_tab, filename="RR_results_sig_table", measure="RR",bold=TRUE)
-create_sim_latex_tab(null_res_tab, filename="RD_results_null_table", measure="RD",bold=TRUE)
-create_sim_latex_tab(res_tab, filename="RD_results_sig_table", measure="RD",bold=TRUE)
+create_sim_latex_tab(res_table=null_res_tab, filename="RD_results_null_table", measure="RD",bold=TRUE, markov=F)
+create_sim_latex_tab(res_table=res_tab, filename="RD_results_sig_table", measure="RD",bold=TRUE)
+create_sim_latex_tab(res_table=res_tab, filename="RD_results_sig_table_simplify", measure="RD",bold=TRUE, simplify=TRUE)
 

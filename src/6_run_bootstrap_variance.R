@@ -39,6 +39,14 @@ set.seed(12345)
 seeds_bootstrap<-sample(1:1000000, 500, replace=FALSE)
 
 N_bootstraps=200
+N_bootstraps=2
+
+system.time({res_EN_undersmooth_markov_boot_test=mclapply_targets_ltmle_bootstrap_simulation(n_df=1000,
+                                                                                         n_bootstrap_samples=N_bootstraps, 
+                                                                                         n_cores=1, estimator="undersmoothed EN markov",
+                                                                                         seeds=seeds_bootstrap[1:2], Markov_variables=Markov_variables, 
+                                                                                         library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
+
 #test=mclapply_targets_ltmle_simulation(n_bootstrap_samples=2, time=2, n_cores=90, estimator="undersmoothed EN markov",seeds=seeds1[1:2], Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))
 
 system.time({res_EN_undersmooth_markov_boot1=mclapply_targets_ltmle_bootstrap_simulation(n_bootstrap_samples=N_bootstraps, n_cores=90, estimator="undersmoothed EN markov",seeds=seeds_bootstrap[1:100], Markov_variables=Markov_variables,  library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})

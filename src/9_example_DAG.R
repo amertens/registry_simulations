@@ -8,8 +8,6 @@ library(tidyverse)
 
 
 # Create the DAG
-
-# Create the DAG
 dag <- dagitty('
   dag {
     L0 -> A1 -> Y1 -> Y2
@@ -40,32 +38,19 @@ coordinates(dag) <- list(
 )
 
 
-# # Plot the DAG
-# p <- ggdag(dag, node=T) +
-#   theme_dag_blank() +
-#   ggtitle("Simplified DAG for Longitudinal Analysis of GLP-1RA Effect on Dementia")
-# p
-# 
-# temp<-dag %>% 
-#   tidy_dagitty(layout = "auto", seed = 12345) %>%
-#   arrange(name)
-# 
-# unique(temp$data$name)
-
 p <- dag %>% 
   tidy_dagitty(layout = "auto", seed = 12345) %>%
   arrange(name) %>% 
   ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
-  #geom_dag_point() +
   geom_dag_edges() +
   geom_dag_text(colour="black", parse = TRUE, label = c(expression(tilde(A)(t)),
-                                        expression(tilde(A)(t+1)),
-                                        expression(D(t)),
-                                        expression(D(t+1)),
-                                        expression(tilde(L)(0)), 
-                                        expression(tilde(L)(t)), 
-                                        expression(Y(t)),
-                                        expression(Y(t+1)))) +  
+                                                        expression(tilde(A)(t+1)),
+                                                        expression(D(t)),
+                                                        expression(D(t+1)),
+                                                        expression(W), 
+                                                        expression(tilde(L)(t)), 
+                                                        expression(Y(t)),
+                                                        expression(Y(t+1)))) +  
   theme_dag_blank()
 p  
 

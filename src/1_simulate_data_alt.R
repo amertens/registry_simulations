@@ -38,14 +38,13 @@ model <- targets::tar_read_raw("lava_model")
 
 
 #set seed
-seed=1366328
+seed=7
 simulated_data_list =NULL
 i=1
 for(i in 1:1000){
   cat(i, "\n")
   set.seed(seed+i)
   simulated_data = simulate_data(lava_model = model, n = n_df)
-  saveRDS(simulated_data, file = paste0(here::here(),"/data/sim_data/simulated_data_",i,".rds"))
+  saveRDS(simulated_data, file = paste0(here::here(),"/data/sim_data/alt/simulated_data_",i,".rds"))
 }
 
-saveRDS(simulated_data_list, file = paste0(here::here(),"/data/simulated_data_list.rds"))

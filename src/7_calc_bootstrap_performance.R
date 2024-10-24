@@ -17,13 +17,17 @@ nn=lapply(list.files("./Ltmle/Augmentation/", full.names = TRUE, recursive=TRUE)
 
 
 #IC variance res
-ic_res <- read.csv(file=paste0(here::here(),"/data/sim_perf_500reps.csv"))
-ic_res=ic_res[ic_res$estimator=="EN_undersmooth_markov",]
+ic_res <- read.csv(file=paste0(here::here(),"/data/sim_perf_1000reps.csv"))
+ic_res=ic_res[ic_res$estimator=="res_ridge_undersmooth",]
 ic_res=ic_res %>% filter(Estimator=="tmle")
 
 #TMLE variance res
-truth<- readRDS(file=paste0(here::here(),"/data/sim_results/truth.rds"))
-tmle_res <- readRDS(file=paste0(here::here(),"/data/sim_results/sim_res_undersmooth_EN_markov_tmle.RDS"))
+truth=readRDS(paste0(here::here(),"/data/sim_results/truth.rds")) %>% subset(., select=-c(meanYa0))
+
+tmle_res <- readRDS(file=paste0(here::here(),"/data/sim_results/sim_res_tmle_var.RDS"))
+
+tmle_res %>% group_by(Target_parameter,Estimator) %>% summarize(mean(estimate))
+
 
 tmle_res = calc_sim_performance(
   res=tmle_res,
@@ -31,12 +35,13 @@ tmle_res = calc_sim_performance(
   time=10)
 tmle_res=tmle_res %>% filter(Estimator=="tmle")
 
-#Bootstrap variance res
-boot1 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot1.RDS")) %>% mutate(boot_run=1)
-boot2 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot2.RDS")) %>% mutate(boot_run=2)
-boot3 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot3.RDS")) %>% mutate(boot_run=3)
-boot4 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot4.RDS")) %>% mutate(boot_run=4)
-boot5 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_EN_undersmooth_markov_boot5.RDS")) %>% mutate(boot_run=5)
+
+#Bootstrap variance res first 500 reps
+boot1 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot1.RDS")) %>% mutate(boot_run=1)
+boot2 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot2.RDS")) %>% mutate(boot_run=2)
+boot3 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot3.RDS")) %>% mutate(boot_run=3)
+boot4 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot4.RDS")) %>% mutate(boot_run=4)
+boot5 <- readRDS(file=paste0(here::here(),"/data/sim_results/res_ridge_undersmooth_markov_boot5.RDS")) %>% mutate(boot_run=5)
 boot_res <- bind_rows(boot1, boot2, boot3, boot4, boot5)
 bootCIs <- boot_res %>% group_by(Target_parameter, sim_iter, boot_run) %>%
   summarise(
@@ -45,19 +50,38 @@ bootCIs <- boot_res %>% group_by(Target_parameter, sim_iter, boot_run) %>%
     boot.CI2=quantile(estimate,.975)
   )
 
-boot_res_A1=mean(bootCIs$boot.CI1[bootCIs$Target_parameter=="Risk(A=1)"] < truth$meanYa1[10] & bootCIs$boot.CI2[bootCIs$Target_parameter=="Risk(A=1)"] > truth$meanYa1[10] )*100
-boot_res_RD=mean(bootCIs$boot.CI1[bootCIs$Target_parameter=="ATE"] < truth$meanRD[10] & bootCIs$boot.CI2[bootCIs$Target_parameter=="ATE"] > truth$meanRD[10] )*100
-boot_res_RR=mean(bootCIs$boot.CI1[bootCIs$Target_parameter=="RelativeRisk"] < truth$meanRR[10] & bootCIs$boot.CI2[bootCIs$Target_parameter=="RelativeRisk"] > truth$meanRR[10] )*100
+bootCI_ATE = bootCIs %>% filter(Target_parameter=="ATE")  %>% arrange(boot.CI2+boot.CI1)
+bootCI_ATE$rep =1:500
+ggplot(bootCI_ATE, aes(x=rep)) +
+  geom_hline(yintercept=(-0.0071862)) +
+  geom_linerange(aes(ymin=boot.CI1, ymax=boot.CI2),alpha=0.5) 
+
+mean(bootCI_ATE$boot.CI1< truth$meanRD[10] & bootCI_ATE$boot.CI2> truth$meanRD[10] )*100
+summary(bootCI_ATE$boot.CI1)
+summary(bootCI_ATE$boot.CI2)
+
+#boot results -new 500 reps
+bootCIs2 <- readRDS(file=paste0(here::here(),"/data/sim_results/bootCIs_501_1000.rds")) %>% mutate(boot_run=9, dataset_num=dataset_num+500)
 
 
+bootCI_df <- bind_rows(bootCIs, bootCIs2) 
+dim(bootCI_df %>% filter(Target_parameter=="ATE"))
+
+boot_res_A1=mean(bootCI_df$boot.CI1[bootCI_df$Target_parameter=="Risk(A=1)"] < truth$meanYa1[10] & bootCI_df$boot.CI2[bootCI_df$Target_parameter=="Risk(A=1)"] > truth$meanYa1[10] )*100
+boot_res_RD=mean(bootCI_df$boot.CI1[bootCI_df$Target_parameter=="ATE"] < truth$meanRD[10] & bootCI_df$boot.CI2[bootCI_df$Target_parameter=="ATE"] > truth$meanRD[10] )*100
+boot_res_RR=mean(bootCI_df$boot.CI1[bootCI_df$Target_parameter=="RelativeRisk"] < truth$meanRR[10] & bootCI_df$boot.CI2[bootCI_df$Target_parameter=="RelativeRisk"] > truth$meanRR[10] )*100
 
 res_tab <- data.frame(`Variance estimator`=c("Influence curve","Bootstrap","TMLE"),
-                      `Y_{A=1} Coverage`=c(ic_res$coverage_Ya1, boot_res_A1,  tmle_res$coverage_Ya1),
+                      `Y_{A=1} Coverage`=c(ic_res$coverage_Ya1, boot_res_A1, tmle_res$coverage_Ya1),
                       `RD Coverage`=c(ic_res$coverage_RD, boot_res_RD, tmle_res$coverage_RD),
                       `RR Coverage`=c(ic_res$coverage_RR, boot_res_RR, tmle_res$coverage_RR))
+colnames(res_tab) <- c("Variance estimator","Y_{A=1} Coverage","RD Coverage","RR Coverage")
 knitr::kable(res_tab, format="simple")
 
+
+
 res_xtable <- res_tab %>%
+  dplyr::select(`Variance estimator`, `RD Coverage`) %>%
   knitr::kable(
     format = "latex",
     align = "l",
@@ -66,28 +90,11 @@ res_xtable <- res_tab %>%
     linesep = "",
     digits =6) %>%
   kableExtra::kable_styling(
-    position = "left"#,
-    # latex_options = c("striped", "repeat_header"),
-    # stripe_color = "gray!15"
+    position = "left"#
   )
 
 save_kable(res_xtable, file=paste0(here::here(),"/tables/variance_comp_tab.tex"),float = FALSE,format="latex")
 
-
-
-res_ic = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
-res_ic = res_ic %>% filter(Target_parameter=="RelativeRisk", Estimator=="tmle", grepl("ridge_undersmooth_markov",analysis))
-plot_df=bind_rows(bootCIs%>% filter(Target_parameter=="RelativeRisk")%>% mutate(variance_estimator="ic"),
-                  res_ic)
-
-ggplot(plot_df, aes(x=std.err, group=variance_estimator )) + geom_boxplot() + geom_vline(xintercept = sd(res_ic$estimate), color="red")
-
-res_ic = readRDS(file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
-res_ic = res_ic %>% filter(Target_parameter=="RelativeRisk", Estimator=="tmle",
-                           !grepl("untrunc",analysis), grepl("ridge_undersmooth",analysis)|analysis=="res_glmnet_2"|analysis=="res_glmnet_1"|analysis=="res_glmnet_undersmooth_2"|analysis=="res_glmnet_undersmooth_1")
-table(res_ic$analysis)
-
-ggplot(res_ic, aes(x=log(estimate), group=estimator  )) + geom_boxplot() + geom_vline(xintercept = log(0.5356286 ), color="red") + theme_classic() + facet_grid(~estimator)
 
 
 #show undersmoothed ridge versus CV lasso

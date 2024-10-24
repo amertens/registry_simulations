@@ -29,6 +29,19 @@ coefs_null$outcome_coef$dementia_7[grepl("GLP1RA",names(coefs_null$outcome_coef$
 coefs_null$outcome_coef$dementia_8[grepl("GLP1RA",names(coefs_null$outcome_coef$dementia_8))] <- 0
 coefs_null$outcome_coef$dementia_9[grepl("GLP1RA",names(coefs_null$outcome_coef$dementia_9))] <- 0
 coefs_null$outcome_coef$dementia_10[grepl("GLP1RA",names(coefs_null$outcome_coef$dementia_10))] <- 0
+
+# do I neef to set the censoring to 0?
+# coefs_null$censoring_coef$Censored_1[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_1))] <-0
+# coefs_null$censoring_coef$Censored_2[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_2))] <-0
+# coefs_null$censoring_coef$Censored_3[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_3))] <-0
+# coefs_null$censoring_coef$Censored_4[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_4))] <-0
+# coefs_null$censoring_coef$Censored_5[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_5))] <-0
+# coefs_null$censoring_coef$Censored_6[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_6))] <-0
+# coefs_null$censoring_coef$Censored_7[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_7))] <-0
+# coefs_null$censoring_coef$Censored_8[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_8))] <-0
+# coefs_null$censoring_coef$Censored_9[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_9))] <-0
+# coefs_null$censoring_coef$Censored_10[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_10))] <-0
+
 model_null = get_lava_model(time_horizon = 10, coefs = coefs_null)
 
 

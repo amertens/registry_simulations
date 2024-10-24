@@ -15,29 +15,32 @@ list.files(paste0(here::here(),"/data/sim_results/"))
 # load(paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
 # load(paste0(here::here(),"/data/sim_results/sim_res_full.Rdata"))
 load(paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_markov_RF.Rdata"))
 
-# summary(res_ridge_extra$estimate[res_ridge_extra$Target_parameter=="ATE" & res_ridge_extra$Estimator=="tmle"])
-# summary(res_ridge_extra$estimate[res_ridge_extra$Target_parameter=="Risk(A=1)" & res_ridge_extra$Estimator=="tmle"])
-# summary(res_ridge_extra$estimate[res_ridge_extra$Target_parameter=="Risk(A=0)" & res_ridge_extra$Estimator=="tmle"])
-# ggplot(res_ridge_extra %>% filter(Target_parameter=="ATE"), aes(x=estimate)) + geom_histogram(bins=100) + facet_wrap(~Estimator)
-# ggplot(res_glm_extra %>% filter(Target_parameter=="ATE"), aes(x=estimate)) + geom_histogram(bins=100) + facet_wrap(~Estimator)
-# ggplot(res_glm_2 %>% filter(Target_parameter=="ATE"), aes(x=estimate)) + geom_histogram(bins=100) + facet_wrap(~Estimator)
-# ggplot(res_glmnet_extra %>% filter(Target_parameter=="ATE"), aes(x=estimate)) + geom_histogram(bins=100) + facet_wrap(~Estimator)
-# ggplot(res_EN_extra %>% filter(Target_parameter=="ATE"), aes(x=estimate)) + geom_histogram(bins=100) + facet_wrap(~Estimator)
+ls(pattern = "res_")
+
+res_EN_markov %>% group_by(Estimator) %>% 
+  summarize( mean(estimate), mean(std.err))
+
+
+res_glmnet_markov_undersmooth_untruncated %>% group_by(Estimator) %>% 
+  summarize( mean(estimate), mean(std.err))
+res_glm_markov %>% group_by(Estimator) %>% 
+  summarize( mean(estimate), mean(std.err))
+res_random_forest %>% group_by(Estimator) %>% 
+  summarize( mean(estimate), mean(std.err))
+
+
 
 res=mget(ls(pattern = "res_"))
 
 res= data.table::rbindlist(l=res, use.names=TRUE, fill=TRUE, idcol="analysis")
-# res$estimator<-gsub("_[0-9]+$","",res$analysis)
-# res$estimator = gsub("res_","",res$estimator)
-# res$estimator = gsub("_tr","",res$estimator)
-res$analysis = gsub("_extra","",res$analysis)
 
 table(res$estimator)
 table(res$analysis)
 #TEMP
 res$estimator <- res$analysis
-#res <- res %>% group_by(estimator) %>% slice(1:100)
+
 
 saveRDS(res, file=paste0(here::here(),"/data/sim_results/sim_res.rds"))
 
