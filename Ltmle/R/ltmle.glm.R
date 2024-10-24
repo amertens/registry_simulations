@@ -4,7 +4,7 @@
 #
 ltmle.glm <- function (formula, family, data, weights){
     #    print(formula)
-    if (length(weights)==NROW(data)||is.null(weights)) {
+    if (length(weights)!=NROW(data)||is.null(weights)) {
         try.result <- try(m <- speedglm::speedglm(formula = formula,
                                                   family = family,
                                                   data = data,
