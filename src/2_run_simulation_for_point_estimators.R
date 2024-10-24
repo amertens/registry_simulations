@@ -1,6 +1,6 @@
 
 rm(list=ls())
-load(paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
+load(paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
 
 gc()
 shh <-try(setwd("C:/Users/andre/Documents/jici/registry_simulations/"),silent = TRUE)
@@ -196,46 +196,47 @@ run_mclapply_targets_ltmle_simulation <- function(ncores=20, estimator="glm", da
 # [17] "sim_res_ridge_Qint_v5"    
 
 #sim_res_glm_ic
-# res_glm_extra = run_run_mclapply_targets_ltmle_simulation(n_cores=1, estimator="glm",dataset_nums=1, library="glm")
+# res_glm = run_run_mclapply_targets_ltmle_simulation(n_cores=1, estimator="glm",dataset_nums=1, library="glm")
 
 #-------------------------------------------------------------------------------
 # Run here
 #-------------------------------------------------------------------------------
 
-load(paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
+system.time({res_test= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="glm",dataset_nums=c(21,40), library="glm", Markov_variables=Markov_variables)})
+res_test
 
-# system.time({res_glm_extra= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="glm",dataset_nums=c(1,1000), library="glm")})
-# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
+#load(paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
 
- # system.time({res_glmnet_extra=run_mclapply_targets_ltmle_simulation(ncores=20, estimator="lasso",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))})
- # save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
- # system.time({res_glmnet_undersmooth_extra= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="undersmoothed lasso",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))})
- # save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
- # 
- # system.time({res_ridge_extra= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="ridge",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))})
- # save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
- # system.time({res_ridge_undersmooth_extra= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="undersmoothed ridge",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
- # save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
- # system.time({res_EN_extra= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="EN",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))})
- # save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
- # system.time({res_EN_undersmooth_extra= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="undersmoothed EN",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
- # save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
+system.time({res_glm= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="glm",dataset_nums=c(1,1000), library="glm", Markov_variables=Markov_variables)})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
 
+ system.time({res_glmnet=run_mclapply_targets_ltmle_simulation(ncores=20, estimator="lasso",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="min_lambda",alpha=1, Markov_variables=Markov_variables))})
+ save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+ system.time({res_glmnet_undersmooth= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="undersmoothed lasso",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1, Markov_variables=Markov_variables))})
+ save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+ system.time({res_ridge= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="ridge",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0, Markov_variables=Markov_variables))})
+ save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+ system.time({res_ridge_undersmooth= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="undersmoothed ridge",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0, Markov_variables=Markov_variables))})
+ save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+ system.time({res_EN= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="EN",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5, Markov_variables=Markov_variables))})
+ save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+ system.time({res_EN_undersmooth= run_mclapply_targets_ltmle_simulation(ncores=20, estimator="undersmoothed EN",dataset_nums=c(1,1000), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5, Markov_variables=Markov_variables))})
+ save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
 
-# system.time({res_glm_untruncated_extra=run_mclapply_targets_ltmle_simulation(ncores=20, estimator="glm",dataset_nums=c(1,1000), gbounds=c(0,1), library="glm")})
-# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
-# system.time({res_glmnet_untruncated_extra=run_mclapply_targets_ltmle_simulation(ncores=20, estimator="lasso",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=1))})
-# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
-# system.time({res_glmnet_undersmooth_untruncated_extra=run_mclapply_targets_ltmle_simulation(ncores=20, estimator="undersmoothed lasso",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1))})
-# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
-# system.time({res_ridge_untruncated_extra=run_mclapply_targets_ltmle_simulation(ncores=50, estimator="ridge",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0))})
-# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
-# system.time({res_ridge_undersmooth_untruncated_extra=run_mclapply_targets_ltmle_simulation(ncores=50, estimator="undersmoothed ridge",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0))})
-# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
-# system.time({res_EN_untruncated_extra=run_mclapply_targets_ltmle_simulation(ncores=50, estimator="EN",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5))})
-# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
-# system.time({res_EN_undersmooth_untruncated_extra=run_mclapply_targets_ltmle_simulation(ncores=50, estimator="undersmoothed EN",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5))})
-# save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_extra.Rdata"))
+system.time({res_glm_untruncated=run_mclapply_targets_ltmle_simulation(ncores=20, estimator="glm",dataset_nums=c(1,1000), gbounds=c(0,1), library="glm")})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+system.time({res_glmnet_untruncated=run_mclapply_targets_ltmle_simulation(ncores=20, estimator="lasso",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=1, Markov_variables=Markov_variables))})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+system.time({res_glmnet_undersmooth_untruncated=run_mclapply_targets_ltmle_simulation(ncores=20, estimator="undersmoothed lasso",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=1, Markov_variables=Markov_variables))})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+system.time({res_ridge_untruncated=run_mclapply_targets_ltmle_simulation(ncores=50, estimator="ridge",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0, Markov_variables=Markov_variables))})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+system.time({res_ridge_undersmooth_untruncated=run_mclapply_targets_ltmle_simulation(ncores=50, estimator="undersmoothed ridge",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0, Markov_variables=Markov_variables))})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+system.time({res_EN_untruncated=run_mclapply_targets_ltmle_simulation(ncores=50, estimator="EN",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="min_lambda",alpha=0.5, Markov_variables=Markov_variables))})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
+system.time({res_EN_undersmooth_untruncated=run_mclapply_targets_ltmle_simulation(ncores=50, estimator="undersmoothed EN",dataset_nums=c(1,1000), gbounds=c(0,1), library="glmnet", SL.Control=list(selector="undersmooth",alpha=0.5, Markov_variables=Markov_variables))})
+save(list=ls(pattern = "res_"), file=paste0(here::here(),"/data/sim_results/sim_res_markov.Rdata"))
 
 
 
