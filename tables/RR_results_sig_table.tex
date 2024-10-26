@@ -7,17 +7,17 @@ Estimator & Algorithm & Lambda & Truncation & RR log-transformed bias & RR varia
 \textbf{TMLE} & \textbf{Ridge} & \textbf{Undersmoothed} & \textbf{Less than 0.01} & \textbf{0.205151} & \textbf{0.018839} & \textbf{0.833486} & \textbf{95.0}\\
 \midrule
 TMLE & Elastic Net & Undersmoothed & Less than 0.01 & 0.217531 & 0.021877 & 0.994112 & 95.1\\
-TMLE & Lasso & Undersmoothed & Less than 0.01 & 0.217640 & 0.021909 & 0.993595 & 95.1\\
+TMLE & GLM & Undersmoothed & Less than 0.01 & 0.217640 & 0.021909 & 0.993595 & 95.1\\
 TMLE & GLM & N/A & Less than 0.01 & 0.226852 & 0.024618 & 1.026388 & 95.4\\
 TMLE & Ridge & Undersmoothed & Untruncated & 0.241599 & 0.028861 & 0.738944 & 94.2\\
 TMLE & Elastic Net & Undersmoothed & Untruncated & 0.258836 & 0.035723 & 0.914950 & 94.4\\
-TMLE & Lasso & Undersmoothed & Untruncated & 0.259397 & 0.035979 & 0.913877 & 94.5\\
+TMLE & GLM & Undersmoothed & Untruncated & 0.259397 & 0.035979 & 0.913877 & 94.5\\
 TMLE & GLM & N/A & Untruncated & 0.268537 & 0.040503 & 0.880112 & 94.6\\
 TMLE & Ridge & CV-minimum SE & Untruncated & 0.321963 & 0.012458 & 1.086871 & 82.2\\
 TMLE & Elastic Net & CV-minimum SE & Untruncated & 0.324839 & 0.011740 & 1.407856 & 81.3\\
-TMLE & Lasso & CV-minimum SE & Untruncated & 0.324873 & 0.011726 & 1.431680 & 81.3\\
+TMLE & GLM & CV-minimum SE & Untruncated & 0.324873 & 0.011726 & 1.431680 & 81.3\\
 TMLE & Elastic Net & CV-minimum SE & Less than 0.01 & 0.325993 & 0.011246 & 1.427793 & 79.8\\
-TMLE & Lasso & CV-minimum SE & Less than 0.01 & 0.327187 & 0.011231 & 1.455764 & 79.5\\
+TMLE & GLM & CV-minimum SE & Less than 0.01 & 0.327187 & 0.011231 & 1.455764 & 79.5\\
 TMLE & Ridge & CV-minimum SE & Less than 0.01 & 0.332889 & 0.010864 & 1.179308 & 79.1\\
 TMLE & Random Forest & N/A & Less than 0.01 & 0.339499 & 0.052330 & 4.017601 & 89.8\\
 TMLE & Random Forest & N/A & Untruncated & 0.345277 & 0.057123 & 4.027725 & 89.5\\
@@ -26,14 +26,14 @@ IPTW & GLM & N/A & Untruncated & 0.268342 & 0.041164 & 0.871940 & 94.7\\
 IPTW & Random Forest & N/A & Less than 0.01 & 0.277342 & 0.015991 & 2.616614 & 89.0\\
 IPTW & Random Forest & N/A & Untruncated & 0.278906 & 0.017923 & 2.574300 & 89.4\\
 IPTW & Elastic Net & CV-minimum SE & Less than 0.01 & 0.321920 & 0.011096 & 1.399584 & 79.9\\
-IPTW & Lasso & CV-minimum SE & Less than 0.01 & 0.323919 & 0.011009 & 1.436212 & 79.5\\
-IPTW & Lasso & CV-minimum SE & Untruncated & 0.330184 & 0.011271 & 1.433795 & 80.3\\
+IPTW & GLM & CV-minimum SE & Less than 0.01 & 0.323919 & 0.011009 & 1.436212 & 79.5\\
+IPTW & GLM & CV-minimum SE & Untruncated & 0.330184 & 0.011271 & 1.433795 & 80.3\\
 IPTW & Elastic Net & CV-minimum SE & Untruncated & 0.331145 & 0.011334 & 1.406249 & 79.4\\
-IPTW & Lasso & Undersmoothed & Less than 0.01 & 0.355225 & 0.010852 & 1.583617 & 76.8\\
+IPTW & GLM & Undersmoothed & Less than 0.01 & 0.355225 & 0.010852 & 1.583617 & 76.8\\
 IPTW & Elastic Net & Undersmoothed & Less than 0.01 & 0.357435 & 0.010800 & 1.591111 & 76.6\\
 IPTW & Ridge & CV-minimum SE & Less than 0.01 & 0.361383 & 0.010892 & 1.174129 & 77.3\\
 IPTW & Ridge & CV-minimum SE & Untruncated & 0.384133 & 0.011676 & 1.140885 & 76.4\\
-IPTW & Lasso & Undersmoothed & Untruncated & 0.393386 & 0.018178 & 1.343341 & 82.0\\
+IPTW & GLM & Undersmoothed & Untruncated & 0.393386 & 0.018178 & 1.343341 & 82.0\\
 IPTW & Elastic Net & Undersmoothed & Untruncated & 0.395204 & 0.017974 & 1.350280 & 81.7\\
 IPTW & Ridge & Undersmoothed & Less than 0.01 & 0.523812 & 0.007356 & 1.739550 & 51.9\\
 IPTW & Ridge & Undersmoothed & Untruncated & 0.553451 & 0.011497 & 1.358210 & 62.5\\

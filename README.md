@@ -34,25 +34,32 @@ The simulation study primarily runs off functions sourced from the Ltmle folder,
 The scripts to reproduce the simulation are in the /src/ folder labeled in order, and the script `0_run_simulations.R` runs each script in order. The file contents, in brief, are as follows:
 
 * `1_simulate_data.R`: using the lava package and exported coefficients using the Danish registry, we simulate the datasets to be used for the simulation and save this in the /data/ subfolder. 
-* `2_run_simulation_for_point_estimators.R`: use function `calc_realistic_truth` to intervene on the DGP to set desired causal contrasts and simulate from them with large N, approximating the truth.
-* `3_run_null_simulations_for_point_estimates.R`:
+* `2_calculate_truth.R`: use function `calc_realistic_truth` to intervene on the DGP to set desired causal contrasts and simulate from them with large N, approximating the truth.
+* `3_run_simulation_for_point_estimators.R`: With wrapper functions for parallelization, we run the simulation for the different estimator options across 1000 iterations of simulated data.
 * `4_calc_performance.R`:
 * `5_calc_performance_null.R`:
 * `6_run_bootstrap_variance.R`:
 * `7_calc_bootstrap_performance.R`:
-* `8_create_latex_tables.R`:
-* `9_example_DAG.R`: creates the example DAG used in the publication. 
+
+* `3_run_null_simulations_for_point_estimates.R`:
+
+
+* `10_create_latex_tables.R`: creates the manuscript results tables
+* `11_example_DAG.R`: creates the example DAG used in the publication. 
 
 ``` R
 source(here("1_simulate_data.R"))
-source(here("2_run_simulation_for_point_estimators.R"))
-source(here("3_run_null_simulations_for_point_estimates.R"))
+source(here("2_calculate_truth.R"))
+source(here("3_run_simulation_for_point_estimators.R"))
 source(here("4_calc_performance.R"))
-source(here("5_calc_performance_null.R"))
-source(here("6_run_bootstrap_variance.R"))
-source(here("7_calc_bootstrap_performance.R"))
-source(here("8_create_latex_tables.R"))
-source(here("9_example_DAG.R"))
+source(here("5_run_bootstrap_variance.R"))
+source(here("6_calc_bootstrap_performance.R"))
+source(here("7_simulate_data_null.R"))
+source(here("8_run_null_simulations_for_point_estimates.R"))
+source(here("9_calc_performance_null.R"))
+source(here("10_create_latex_tables.R"))
+source(here("11_example_DAG.R"))
+
 ```
 
 ## Notes

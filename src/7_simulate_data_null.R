@@ -30,17 +30,17 @@ coefs_null$outcome_coef$dementia_8[grepl("GLP1RA",names(coefs_null$outcome_coef$
 coefs_null$outcome_coef$dementia_9[grepl("GLP1RA",names(coefs_null$outcome_coef$dementia_9))] <- 0
 coefs_null$outcome_coef$dementia_10[grepl("GLP1RA",names(coefs_null$outcome_coef$dementia_10))] <- 0
 
-# do I neef to set the censoring to 0?
-# coefs_null$censoring_coef$Censored_1[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_1))] <-0
-# coefs_null$censoring_coef$Censored_2[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_2))] <-0
-# coefs_null$censoring_coef$Censored_3[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_3))] <-0
-# coefs_null$censoring_coef$Censored_4[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_4))] <-0
-# coefs_null$censoring_coef$Censored_5[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_5))] <-0
-# coefs_null$censoring_coef$Censored_6[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_6))] <-0
-# coefs_null$censoring_coef$Censored_7[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_7))] <-0
-# coefs_null$censoring_coef$Censored_8[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_8))] <-0
-# coefs_null$censoring_coef$Censored_9[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_9))] <-0
-# coefs_null$censoring_coef$Censored_10[grepl("GLP1RA",names(coefs_null$censoring_coef$Censored_10))] <-0
+
+coefs_null$comp.event_coef$Dead_1[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_1))] <- 0
+coefs_null$comp.event_coef$Dead_2[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_2))] <- 0
+coefs_null$comp.event_coef$Dead_3[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_3))] <- 0
+coefs_null$comp.event_coef$Dead_4[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_4))] <- 0
+coefs_null$comp.event_coef$Dead_5[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_5))] <- 0
+coefs_null$comp.event_coef$Dead_6[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_6))] <- 0
+coefs_null$comp.event_coef$Dead_7[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_7))] <- 0
+coefs_null$comp.event_coef$Dead_8[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_8))] <- 0
+coefs_null$comp.event_coef$Dead_9[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_9))] <- 0
+coefs_null$comp.event_coef$Dead_10[grepl("GLP1RA",names(coefs_null$comp.event_coef$Dead_10))] <- 0
 
 model_null = get_lava_model(time_horizon = 10, coefs = coefs_null)
 
@@ -55,6 +55,11 @@ d.never = simulate_data(lava_model = modelA0, n = 1000000)
 
 Ya0_t10 <- mean(d.never$dementia_10,na.rm=T)
 Ya1_t10 <- mean(d.always$dementia_10,na.rm=T)
+Ya1_t10 - Ya0_t10
+Ya1_t10 / Ya0_t10
+
+Ya0_t10 <- mean(d.never$Dead_9,na.rm=T)
+Ya1_t10 <- mean(d.always$Dead_9,na.rm=T)
 Ya1_t10 - Ya0_t10
 Ya1_t10 / Ya0_t10
 
@@ -74,7 +79,7 @@ Markov_variables=c("heart.failure","renal.disease","chronic.pulmonary.disease", 
 seed=3456
 simulated_data_list =NULL
 i=1
-for(i in 1:1000){
+for(i in 367:1000){
   cat(i, "\n")
   set.seed(seed+i)
   simulated_data = simulate_data(lava_model = model_null, n = n_df)

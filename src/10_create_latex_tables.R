@@ -35,8 +35,8 @@ head(res_tab)
 
 
 null_truth=truth
-null_truth[10,3]=1
-null_truth[10,4]=0
+null_truth[,c(3,6)]=1
+null_truth[,c(4,7)]=0
 null_truth
 
 null_res_tab = calc_sim_performance(
@@ -44,6 +44,10 @@ null_res_tab = calc_sim_performance(
   truth=null_truth,
   time=10)
 
+mean(null_res_tab$coverage_RD[null_res_tab$Estimator=="tmle"])
+mean(null_res_tab$coverage_RD[null_res_tab$Estimator=="iptw"])
+mean(null_res_tab$coverage_RR[null_res_tab$Estimator=="tmle"])
+mean(null_res_tab$coverage_RR[null_res_tab$Estimator=="iptw"])
 
 #scale variance and bias so its clearer
 res_tab$abs_bias_RD <- res_tab$abs_bias_RD * 100
@@ -116,6 +120,7 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE, 
   res_table[grep("RF",alg_old),Algorithm:="Random Forest"]
   res_table[grep("random_forest",alg_old),Algorithm:="Random Forest"]
   res_table[grep("glmnet",alg_old),Algorithm:="Lasso"]
+  res_table[grep("glm",alg_old),Algorithm:="GLM"]
   
   # sort 
   names(res_table)
@@ -148,11 +153,14 @@ create_sim_latex_tab <- function(res_table, filename, measure="RR", bold=FALSE, 
                                                         `RD bias SE ratio`,
                                                         `RD oracle 95% coverage`)] 
                               if(simplify==TRUE){
-                                res_table <- res_table[,.(Estimator, 
-                                                         Algorithm,
+                                res_table <- res_table[Estimator=="TMLE",.(Algorithm,
+                                                         Lambda, 
+                                                         Truncation,
                                                         `RD oracle 95% coverage`, 
                                                         `RD variance`,
-                                                        `RD bias`)]
+                                                        `RD bias`)] 
+                                res_table$`RD bias` <-  round(res_table$`RD bias`,digits=3)
+                                colnames(res_table) <- c("Algorithm","Lambda","Truncation","95% Coverage","Variance","Bias")
                               }
                               
                             }
