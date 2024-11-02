@@ -21,7 +21,7 @@ This repository contains a pipeline for longitudinal simulation studies from EHR
 1. Install required packages by running:
 
 ```R
-   install.packages(c("tidyverse", "targets", "fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","Publish","matrixStats","speedglm","parallel","caret","foreach","clustermq"))
+   install.packages(c("tidyverse",  "fst","lava","ltmle","data.table","tidyverse","glmnet","Matrix","Publish","matrixStats","speedglm","parallel","caret","foreach","clustermq"))
 ```
 
 ## Functions
@@ -33,34 +33,20 @@ The simulation study primarily runs off functions sourced from the Ltmle folder,
 
 The scripts to reproduce the simulation are in the /src/ folder labeled in order, and the script `0_run_simulations.R` runs each script in order. The file contents, in brief, are as follows:
 
+
 * `1_simulate_data.R`: using the lava package and exported coefficients using the Danish registry, we simulate the datasets to be used for the simulation and save this in the /data/ subfolder. 
 * `2_calculate_truth.R`: use function `calc_realistic_truth` to intervene on the DGP to set desired causal contrasts and simulate from them with large N, approximating the truth.
 * `3_run_simulation_for_point_estimators.R`: With wrapper functions for parallelization, we run the simulation for the different estimator options across 1000 iterations of simulated data.
-* `4_calc_performance.R`:
-* `5_calc_performance_null.R`:
-* `6_run_bootstrap_variance.R`:
-* `7_calc_bootstrap_performance.R`:
-
-* `3_run_null_simulations_for_point_estimates.R`:
-
-
+* `4_calc_performance.R`: Calculates the performance of the estimators across multiple metrics, including bias and empirical and oracle variance and coverage.
+* `5_run_bootstrap_variance.R`: Estimate the bootstrapped confidence intervals the winning point estimator 
+* `6_calc_bootstrap_performance.R`: Compare the coverage of bootstrapped variance compared to the influence curve and TMLE based variance.
+* `7_simulate_data_null.R`: using the same process as `1_simulate_data.R` but with the null hypothesis of no effect of the treatment on dementia or death.
+* `8_run_null_simulation_for_point_estimators.R`: With wrapper functions for parallelization, we run the simulation for the different estimator options across 1000 iterations of simulated null data.
+* `9_calc_performance_null.R`: Calculates the performance of the null simulation.
 * `10_create_latex_tables.R`: creates the manuscript results tables
 * `11_example_DAG.R`: creates the example DAG used in the publication. 
 
-``` R
-source(here("1_simulate_data.R"))
-source(here("2_calculate_truth.R"))
-source(here("3_run_simulation_for_point_estimators.R"))
-source(here("4_calc_performance.R"))
-source(here("5_run_bootstrap_variance.R"))
-source(here("6_calc_bootstrap_performance.R"))
-source(here("7_simulate_data_null.R"))
-source(here("8_run_null_simulations_for_point_estimates.R"))
-source(here("9_calc_performance_null.R"))
-source(here("10_create_latex_tables.R"))
-source(here("11_example_DAG.R"))
 
-```
 
 ## Notes
 - The deterministic Q function (which encodes the setting of the probability of the outcome dementia deterministically to 1 once death, the competing event, has occurred) is built into the updates to the ltmle package, found in the repo. The exact code used for this can be found here: Ltmle/Augmentation/event_node_manipulator.R
