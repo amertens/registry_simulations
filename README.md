@@ -45,6 +45,7 @@ The scripts to reproduce the simulation are in the /src/ folder labeled in order
 * `9_calc_performance_null.R`: Calculates the performance of the null simulation.
 * `10_create_latex_tables.R`: creates the manuscript results tables
 * `11_example_DAG.R`: creates the example DAG used in the publication. 
+* `12_example_detQ_function_use.R`: Example demonstration of writing and implementing a deterministic Q function; this script is not a part of the manuscript analysis. 
 
 
 
