@@ -50,21 +50,32 @@ The scripts to reproduce the simulation are in the /src/ folder labeled in order
 
 
 ## Notes
-- The deterministic Q function (which encodes the setting of the probability of the outcome dementia deterministically to 1 once death, the competing event, has occurred) is built into the updates to the ltmle package, found in the repo. The exact code used for this can be found here: [Ltmle/Augmentation/event_node_manipulator.R](https://github.com/amertens/registry_simulations/blob/main/Ltmle/Augmentation/prepare_Ltmle.R) and is padted below:
+- The deterministic Q function (which encodes the setting of the probability of the outcome dementia deterministically to 1 once death, the competing event, has occurred) is built into the updates to the ltmle package, found in the repo. A simple reproducible example of using a deterministic Q function within LTMLE is given in the 12_example_detQ_function_use.R script, and the exact code used for this can be found here: [Ltmle/Augmentation/prepare_Ltmle.R](https://github.com/amertens/registry_simulations/blob/main/Ltmle/Augmentation/prepare_Ltmle.R) and is pasted below:
 
     ## Deterministic Q function -- creates function indicating that competing risk event means that no event can happen
+  
     dq <- function(data, current.node, nodes, called.from.estimate.g){
+  
         death.index <- grep(paste0(name_comp.event, "_"),names(data))
+  
         if(length(death.index)==0)stop("No death/terminal event node found")
+  
         hist.death.index <- death.index[death.index < current.node]
+  
         if(length(hist.death.index)==0)
+  
             return(NULL)
+  
         else{
-            is.deterministic <- Reduce("+",lapply(data[,hist.death.index,drop=FALSE],
-                                                  function(dd){x=dd;x[is.na(dd)] <- 0;x}))>=1
+  
+            is.deterministic <- Reduce("+",lapply(data[,hist.death.index,drop=FALSE], function(dd){x=dd;x[is.na(dd)] <- 0;x}))>=1
+  
             is.deterministic[is.na(is.deterministic)] <- FALSE
+  
             list(is.deterministic=is.deterministic, Q.value=0)
+  
         }
+  
     }
 
 - When using undersmoothed penalized regressions, we selected the lambda value by choosing the minimum penalization (i.e., the largest lambda value) across a range of candidate values that did not cause the algorithm to crash. The exact code used for this can be found on lines 80-96 here: Ltmle/Augmentation/ltmle.glmnet.R
