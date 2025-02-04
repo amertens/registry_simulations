@@ -78,7 +78,7 @@ The scripts to reproduce the simulation are in the /src/ folder labeled in order
   
     }
 
-- When using undersmoothed penalized regressions, we selected the lambda value by choosing the minimum penalization (i.e., the largest lambda value) across a range of candidate values that did not cause the algorithm to crash. The exact code used for this can be found on lines 80-96 here: Ltmle/Augmentation/ltmle.glmnet.R
+- When using undersmoothed penalized regressions, we selected the lambda value by choosing the minimum penalization (i.e., the largest lambda value) across a range of candidate values that did not cause the algorithm to crash. The exact code used for the deterministic Q function in the registry analysis can be found on lines 80-96 here: Ltmle/Augmentation/ltmle.glmnet.R
 
 ## License
 
