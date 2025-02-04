@@ -50,7 +50,7 @@ The scripts to reproduce the simulation are in the /src/ folder labeled in order
 
 
 ## Notes
-- The deterministic Q function (which encodes the setting of the probability of the outcome dementia deterministically to 1 once death, the competing event, has occurred) is built into the updates to the ltmle package, found in the repo. A simple reproducible example of using a deterministic Q function within LTMLE is given in the 12_example_detQ_function_use.R script, and the exact code used for this can be found here: [Ltmle/Augmentation/prepare_Ltmle.R](https://github.com/amertens/registry_simulations/blob/main/Ltmle/Augmentation/prepare_Ltmle.R) and is pasted below:
+- The deterministic Q function (which encodes the setting of the probability of the outcome dementia deterministically to 1 once death, the competing event, has occurred) is built into the updates to the ltmle package, found in the repo. A simple reproducible example of using a deterministic Q function within LTMLE is given in the 12_example_detQ_function_use.R script, and the exact code used for this can be found on line 69-94 within the prepare_Ltmle function here: [Ltmle/Augmentation/prepare_Ltmle.R](https://github.com/amertens/registry_simulations/blob/main/Ltmle/Augmentation/prepare_Ltmle.R) and is pasted below:
 
   Deterministic Q function -- creates function indicating that competing risk event means that no event can happen:
   
